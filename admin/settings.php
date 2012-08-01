@@ -63,8 +63,8 @@ $options[] = array( "name"  =>  "Twitter Username",
 					"id"    =>  $prefix ."twitter",
 					"type"  =>  "text" );	
 					
-$options[] = array( "name"  =>  "Facebook Username",
-					"desc"  =>  "Just your username (e.g. GetLeeflets).",
+$options[] = array( "name"  =>  "Facebook Address",
+					"desc"  =>  "Your public Facebook address (e.g. http://facebook.com/your-name).",
 					"id"    =>  $prefix ."facebook",
 					"type"  =>  "text" );
 					
