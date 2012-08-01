@@ -1,0 +1,18 @@
+# Name:
+Words
+
+# Description:
+The essence of "minimal", the Words Leeflet can be used to express whatever is important and nothing more.
+
+# Author:
+Jason Schuller
+
+# Author URL:
+http://jasonschuller.com
+
+# Current Version:
+1.0
+
+# Change Log:
+* Version 1.0 - July 3rd, 2012
+- **NEW** Everything of Course
