@@ -30,7 +30,7 @@ include('functions.php');
     <link rel="shortcut icon" href="images/favicon.png">
 </head>
 
-<body class="leeflets-admin<?php if (file_exists('../config.php')) { ?><?php } else { ?> welcome<?php } ?>">
+<body class="leeflets-admin<?php if (!isset($_SESSION['user'])) { ?> welcome<?php } ?>">
     <div class="progress progress-striped active save-loading hide">
         <div class="bar" style="width: 100%;"></div>
     </div>
@@ -96,19 +96,24 @@ if (!isset($_SESSION['user'])) {
                             <?php endif; ?>
                         </div>
                         <div class="clearfix">
-                            <label for="username">User Name</label>
+                            <label for="username"><i class="icon-user icon-black"></i> User Name:</label>
                             <div class="input">
                                 <input type="text" name="username" id="username">
                             </div>
                         </div>
                         <div class="clearfix">
-                            <label for="password">Password</label>
+                            <label for="password"><i class="icon-lock icon-black"></i> Password:</label>
                             <div class="input">
                                 <input type="password" name="password" id="password">
                             </div>
                         </div>
+                        
+                        <span class="help-block"><strong>Note: </strong>Forgot your password? Delete "config.php" and then reload this page to reset your password.</span>
+                        
+                        <hr>
+                        
                         <div class="actions">
-                            <input type="submit" class="btn btn-success" value="Login">
+                            <input type="submit" class="btn btn-info" value="Login">
                             <a href="<?php get_home_url(); ?>" class="btn">Cancel</a>
                         </div>
                     </fieldset>
@@ -138,7 +143,7 @@ if (!isset($_SESSION['user'])) {
                     <form method="POST" action="save-user.php">
                         <fieldset>
                             <div class="modal-body">
-                                <p><strong>Note: </strong>After your password has been set you will be redirected to the Leeflets login page where you will prompted to enter your new username and password. Of course, you will be able to change your username and password at any time within the Leeflets admin.</p>
+                                <p><strong>Note: </strong>After your password has been set you will be redirected to the Leeflets admin login page where you will prompted to enter your selected <strong>username</strong> and <strong>password</strong>. You will be able to change your username and password at any time within the Leeflets admin.</p>
                                 
                                 <div class="clearfix">
                                     <label for="username"><i class="icon-user icon-black"></i> Choose a Username:</label>
