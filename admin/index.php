@@ -30,7 +30,7 @@ include('functions.php');
     <link rel="shortcut icon" href="images/favicon.png">
 </head>
 
-<body class="leeflets-admin">
+<body class="leeflets-admin<?php if (file_exists('../config.php')) { ?><?php } else { ?> welcome<?php } ?>">
     <div class="progress progress-striped active save-loading hide">
         <div class="bar" style="width: 100%;"></div>
     </div>
@@ -81,39 +81,89 @@ include('functions.php');
 if (!isset($_SESSION['user'])) { 
     
 ?>   
+        <?php if (file_exists('../config.php')) { ?>
             
-        <div class="row-fluid">
-            <div class="page-header">
-                <h1>Welcome Back! <small>Enter your username and password to login.</small></h1>
+            <div class="row-fluid">
+                <div class="page-header">
+                    <h1>Welcome Back! <small>Enter your username and password to login.</small></h1>
+                </div>
+                
+                <form method="POST" action="?action=login">
+                    <fieldset>
+                        <div class="clearfix">
+                            <?php if(isset($login_error)): ?>
+                            <p class="alert alert-error"><?php echo $login_error; ?></p>
+                            <?php endif; ?>
+                        </div>
+                        <div class="clearfix">
+                            <label for="username">User Name</label>
+                            <div class="input">
+                                <input type="text" name="username" id="username">
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label for="password">Password</label>
+                            <div class="input">
+                                <input type="password" name="password" id="password">
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <input type="submit" class="btn btn-success" value="Login">
+                            <a href="<?php get_home_url(); ?>" class="btn">Cancel</a>
+                        </div>
+                    </fieldset>
+                </form>
             </div>
-            
-            <form method="POST" action="?action=login">
-                <fieldset>
-                    <div class="clearfix">
-                        <?php if(isset($login_error)): ?>
-                        <p class="alert alert-error"><?php echo $login_error; ?></p>
-                        <?php endif; ?>
-                    </div>
-                    <div class="clearfix">
-                        <label for="username">User Name</label>
-                        <div class="input">
-                            <input type="text" name="username" id="username">
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <label for="password">Password</label>
-                        <div class="input">
-                            <input type="password" name="password" id="password">
-                        </div>
-                    </div>
-                    <div class="actions">
-                        <input type="submit" class="btn btn-success" value="Login">
-                        <a href="<?php get_home_url(); ?>" class="btn">Cancel</a>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
         
+        <?php } else { ?>
+            
+            <div class="row-fluid">
+                <div class="hero-unit">
+                    <h1>Welcome to Leeflets!</h1>
+                    
+                    <p>Congrats... you're already <strong>99% finished</strong> installing Leeflets. Pretty easy right? All you need to do now is set your desired <strong>username</strong> and <strong>password</strong> and we're done.</p>
+                
+                    <p class="hero-nav">
+                        <a data-toggle="modal" href="#set-user" class="btn btn-info btn-large">Set Username &amp; Password</a> 
+                        <a href="<?php get_home_url(); ?>" class="btn btn-large">Cancel</a>
+                    </p>
+                </div>
+                
+                <div class="modal fade hide" id="set-user">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h3>Set Your Username &amp; Password</h3>
+                    </div>
+                    
+                    <form method="POST" action="save-user.php">
+                        <fieldset>
+                            <div class="modal-body">
+                                <p><strong>Note: </strong>After your password has been set you will be redirected to the Leeflets login page where you will prompted to enter your new username and password. Of course, you will be able to change your username and password at any time within the Leeflets admin.</p>
+                                
+                                <div class="clearfix">
+                                    <label for="username"><i class="icon-user icon-black"></i> Choose a Username:</label>
+                                    <div class="input">
+                                        <input type="text" name="username" id="username">
+                                    </div>
+                                </div>
+                                <div class="clearfix">
+                                    <label for="password"><i class="icon-lock icon-black"></i> Choose a Password:</label>
+                                    <div class="input">
+                                        <input type="password" name="password" id="password">
+                                    </div>
+                                </div>   
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <button type="submit" name="submit" value="submit" class="btn btn-info">Continue</button>
+                                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        
+        <?php } ?>    
 <?php 
 
 } else { 
