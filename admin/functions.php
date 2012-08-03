@@ -224,6 +224,28 @@ function get_options($part = '') {
 }
 
 /*-----------------------------------------------------------------------------------*/
+/* Get Latest Leeflets News
+/*-----------------------------------------------------------------------------------*/
+
+function get_latest_tweets($count = '1') {
+    
+    $statuses = simplexml_load_file('http://twitter.com/statuses/user_timeline/GetLeeflets.xml?count='. $count .'') or die('<blockquote>Sorry, but the latest news is not currently available.</blockquote>');
+    
+    foreach ($statuses->status as $status):
+        
+        $text = $status->text;
+        $id = $status->id;
+        $created_at = $status->created_at;
+        
+        { ?>
+        <blockquote class="twitter-tweet"><p><?php echo $text; ?></p>&mdash; Leeflets (@GetLeeflets) <a href="https://twitter.com/GetLeeflets/status/<?php echo $id; ?>" data-datetime="<?php echo $created_at; ?>"><?php echo $created_at; ?></a></blockquote>
+        <?php } 
+    
+    endforeach;
+
+}
+
+/*-----------------------------------------------------------------------------------*/
 /* Display Available Leeflets
 /*-----------------------------------------------------------------------------------*/
 
@@ -326,14 +348,14 @@ function get_available_leeflets() {
 /* Display Premium Leeflets
 /*-----------------------------------------------------------------------------------*/
 
-include(ADMIN_DIR . 'includes/feedcache.php');
+//include(ADMIN_DIR . 'includes/feedcache.php');
 
 function get_premium_leeflets($type = 'all') {
 
-    $feed_cache = new FeedCache('leeflets-'. $type .'.xml', 'http://leeflets.com/updates/leeflets-'. $type .'.xml');
-    $leeflets = simplexml_load_string($feed_cache->get_data());
+    //$feed_cache = new FeedCache('leeflets-'. $type .'.xml', 'http://leeflets.com/updates/leeflets-'. $type .'.xml');
+    //$leeflets = simplexml_load_string($feed_cache->get_data());
     
-    //$leeflets = simplexml_load_file('http://leeflets.com/leeflets-'. $type .'.xml');
+    $leeflets = simplexml_load_file('http://leeflets.com/updates/leeflets-'. $type .'.xml');
     
     foreach ($leeflets as $leeflet):
         

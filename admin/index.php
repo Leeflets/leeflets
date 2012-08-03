@@ -144,7 +144,7 @@ if (!isset($_SESSION['user'])) {
                     </div> 
                     
                     <div id="featured-leeflets" class="collapse in">
-                        <ul class="thumbnails">    
+                        <ul class="thumbnails">
                             <?php get_premium_leeflets('featured'); // Get Featured Leeflets ?>
                         </ul>
                     </div>
@@ -156,7 +156,7 @@ if (!isset($_SESSION['user'])) {
                     </div>
                     
                     <div id="leeflets-news" class="collapse in">
-                        <blockquote class="twitter-tweet"><p>By the way, the Leeflets website (<a href="http://t.co/mm6WfedO" title="http://leeflets.com">leeflets.com</a>) is powered by the <a href="https://twitter.com/search/%2523Leeflets">#Leeflets</a> beta.</p>&mdash; Leeflets (@GetLeeflets) <a href="https://twitter.com/GetLeeflets/status/223172762431266817" data-datetime="2012-07-11T21:51:47+00:00">July 11, 2012</a></blockquote>
+                        <?php get_latest_tweets('3'); // Get Latest News ?>
                         <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
                     </div>
                 </div>
