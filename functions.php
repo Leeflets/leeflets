@@ -1,7 +1,7 @@
 <?php
 
-define('ACTIVE_LEEFLET', file_get_contents('./content/site_leeflet.txt'));
-define('ACTIVE_LEEFLET_DIR', './leeflets/' . ACTIVE_LEEFLET);
+define('ACTIVE_TEMPLATE', file_get_contents('./content/site_template.txt'));
+define('ACTIVE_TEMPLATE_DIR', './templates/' . ACTIVE_TEMPLATE);
 
 /*-----------------------------------------------------------------------------------*/
 /* Leeflets Version
@@ -32,8 +32,8 @@ function get_site_info($info = '') {
 /* Leeflet Parts
 /*-----------------------------------------------------------------------------------*/
 
-function get_leeflet_part($part = '') {
-    include('./leeflets/'. ACTIVE_LEEFLET .'/' . $part . '.php'); 
+function get_template_part($part = '') {
+    include('./templates/'. ACTIVE_TEMPLATE .'/' . $part . '.php'); 
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -42,13 +42,13 @@ function get_leeflet_part($part = '') {
 
 function get_content_part($part = '') {
 
-    if (file_exists('./content/'. ACTIVE_LEEFLET .'_'. $part .'.txt')) { 
+    if (file_exists('./content/'. ACTIVE_TEMPLATE .'_'. $part .'.txt')) { 
         
-        echo file_get_contents('./content/'. ACTIVE_LEEFLET .'_'. $part .'.txt');
+        echo file_get_contents('./content/'. ACTIVE_TEMPLATE .'_'. $part .'.txt');
     
     } else { 
         
-        echo file_get_contents('./leeflets/'. ACTIVE_LEEFLET .'/sample-content/'. ACTIVE_LEEFLET .'_'. $part .'.txt');
+        echo file_get_contents('./templates/'. ACTIVE_TEMPLATE .'/sample-content/'. ACTIVE_TEMPLATE .'_'. $part .'.txt');
     
     }
 
@@ -58,8 +58,8 @@ function get_content_part($part = '') {
 /* Leeflet Directory
 /*-----------------------------------------------------------------------------------*/
 
-function get_leeflet_dir() {
-    echo ACTIVE_LEEFLET_DIR;
+function get_template_dir() {
+    echo ACTIVE_TEMPLATE_DIR;
 }
 
 ?>

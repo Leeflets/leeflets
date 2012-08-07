@@ -2,7 +2,7 @@
 Words
 
 # Description:
-The essence of "minimal", the Words Leeflet can be used to express whatever is important and nothing more.
+The essence of "minimal", the Words template can be used to express whatever is important and nothing more.
 
 # Author:
 Jason Schuller

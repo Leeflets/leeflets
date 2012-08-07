@@ -7,10 +7,9 @@
 define('SITE_DIR', '../');
 define('ADMIN_DIR', '../admin/');
 define('CONTENT_DIR', '../content/');
-define('ACTIONS_DIR', '../admin/actions/');
-define('LEEFLETS_DIR', '../leeflets/');
-define('ACTIVE_LEEFLET', file_get_contents(CONTENT_DIR . 'site_leeflet.txt'));
-define('ACTIVE_LEEFLET_DIR', '../leeflets/' . ACTIVE_LEEFLET . '/');
+define('TEMPLATES_DIR', '../templates/');
+define('ACTIVE_TEMPLATE', file_get_contents(CONTENT_DIR . 'site_template.txt'));
+define('ACTIVE_TEMPLATE_DIR', '../templates/' . ACTIVE_TEMPLATE . '/');
 
 /*-----------------------------------------------------------------------------------*/
 /* Leeflets Version
@@ -124,7 +123,7 @@ function options_machine($options) {
         		
         		} else { 
         		    
-        		    $output .= '<input type="text" class="input-large" name="content" value="'. file_get_contents(''. ACTIVE_LEEFLET_DIR .'sample-content/'. $value['id'] .'.txt') .'">';
+        		    $output .= '<input type="text" class="input-large" name="content" value="'. file_get_contents(''. ACTIVE_TEMPLATE_DIR .'sample-content/'. $value['id'] .'.txt') .'">';
         		
         		}
         		
@@ -145,7 +144,7 @@ function options_machine($options) {
         		
         		} else { 
         		    
-        		    $output .= '<textarea class="input-xlarge '. $value['edit'] .'" name="content" rows="'. $value['rows'] .'">'. file_get_contents(''. ACTIVE_LEEFLET_DIR .'sample-content/'. $value['id'] .'.txt') .'</textarea>';
+        		    $output .= '<textarea class="input-xlarge '. $value['edit'] .'" name="content" rows="'. $value['rows'] .'">'. file_get_contents(''. ACTIVE_TEMPLATE_DIR .'sample-content/'. $value['id'] .'.txt') .'</textarea>';
         		
         		}
         		
@@ -205,14 +204,14 @@ function get_options($part = '') {
         
     elseif ($part == 'content') : 
     
-        // The Active Leeflet Prefix	
-        $prefix = ACTIVE_LEEFLET .'_';
+        // The Active Template Prefix	
+        $prefix = ACTIVE_TEMPLATE .'_';
         
         // Prefix
         $panel = 'site-content';
         
-        // Get the Active Leeflet Content Options
-        include(ACTIVE_LEEFLET_DIR . 'content.php');   
+        // Get the Active Template Content Options
+        include(ACTIVE_TEMPLATE_DIR . 'content.php');   
     					
     endif;						
     
@@ -246,91 +245,91 @@ function get_latest_tweets($count = '1') {
 }
 
 /*-----------------------------------------------------------------------------------*/
-/* Display Available Leeflets
+/* Display Available Templates
 /*-----------------------------------------------------------------------------------*/
 
-function get_available_leeflets() {
+function get_available_templates() {
     
-    // Currently Active Leeflet
-    $active_leeflet = ACTIVE_LEEFLET;
+    // Currently Active Template
+    $active_template = ACTIVE_TEMPLATE;
 
-    // The Leeflets Directory
-    $leeflets_directory = LEEFLETS_DIR;
+    // The Templates Directory
+    $templates_directory = TEMPLATES_DIR;
     
-    // Get All Leeflets in the Leeflets Directory
-    $available_leeflets = glob($leeflets_directory . "*");
+    // Get All Templates in the Templates Directory
+    $templates = glob($templates_directory . "*");
 
-    foreach($available_leeflets as $leeflet): 
+    foreach($templates as $template): 
     
-        // Leeflet Name    
-        $leeflet_dir_name = substr($leeflet, 12); 
+        // Template Name    
+        $template_dir_name = substr($template, 13); 
         
         // Screenshots
-        $leeflet_screenshot = ''. $leeflets_directory .''. $leeflet_dir_name .'/screenshot.jpg';
+        $template_screenshot = ''. $templates_directory .''. $template_dir_name .'/screenshot.jpg';
 
         // The About File
-        $about = ''. $leeflets_directory .''. $leeflet_dir_name .'/about.txt';
+        $about = ''. $templates_directory .''. $template_dir_name .'/about.txt';
         
         // About Array (Reading Line Numbers)
         $about_line = file($about);
         
-        // Leeflet Name
-        $leeflet_name = $about_line[1];
+        // Template Name
+        $template_name = $about_line[1];
         
-        // Leeflet Description
-        $leeflet_description = $about_line[4];
+        // Template Description
+        $template_description = $about_line[4];
         
-        // Leeflet Author
-        $leeflet_author = $about_line[7];
+        // Template Author
+        $template_author = $about_line[7];
         
-        // Leeflet Author URL
-        $leeflet_author_url = $about_line[10];
+        // Template Author URL
+        $template_author_url = $about_line[10];
         
-        // Leeflet Version
-        $leeflet_version = $about_line[13];
+        // Template Version
+        $template_version = $about_line[13];
     
         { ?>
         <li class="span3">
             <div class="thumbnail">
                 <div class="screenshot-frame"></div>
                 
-                <img src="<?php if (file_exists($leeflet_screenshot)) { echo $leeflet_screenshot; } else { echo ADMIN_DIR . 'images/screenshot.jpg'; } ?>">
+                <img src="<?php if (file_exists($template_screenshot)) { echo $template_screenshot; } else { echo ADMIN_DIR . 'images/screenshot.jpg'; } ?>">
                 
                 <div class="caption">
-                    <h3><?php if ($leeflet_name == '') : echo('Whoops!'); else : echo $leeflet_name; endif; ?> <span class="badge badge-inverse"><?php if ($leeflet_version == '') : echo('0.0'); else : echo $leeflet_version; endif; ?></span></h3>
+                    <h3><?php if ($template_name == '') : echo('Whoops!'); else : echo $template_name; endif; ?> <span class="badge badge-inverse"><?php if ($template_version == '') : echo('0.0'); else : echo $template_version; endif; ?></span></h3>
                     
-                    <h6>by: <a href="<?php echo $leeflet_author_url; ?>"><?php if ($leeflet_author == '') : echo('Who Knows'); else : echo $leeflet_author; endif; ?></a></h6>
+                    <h6>by: <a href="<?php echo $template_author_url; ?>"><?php if ($template_author == '') : echo('Who Knows'); else : echo $template_author; endif; ?></a></h6>
                     
-                    <p><?php if ($leeflet_description == '') : echo('This Leeflet is unfinished, broken or maybe it just did not install properly. Probably a good idea to re-install it.'); else : echo $leeflet_description; endif; ?></p>
+                    <p><?php if ($template_description == '') : echo('This Leeflet is unfinished, broken or maybe it just did not install properly. Probably a good idea to re-install it.'); else : echo $template_description; endif; ?></p>
                     
                     <p>
-                        <?php if ($active_leeflet == $leeflet_dir_name) : ?>
+                        <?php if ($active_template == $template_dir_name) : ?>
                         <span class="btn btn-info disabled"><i class="icon-ok-circle icon-white"></i> Currently Active</span>
                         <?php else : ?>
-                        <form id="activate-<?php echo $leeflet_dir_name; ?>" class="ajax-form" method="POST" action="save.php">
-                            <input type="hidden" name="content_file" value="site_leeflet">
-                            <input type="hidden" name="content" value="<?php echo $leeflet_dir_name; ?>">
+                        <form id="activate-<?php echo $template_dir_name; ?>" class="ajax-form" method="POST" action="save.php">
+                            <input type="hidden" name="content_file" value="site_template">
+                            <input type="hidden" name="content" value="<?php echo $template_dir_name; ?>">
                             <button type="submit" name="submit" value="submit" class="btn btn-info">Activate</button>
                         </form>
                         
-                        <a class="btn" data-toggle="modal" href="#delete-<?php echo $leeflet_dir_name; ?>">Delete</a>
+                        <a class="btn" data-toggle="modal" href="#delete-<?php echo $template_dir_name; ?>">Delete</a>
                         <?php endif; ?>
                     </p>
                     
-                    <div class="modal fade hide" id="delete-<?php echo $leeflet_dir_name; ?>">
+                    <div class="modal fade hide" id="delete-<?php echo $template_dir_name; ?>">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
-                            <h3>You Are About to Delete <?php echo $leeflet_name; ?></h3>
+                            <h3>You Are About to Delete <?php echo $template_name; ?></h3>
                         </div>
                         
                         <div class="modal-body">
-                            <p>Are you absolutely sure you want to delete the <?php echo $leeflet_name; ?> leeflet? This will delete everything, including the leeflet and all your content associated with it.</p>
+                            <p>Are you absolutely sure you want to delete the <?php echo $template_name; ?> template?.</p>
                         </div>
                         
                         <div class="modal-footer">
                             <a href="#" class="btn" data-dismiss="modal">Cancel</a>
-                            <form id="delete-<?php echo $leeflet_dir_name; ?>" class="ajax-form" method="POST" action="actions/delete.php">
-                                <input type="hidden" name="leeflet_path" value="<?php echo LEEFLETS_DIR . $leeflet_dir_name; ?>">
+                            <form id="delete-<?php echo $template_dir_name; ?>" class="ajax-form" method="POST" action="actions/delete.php">
+                                <input type="hidden" name="leeflet_path" value="<?php echo TEMPLATES_DIR . $template_dir_name; ?>">
                                 <button type="submit" name="submit" value="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </div>
@@ -345,73 +344,73 @@ function get_available_leeflets() {
 }
 
 /*-----------------------------------------------------------------------------------*/
-/* Display Premium Leeflets
+/* Display Premium Templates
 /*-----------------------------------------------------------------------------------*/
 
 //include(ADMIN_DIR . 'includes/feedcache.php');
 
-function get_premium_leeflets($type = 'all') {
+function get_premium_templates($type = 'all') {
 
     //$feed_cache = new FeedCache('leeflets-'. $type .'.xml', 'http://leeflets.com/updates/leeflets-'. $type .'.xml');
     //$leeflets = simplexml_load_string($feed_cache->get_data());
     
-    $leeflets = simplexml_load_file('http://leeflets.com/updates/leeflets-'. $type .'.xml');
+    $templates = simplexml_load_file('http://leeflets.com/updates/templates-'. $type .'.xml');
     
-    foreach ($leeflets as $leeflet):
+    foreach ($templates as $template):
         
-        $leeflet_name=$leeflet->name;
-        $leeflet_file_name=$leeflet->file_name;
-        $leeflet_price=$leeflet->price;
-        $leeflet_buy_url=$leeflet->buy_url;
-        $leeflet_featured=$leeflet->featured;
+        $template_name=$template->name;
+        $template_file_name=$template->file_name;
+        $template_price=$template->price;
+        $template_buy_url=$template->buy_url;
+        $template_featured=$template->featured;
         
         // The About File
-        $about = 'http://leeflets.com/view/'. $leeflet_file_name .'/leeflets/'. $leeflet_file_name .'/about.txt';
+        $about = 'http://leeflets.com/view/'. $template_file_name .'/templates/'. $template_file_name .'/about.txt';
         
         // About Array (Reading Line Numbers)
         $about_line = file($about);
         
-        // Leeflet Description
-        $leeflet_description = $about_line[4];
+        // Template Description
+        $template_description = $about_line[4];
         
-        // Leeflet Author
-        $leeflet_author = $about_line[7];
+        // Template Author
+        $template_author = $about_line[7];
         
-        // Leeflet Author URL
-        $leeflet_author_url = $about_line[10];
+        // Template Author URL
+        $template_author_url = $about_line[10];
         
-        // Leeflet Version
-        $leeflet_version = $about_line[13];
+        // Template Version
+        $template_version = $about_line[13];
         
         { ?>
         <li class="span3">
             <div class="thumbnail">
                 <div class="screenshot-frame"></div>
                  
-                <img src="http://leeflets.com/view/<?php echo $leeflet_file_name; ?>/leeflets/<?php echo $leeflet_file_name; ?>/screenshot.jpg" alt="<?php echo $leeflet_name; ?>">
+                <img src="http://leeflets.com/view/<?php echo $template_file_name; ?>/templates/<?php echo $template_file_name; ?>/screenshot.jpg" alt="<?php echo $template_name; ?>">
                 
                 <div class="caption">
-                    <h3><?php echo $leeflet_name; ?> <span class="badge badge-inverse"><?php echo $leeflet_version; ?></span></h3>
+                    <h3><?php echo $template_name; ?> <span class="badge badge-inverse"><?php echo $template_version; ?></span></h3>
                     
-                    <h6>by: <a href="<?php echo $leeflet_author_url; ?>"><?php echo $leeflet_author; ?></a></h6>
+                    <h6>by: <a href="<?php echo $template_author_url; ?>"><?php echo $template_author; ?></a></h6>
                     
-                    <p><?php echo $leeflet_description; ?></p>
+                    <p><?php echo $template_description; ?></p>
                     
-                    <p><a class="btn btn-success" data-toggle="modal" href="#buy-<?php echo $leeflet_file_name; ?>">Purchase <?php echo $leeflet_price; ?></a> <a href="http://leeflets.com/view/<?php echo $leeflet_file_name; ?>/" class="btn" target="_blank">Live Demo</a></p>
+                    <p><a class="btn btn-success" data-toggle="modal" href="#buy-<?php echo $template_file_name; ?>">Purchase <?php echo $template_price; ?></a> <a href="http://leeflets.com/view/<?php echo $template_file_name; ?>/" class="btn" target="_blank">Live Demo</a></p>
                     
-                    <div class="buy modal fade hide" id="buy-<?php echo $leeflet_file_name; ?>">
+                    <div class="buy modal fade hide" id="buy-<?php echo $template_file_name; ?>">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
-                            <h3>Purchase <?php echo $leeflet_name; ?></h3>
+                            <h3>Purchase <?php echo $template_name; ?></h3>
                         </div>
                         
                         <div class="modal-body">
-                            <p>Click "Buy Now" below to continue to <strong>PayPal.com</strong> and complete your purchase. After your payment has successfully cleared (usually instant), you will receive purchase confirmation and a unique link via email which you will be able to use to download and install the <?php echo $leeflet_name; ?> Leeflet.</p>
+                            <p>Click "Buy Now" below to continue to <strong>PayPal.com</strong> and complete your purchase. After your payment has successfully cleared (usually instant), you will receive purchase confirmation and a unique link via email which you will be able to use to download and install the <?php echo $template_name; ?> template.</p>
                         </div>
                         
                         <div class="modal-footer">
                             <a href="#" class="btn" data-dismiss="modal">Close</a>
-                            <a href="<?php echo $buy_url; ?>" class="btn btn-success">Buy Now <?php echo $leeflet_price; ?></a>
+                            <a href="<?php echo $buy_url; ?>" class="btn btn-success">Buy Now <?php echo $template_price; ?></a>
                         </div>
                     </div>
                 </div>

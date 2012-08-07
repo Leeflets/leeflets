@@ -38,19 +38,19 @@ Copyright <?php echo date("Y"); ?> Circa75 Media, LLC
         <!-- Default Framework Styles -->
         <link rel="stylesheet" href="style.css">
         
-        <!-- Current Leeflet Styles -->
-        <link rel="stylesheet" href="leeflets/<?php get_site_info('leeflet'); ?>/style.css">
+        <!-- Current Template Styles -->
+        <link rel="stylesheet" href="<?php get_template_dir(); ?>/style.css">
         
-        <!-- Current Leeflet Icons -->
-        <link rel="shortcut icon" href="leeflets/<?php get_site_info('leeflet'); ?>/images/favicon.png">
+        <!-- Current Template Icons -->
+        <link rel="shortcut icon" href="<?php get_template_dir(); ?>/images/favicon.png">
         
-        <?php get_leeflet_part('header'); ?>
+        <?php get_template_part('header'); ?>
     </head>
     
     <body>
-		<?php get_leeflet_part('index'); ?>
+		<?php get_template_part('index'); ?>
 		
-		<?php get_leeflet_part('footer'); ?>
+		<?php get_template_part('footer'); ?>
 		
 		<?php get_site_info('analytics'); ?>
 	</body> 

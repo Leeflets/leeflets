@@ -57,7 +57,7 @@ include('functions.php');
                     <ul class="nav pull-left">
                         <li class="active"><a href="#dashboard" data-toggle="tab"><i class="icon-home icon-white"></i> Dashboard</a></li>
                         <li><a href="#marketplace" data-toggle="tab"><i class="icon-shopping-cart icon-white"></i> Marketplace</a></li>
-                        <li><a href="#leeflet-select" data-toggle="tab"><i class="icon-eye-open icon-white"></i> Appearance</a></li>
+                        <li><a href="#template-select" data-toggle="tab"><i class="icon-eye-open icon-white"></i> Design</a></li>
                         <li><a href="#site-settings" data-toggle="tab"><i class="icon-cog icon-white"></i> Settings</a></li>
                         <li><a href="#site-content" data-toggle="tab"><i class="icon-align-left icon-white"></i> Content</a></li>
                         <li><a href="#leeflets-support" data-toggle="tab"><i class="icon-question-sign icon-white"></i> Support</a></li>
@@ -189,18 +189,18 @@ if (!isset($_SESSION['user'])) {
                     <p class="hero-nav">
                         <a class="btn btn-info btn-large">View Your Site</a> 
                         <a class="btn btn-warning btn-large">Get Support</a>
-                        <a class="btn btn-success btn-large" href="#marketplace" data-toggle="tab">Purchase New Leeflets</a>
+                        <a class="btn btn-success btn-large" href="#marketplace" data-toggle="tab">Purchase New Templates</a>
                     </p>
                 </div>
                 
                 <div class="accordion-group">
                     <div class="page-header extra-margin">
-                        <h1><a data-toggle="collapse" data-parent="#dashboard" href="#featured-leeflets">Latest Featured Leeflets <small>Here are some great new leeflets available for purchase.</small></a></h1>
+                        <h1><a data-toggle="collapse" data-parent="#dashboard" href="#featured-templates">Latest Featured Templates <small>Here are some great new templates available for purchase.</small></a></h1>
                     </div> 
                     
-                    <div id="featured-leeflets" class="collapse in">
+                    <div id="featured-templates" class="collapse in">
                         <ul class="thumbnails">
-                            <?php get_premium_leeflets('featured'); // Get Featured Leeflets ?>
+                            <?php get_premium_templates('featured'); // Get Featured Templates ?>
                         </ul>
                     </div>
                 </div>
@@ -224,67 +224,67 @@ if (!isset($_SESSION['user'])) {
                     <p>Browse our growing marketplace of amazing Leeflets. If you find something you like, buy it, install it and have your new site online in under 5 minutes. Yeah... it's that simple.</p>
                     
                     <p class="hero-nav">
-                        <a class="btn btn-info btn-large" data-toggle="collapse" data-parent="#marketplace" href="#get-featured-leeflets">New Leeflets</a> 
-                        <a class="btn btn-warning btn-large" data-toggle="collapse" data-parent="#marketplace" href="#get-popular-leeflets">Popular Leeflets</a> 
-                        <a class="btn btn-success btn-large" data-toggle="collapse" data-parent="#marketplace" href="#get-all-leeflets">All Leeflets</a> 
+                        <a class="btn btn-info btn-large" data-toggle="collapse" data-parent="#marketplace" href="#get-featured-templates">What's New</a> 
+                        <a class="btn btn-warning btn-large" data-toggle="collapse" data-parent="#marketplace" href="#get-popular-templates">Templates</a> 
+                        <a class="btn btn-success btn-large" data-toggle="collapse" data-parent="#marketplace" href="#get-all-templates">Blocks</a> 
                     </p>
                 </div>
                 
                 <div class="accordion-group">
                     <div class="page-header extra-margin">
-                        <h1><a data-toggle="collapse" data-parent="#marketplace" href="#get-featured-leeflets">New and Noteworthy <small>Here are some great new Leeflets.</small></a></h1>
+                        <h1><a data-toggle="collapse" data-parent="#marketplace" href="#get-featured-templates">New and Noteworthy <small>Here are some great new templates.</small></a></h1>
                     </div> 
                     
-                    <div id="get-featured-leeflets" class="collapse in">
+                    <div id="get-featured-templates" class="collapse in">
                         <ul class="thumbnails">    
-                            <?php get_premium_leeflets('featured'); // Get Featured Leeflets ?>
+                            <?php get_premium_templates('featured'); // Get Featured Templates ?>
                         </ul>
                     </div>
                 </div>
                 
                 <div class="accordion-group">    
                     <div class="page-header extra-margin">
-                        <h1><a data-toggle="collapse" data-parent="#marketplace" href="#get-popular-leeflets">What's Hot <small>The most popular Leeflets.</small></a></h1>
+                        <h1><a data-toggle="collapse" data-parent="#marketplace" href="#get-popular-templates">What's Hot <small>The most popular templates.</small></a></h1>
                     </div> 
                     
-                    <div id="get-popular-leeflets" class="collapse">
+                    <div id="get-popular-templates" class="collapse">
                         <ul class="thumbnails">    
-                            <?php get_premium_leeflets('popular'); // Get Popular Leeflets ?>
+                            <?php get_premium_templates('popular'); // Get Popular Templates ?>
                         </ul>
                     </div>
                 </div>
                 
                 <div class="accordion-group">      
                     <div class="page-header extra-margin">
-                        <h1><a data-toggle="collapse" data-parent="#marketplace" href="#get-all-leeflets">All Leeflets <small>Everything under the sun.</small></a></h1>
+                        <h1><a data-toggle="collapse" data-parent="#marketplace" href="#get-all-templates">All Templates <small>Everything under the sun.</small></a></h1>
                     </div> 
                     
-                    <div id="get-all-leeflets" class="collapse">
+                    <div id="get-all-templates" class="collapse">
                         <ul class="thumbnails">    
-                            <?php get_premium_leeflets('all'); // Get All Leeflets ?>
+                            <?php get_premium_templates('all'); // Get All Templates ?>
                         </ul>
                     </div>
                 </div>
             </section>
             
-            <section class="tab-pane fade" id="leeflet-select">
+            <section class="tab-pane fade" id="template-select">
                 <div class="hero-unit">
                     <h1>Choose Wisely</h1>
                     
-                    <p>Below is a list of leeflets that are currently installed and available for you to use. Click <strong>Activate</strong> to use a leeflet or <strong>Delete</strong> to delete a leeflet. If you don't see anything you like, you can purchase new leeflets below as well.</p>
+                    <p>Below is a list of templates that are currently installed and available for you to use. Click <strong>Activate</strong> to use a leeflet or <strong>Delete</strong> to delete a leeflet. If you don't see anything you like, you can purchase new templates below as well.</p>
                     
                     <p class="hero-nav">
-                        <a class="btn btn-info btn-large refresh">Install New Leeflets</a> 
-                        <a class="btn btn-success btn-large" href="#marketplace" data-toggle="tab">Purchase New Leeflets</a>
+                        <a class="btn btn-info btn-large refresh">Install New Templates</a> 
+                        <a class="btn btn-success btn-large" href="#marketplace" data-toggle="tab">Purchase New Templates</a>
                     </p>
                 </div>
                 
                 <div class="page-header extra-margin">
-                    <h1>Currently Installed Leeflets <small>Choose the leeflet you would like to use for this site.</small></h1>
+                    <h1>Currently Installed Templates <small>Choose the template you would like to use for this site.</small></h1>
                 </div> 
                 
                 <ul class="thumbnails">
-                    <?php get_available_leeflets(); // Get Installed Leeflets ?>
+                    <?php get_available_templates(); // Get Installed Templates ?>
                 </ul>
             </section>
             
@@ -305,8 +305,8 @@ if (!isset($_SESSION['user'])) {
                     <p>Use the options below to configure your actual <strong>site content</strong>. Keep in mind that these options will change depending on the currently active Leeflet. No worries... changing Leeflets will not delete your saved content for the active Leeflet.</p>
                 
                     <p class="hero-nav">
-                        <a class="btn btn-info btn-large">Change Leeflets</a> 
-                        <a class="btn btn-success btn-large" href="#marketplace" data-toggle="tab">Purchase New Leeflets</a>
+                        <a class="btn btn-info btn-large">Change Templates</a> 
+                        <a class="btn btn-success btn-large" href="#marketplace" data-toggle="tab">Purchase New Templates</a>
                     </p>
                 </div>
                 
@@ -396,7 +396,7 @@ if (!isset($_SESSION['user'])) {
                     $(".save-loading").fadeIn(500).delay(1500).fadeOut(1500);
                     
                     // Refresh Content
-                    $("#leeflet-select").load(location.href+" #leeflet-select>*","");
+                    $("#template-select").load(location.href+" #template-select>*","");
                     $("#site-content").load(location.href+" #site-content>*","");
                     
                     // End Transitions
