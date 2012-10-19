@@ -2,38 +2,31 @@
 class Leeflets {
 
 	const PHP_VERSION_REQUIRED = '5.3';
+	public $config;
 
-	function __construct() {
+	function __construct( $admin_path ) {
 		$this->check_php_version();
-		$this->setup_error_reporting();
 
-		define( 'LF_ROOT_PATH', realpath( LF_ADMIN_PATH . '/../' ) );
-		define( 'LF_CORE_PATH', LF_ADMIN_PATH . '/core' );
-		define( 'LF_CONTROLLER_PATH', LF_CORE_PATH . '/controller' );
-		define( 'LF_LIBRARY_PATH', LF_CORE_PATH . '/library' );
-		define( 'LF_VIEW_PATH', LF_CORE_PATH . '/view' );
-		define( 'LF_THEME_PATH', LF_CORE_PATH . '/theme' );
-		define( 'LF_FORM_PATH', LF_CORE_PATH . '/form' );
+		require $admin_path . '/core/library/config.php';
 
-		require LF_LIBRARY_PATH . '/string.php';
-		require LF_LIBRARY_PATH . '/file.php';
+		$config = $this->config = new LF_Config( $admin_path );
+
+		require $config->library_path . '/string.php';
+		require $config->library_path . '/file.php';
 
 		spl_autoload_register( array( $this, 'autoload' ) );
 
-		$config_path = LF_ADMIN_PATH . '/config.php';
+		$is_config_loaded = $this->config->load();
 
-		$is_install = preg_match( '@setup/install/@', $_SERVER['REQUEST_URI'] );
+		$this->setup_error_reporting();
 
-		if ( !file_exists( $config_path ) && !$is_install ) {
-			LF_Router::redirect( 'setup/install/' );
+		$is_install = preg_match( '@setup/install/$@', $_SERVER['REQUEST_URI'] );
+
+		$router = new LF_Router( $config );
+
+		if ( !$is_config_loaded && !$is_install ) {
+			LF_Router::redirect( $router->admin_url( '/setup/install/' ) );
 			exit;
-		}
-
-		if ( $is_install ) {
-			define( 'LF_ADMIN_URL', preg_replace( '@/setup/install/.*$@', '', LF_Router::request_url() ) );
-		}
-		else {
-			require $config_path;
 		}
 
 		$user = new LF_User();
@@ -41,24 +34,23 @@ class Leeflets {
 		$is_login = preg_match( '@user/login/@', $_SERVER['REQUEST_URI'] );
 
 		if ( !$user->is_logged_in() && !( $is_install || $is_login ) ) {
-			LF_Router::redirect( 'user/login/' );
+			LF_Router::redirect( $router->admin_url( '/user/login/' ) );
 			exit;
 		}
 
-		$router = new LF_Router();
-        $view = new LF_View();
+        $view = new LF_View( $config, $router );
+        $filesystem = new LF_Filesystem_Direct(array());
 
 		$controller_class = $router->controller_class;
-		$controller = new $controller_class( $router, $view );
+		$controller = new $controller_class( $router, $view, $filesystem, $config );
 		
-		$view->controller = $controller;
-		$view->router = $router;
+		//$view->controller = $controller;
 
         $controller->call_action();
 	}
 
 	function autoload( $class ) {
-		$path = LF_File::get_class_file_path( $class );
+		$path = LF_File::get_class_file_path( $this->config, $class );
 		if ( !$path ) return;
 		require $path;
 	}
@@ -68,7 +60,7 @@ class Leeflets {
 		die( 'Leeflets requires that you run PHP version ' . self::PHP_VERSION_REQUIRED . ' or greater. You are currently running PHP ' . PHP_VERSION . '.' );
 	}
 
-	function setup_error_reporting() {
+	function setup_error_reporting( $debug ) {
 		if ( defined( 'LF_DEBUG' ) ) {
 			error_reporting( E_ALL & ~E_DEPRECATED & ~E_STRICT );
 
@@ -89,4 +81,3 @@ class Leeflets {
 	}
 }
 
-new Leeflets();

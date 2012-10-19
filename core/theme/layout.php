@@ -8,9 +8,9 @@
         
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <link rel="stylesheet" href="<?php echo LF_ADMIN_URL; ?>/core/theme/asset/css/style.css">
+        <link rel="stylesheet" href="<?php echo $admin_url; ?>/core/theme/asset/css/style.css">
 
-        <link rel="shortcut icon" href="<?php echo LF_ADMIN_URL; ?>/core/theme/asset/img/favicon.png">
+        <link rel="shortcut icon" href="<?php echo $admin_url; ?>/core/theme/asset/img/favicon.png">
         
         <?php $this->out( 'header' ); ?>
     </head>

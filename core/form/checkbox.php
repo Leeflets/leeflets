@@ -1,5 +1,5 @@
 <?php
-class LF_Form_Checkbox extends LF_Form {
+class LF_Form_Checkbox extends LF_Form_Element {
     function table($print = false) {
         if ($this->hide_in_table) return;
         if (!$print) ob_start();

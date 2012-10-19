@@ -1,24 +1,49 @@
 <?php
 class LF_Router {
 
-    public $request_url;
+    public $request_url, $base_request_url, $request_path;
+    public $config;
+    public $admin_url, $site_url, $admin_dir_name;
 
     public $controller_name = '';
     public $action = '';
     public $params = array();
     public $controller_class = '';
 
-    function __construct( $request_url = null ) {
-        if ( is_null( $request_url ) ) $request_url = self::request_url();
+    function __construct( $config, $base_request_url = null, $request_path = null ) {
+        if ( is_null( $base_request_url ) ) $base_request_url = self::base_request_url();
+        if ( is_null( $request_path ) ) $request_path = $_SERVER['REQUEST_URI'];
 
-        $this->request_url = $request_url;
-        
+        $this->base_request_url = $base_request_url;
+        $this->request_path = $request_path;
+        $this->request_url = $base_request_url . $request_path;
+        $this->config = $config;
+
+        $this->set_urls();
         $this->parse_request_url();
         $this->set_controller_class();
     }
 
+    private function set_urls() {
+        $admin_path = str_replace( '/index.php', '', $_SERVER['SCRIPT_NAME'] );
+        $root_path = substr( $admin_path, 0, strrpos( $admin_path, '/' ) );
+
+        $this->admin_url = $this->base_request_url . $admin_path;
+        $this->site_url = $this->base_request_url . $root_path;
+
+        $this->admin_dir_name = substr( $admin_path, strrpos( $admin_path, '/' )+1 );
+    }
+
+    function admin_url( $path = '' ) {
+        return $this->admin_url . '/' . ltrim( $path, '/' );
+    }
+
+    function site_url( $path = '' ) {
+        return $this->site_url . '/' . ltrim( $path, '/' );
+    }
+
     private function parse_request_url() {
-        $admin_url = parse_url( LF_ADMIN_URL );
+        $admin_url = parse_url( $this->admin_url );
         $request_url = parse_url( $this->request_url );
 
         $path = preg_replace( '@^' . $admin_url['path'] . '@', '', $request_url['path'] );
@@ -52,21 +77,21 @@ class LF_Router {
         $name = preg_replace( '@[/\-\.]@', '_', $name );
         $class = 'LF_Controller_' . LF_String::camelize( $name );
 
-        $path = LF_File::get_class_file_path( $class );
+        $path = LF_File::get_class_file_path( $this->config, $class );
         if ( !file_exists( $path ) || !method_exists( $class, $this->action ) ) {
             $this->controller_name = 'error';
             $this->controller_class = 'LF_Controller_Error';
-            $this->action = 'e404';
+            $this->action = '404';
         }
         else {
             $this->controller_class = $class;
         }
     }
 
-    static function request_url() {
-        $ssl = (  isset(  $_SERVER['HTTPS']  ) && $_SERVER['HTTPS'] == 'on'  ) ? 's' : '';
-        $port = (  $_SERVER['SERVER_PORT'] != '80'  ) ? ':' . $_SERVER['SERVER_PORT'] : '';
-        return sprintf(  'http%s://%s%s%s', $ssl, $_SERVER['SERVER_NAME'], $port, $_SERVER['REQUEST_URI']  );
+    static function base_request_url() {
+        $ssl = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ) ? 's' : '';
+        $port = ( $_SERVER['SERVER_PORT'] != '80'  ) ? ':' . $_SERVER['SERVER_PORT'] : '';
+        return sprintf('http%s://%s%s', $ssl, $_SERVER['SERVER_NAME'], $port );
     }
 
     static function redirect( $url, $status = 302 ) {

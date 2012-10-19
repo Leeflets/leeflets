@@ -37,7 +37,7 @@ class LF_Form_Checklist extends LF_Form_Select {
         
         <tr>
             <th style="text-align: left; vertical-align: top;"><?php echo $this->lbl; ?>:</th>
-            <td><?php echo ($this->value) ? nl2br(htmlentities(join(', ', $this->value), null, $this->fieldset->form->encoding)) : ''; ?></td>
+            <td><?php echo ($this->value) ? nl2br(htmlentities(join(', ', $this->value), null, $this->form->encoding)) : ''; ?></td>
         </tr>
             
         <?php

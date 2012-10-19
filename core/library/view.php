@@ -1,23 +1,27 @@
 <?php
 class LF_View {
 
-    public $controller;
-    public $router;
+    public $router, $config;
 
     private $vars;
+
+    function __construct( $config, $router ) {
+        $this->config = $config;
+        $this->router = $router;
+    }
     
     function render( $vars = array(), $file = '' ) {
         if ( !$file ) {
             $file = $this->router->controller_name . '/' . $this->router->action;
         }
 
-        $path = LF_VIEW_PATH . '/' . $file . '.php';
+        $path = $this->config->view_path . '/' . $file . '.php';
         
-        $content = $this->get_content( $path, $vars );
+        if ( !file_exists( $path ) ) return;
 
         $vars['content'] = $content;
 
-        echo $this->get_content( LF_THEME_PATH . '/layout.php', $vars );
+        echo $this->get_content( $this->config->theme_path . '/layout.php', $vars );
     }
 
     function get_content( $path, $vars ) {

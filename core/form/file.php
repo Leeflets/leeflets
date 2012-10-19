@@ -1,5 +1,5 @@
 <?php
-class LF_Form_File extends LF_Form {
+class LF_Form_File extends LF_Form_Element {
     var $upload_errors;
     var $on_validate_complete;
     var $upload_path;
@@ -34,7 +34,7 @@ class LF_Form_File extends LF_Form {
         
         <tr>
             <th style="text-align: left; vertical-align: top;"><?php echo $this->lbl; ?>:</th>
-            <td><?php echo nl2br(htmlentities($this->value, null, $this->fieldset->form->encoding)); ?></td>
+            <td><?php echo nl2br(htmlentities($this->value, null, $this->form->encoding)); ?></td>
         </tr>
             
         <?php

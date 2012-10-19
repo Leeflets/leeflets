@@ -1,5 +1,5 @@
 <?php
-class LF_Form_Expiry extends LF_Form {
+class LF_Form_Expiry extends LF_Form_Element {
     function html($print = false) {
         if (!$print) ob_start();
         ?>
