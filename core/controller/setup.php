@@ -10,6 +10,7 @@ class LF_Controller_Setup extends LF_Controller {
 		}
 
 		$password_min_length = 5;
+		$password_max_length = 72;
 
 		$form = new LF_Form( 'install-form', array(
 			'elements' => array(
@@ -31,6 +32,11 @@ class LF_Controller_Setup extends LF_Controller {
 									'callback' => 'min_length',
 									'msg' => 'Sorry, your password must be at least ' . $password_min_length . ' characters in length.',
 									'args' => array( $password_min_length )
+								),
+								array(
+									'callback' => 'max_length',
+									'msg' => 'Sorry, your password can be no longer than ' . $password_max_length . ' characters in length.',
+									'args' => array( $password_max_length )
 								)
 							)
 						),
@@ -93,22 +99,21 @@ class LF_Controller_Setup extends LF_Controller {
 
 		$form->add_elements( $elements );
 
-		if ( $form->is_submitted() && $form->validate() ) {
+		if ( $form->validate() ) {
+			$hasher = new PasswordHash( 8, false );
+
 			$data = array(
 				'username' => $_POST['username'],
-				'password' => $_POST['password1']
+				'password' => $hasher->HashPassword( $_POST['password1'] )
 			);
 
 			$this->config->write( $this->filesystem, $data );
 
 			LF_Router::redirect( $this->router->admin_url( '/user/login/' ) );
+			exit;
 		}
 		else {
 			$form->html();
 		}
-
-		//print_r( $form->elements );
-
-		//print_r( $form->errors );
 	}
 }

@@ -61,6 +61,12 @@ class LF_Router {
         
         $this->action = array_shift( $segments );
 
+        // if the function starts with an underscore, 
+        // it can't be called as a controller action
+        if ( '_' == substr( $this->action, 0, 1 ) ) {
+            $this->action = '';
+        }
+
         $this->params = $segments;
     }
     

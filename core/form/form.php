@@ -48,6 +48,7 @@ class LF_Form extends LF_Form_Element_Collection {
     }
 
     function validate() {
+        if ( !$this->is_submitted() ) return false;
         parent::validate();
         return empty( $this->errors );
     }

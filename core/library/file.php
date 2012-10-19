@@ -13,10 +13,28 @@ class LF_File {
 			$path = $config->library_path;
 			$file = $matches[1];
 		}
+		elseif ( $_file = self::third_party_file( $class ) ) {
+			$path = $config->third_party_path;
+			$file = $_file;
+		}
 
 		if ( !isset( $path ) ) return false;
 
 		return $path . '/' . LF_String::decamelize( $file ) . '.php';
+	}
+
+	static function third_party_file( $class ) {
+		$files = array(
+			'PasswordHash' => 'phpass',
+			'PclZip' => 'pclzip',
+			'ftp_base' => 'ftp'
+		);
+
+		if ( isset( $files[$class] ) ) {
+			return $files[$class];
+		}
+
+		return false;
 	}
 
 }
