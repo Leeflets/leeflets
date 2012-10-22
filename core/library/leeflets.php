@@ -29,7 +29,7 @@ class Leeflets {
 			exit;
 		}
 
-		$user = new LF_User();
+		$user = new LF_User( $config, $router );
 
 		$is_login = preg_match( '@user/login/@', $_SERVER['REQUEST_URI'] );
 
@@ -42,7 +42,7 @@ class Leeflets {
         $filesystem = new LF_Filesystem_Direct(array());
 
 		$controller_class = $router->controller_class;
-		$controller = new $controller_class( $router, $view, $filesystem, $config );
+		$controller = new $controller_class( $router, $view, $filesystem, $config, $user );
 		
 		//$view->controller = $controller;
 

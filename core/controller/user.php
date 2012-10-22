@@ -45,12 +45,27 @@ class LF_Controller_User extends LF_Controller {
 		) );
 
 		if ( $form->validate() ) {
+			$this->user->set_cookie();
 			LF_Router::redirect( $this->router->admin_url() );
 			exit;
 		}
 		else {
 			$form->html();
 		}
+	}
+
+	function logout() {
+		$this->user->clear_cookie();
+
+		if ( isset( $_GET['redirect'] ) && '' != $_GET['redirect'] ) {
+			$redirect = $_GET['redirect'];
+		}
+		else {
+			$redirect = $this->router->admin_url( '/user/login/' );
+		}
+
+		$this->router->redirect( $_GET['redirect'] );
+		exit;
 	}
 
 	function _check_username( $value ) {
