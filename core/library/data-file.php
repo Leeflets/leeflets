@@ -7,8 +7,14 @@ class LF_Data_File {
 		$this->config = $config;
 		$this->filesystem = $filesystem;
 
-		$this->filename = $filename;
-		$this->filepath = $this->config->data_path . '/' . $this->filename . '.json.php';
+		if ( '/' == substr( $filename, 0, 1 ) ) {
+			$this->filepath = $filename;
+			$this->filename = basename( $filename );
+		}
+		else {
+			$this->filename = $filename;
+			$this->filepath = $this->config->data_path . '/' . $this->filename . '.json.php';
+		}
 	}
 
 	function write( $data ) {

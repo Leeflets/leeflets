@@ -53,7 +53,7 @@ class LF_Template {
 
 	public function get_part( $file ) {
 		ob_start();
-		include $this->template_file_path( $file );
+		include $this->template_file_path( 'part-' . $file );
 		return ob_get_clean();
 	}
 
@@ -98,15 +98,15 @@ class LF_Template {
 	}
 
 	function get_form() {
-		$content_file = $this->template_file_path( 'content' );
+		$content_file = $this->template_file_path( 'meta-content' );
 		if ( !$content_file ) {
-			return false;
+			die( "Can't load meta-content.php from active template." );
 		}
 
 		include $content_file;
 
 		if ( !isset( $content ) ) {
-			return false;
+			die( "Can't load $content variable in the active template's meta-content.php." );
 		}
 
 		$content['buttons'] = array(
