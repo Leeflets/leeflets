@@ -5,6 +5,7 @@ class LF_Form_Control extends LF_Form_Element {
     
     function __construct( $form, $id, $args = array() ) {
         $this->id = $id;
+        $this->form = $form;
         $this->errors = array();
 
         if ( !isset( $args['class'] ) ) {
@@ -108,7 +109,7 @@ class LF_Form_Control extends LF_Form_Element {
     function html_start() {
         ?>
 
-        <div class="<?php echo $this->class; ?>">
+        <div class="field <?php echo $this->class; ?>">
             <?php if ( $this->label != '' ) : ?>
             <label for="<?php echo $this->id ?>"><?php echo $this->label; echo ($this->required) ? '<span class="req">*</span>' : '' ?></label>
             <?php endif; ?>
@@ -149,6 +150,10 @@ class LF_Form_Control extends LF_Form_Element {
 
     function value_att() {
         return $this->esc_att( $this->value );
+    }
+
+    function value_html() {
+        return $this->esc_html( $this->value );
     }
 
     function slug($str) {

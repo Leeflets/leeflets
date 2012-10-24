@@ -58,13 +58,13 @@ class LF_Controller_User extends LF_Controller {
 		$this->user->clear_cookie();
 
 		if ( isset( $_GET['redirect'] ) && '' != $_GET['redirect'] ) {
-			$redirect = $_GET['redirect'];
+			$url = $_GET['redirect'];
 		}
 		else {
-			$redirect = $this->router->admin_url( '/user/login/' );
+			$url = $this->router->admin_url( '/user/login/' );
 		}
 
-		$this->router->redirect( $_GET['redirect'] );
+		$this->router->redirect( $url );
 		exit;
 	}
 

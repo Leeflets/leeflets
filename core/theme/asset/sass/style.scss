@@ -1,0 +1,54 @@
+body {
+	font-family: "Helvetica Neue", sans-serif;
+	padding: 2em;
+}
+
+p {
+	margin: 0;
+}
+
+fieldset {
+	border: 0;
+	border-bottom: 1px solid #ccc;
+	padding: 2.5em 0 1.5em 0;
+}
+
+fieldset:first-of-type {
+	padding-top: 0;
+}
+
+fieldset.buttons {
+	border: 0;
+}
+
+.field {
+	margin-bottom: 1em;
+
+	> label {
+		display: block;
+		margin-bottom: 0.2em;
+	}
+
+	.tip {
+		font-size: 0.8em;
+	}
+
+	input, textarea {
+		width: 500px;
+		font-family: "Helvetica Neue", sans-serif;
+		font-size: 1em;
+		padding: 0.3em 0.5em;
+	}
+
+	textarea {
+		height: 6em;
+	}
+}
+
+.message {
+	margin-bottom: 1em;
+}
+
+.home-link {
+	margin-bottom: 1em;
+}

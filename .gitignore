@@ -3,3 +3,4 @@ content/
 config.php
 data/
 uploads/
+core/theme/asset/.sass-cache/

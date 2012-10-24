@@ -13,6 +13,15 @@ class LF_Form extends LF_Form_Element_Collection {
         ), $this->atts );
     }
 
+    function get_encoding() {
+        if ( isset( $this->atts['accept-charset'] ) && '' != $this->atts['accept-charset'] ) {
+            return $this->atts['accept-charset'];
+        }
+        else {
+            return 'UTF-8';
+        }
+    }
+
     function html() {
         ?>
 

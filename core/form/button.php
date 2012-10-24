@@ -9,7 +9,7 @@ class LF_Form_Button extends LF_Form_Element {
 	function html() {
 		?>
 
-		<button <?php echo $this->atts_html(); ?>><?php echo htmlentities( $this->value, null, $this->form->encoding ) ?></button>
+		<button <?php echo $this->atts_html(); ?>><?php echo $this->esc_html( $this->value ); ?></button>
 		
 		<?php
 	}

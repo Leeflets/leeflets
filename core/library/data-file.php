@@ -1,19 +1,38 @@
 <?php
 class LF_Data_File {
 
-	public $data, $path;
+	public $filename, $filepath, $config, $filesystem;
 
-	function __construct() {
+	function __construct( $filename, LF_Config $config, LF_Filesystem $filesystem ) {
+		$this->config = $config;
+		$this->filesystem = $filesystem;
+
+		$this->filename = $filename;
+		$this->filepath = $this->config->data_path . '/' . $this->filename . '.json.php';
 	}
 
-	function load() {
-		if ( !file_exists( $this->path ) ) return false;
+	function write( $data ) {
+		$out = "<?php exit; // No public access. ?>\n";
+		$out .= LF_String::json_prettify( json_encode( $data ) );
+		return $this->filesystem->put_contents( $this->filepath, $out );
+	}
 
-		$data = file_get_contents( $this->path );
-		$after_first_line = strpos( $data, "\n" ) + 1;
-		$before_last_line = strrpos( $data, "\n" );
-		$data = substr( $data, $after_first_line, $before_last_line - $after_first_line );
-		echo $data;
+	function read() {
+		if ( !$this->filesystem->exists( $this->filepath ) ) {
+			return false;
+		}
+
+		$json = $this->filesystem->get_contents( $this->filepath );
+		$after_first_line = strpos( $json, "\n" ) + 1;
+		$json = substr( $json, $after_first_line );
+
+		$data = json_decode( $json, true );
+
+		if ( is_null( $data ) ) {
+			return false;
+		}
+
+		return $data;
 	}
 
 }

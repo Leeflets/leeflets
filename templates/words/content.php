@@ -10,8 +10,8 @@ $content = array(
 				'tip' => 'This is the title displayed on your page.'
 			),
 			'intro-paragraph' => array(
-				'type' => 'text',
-				'label' => 'Page Title',
+				'type' => 'textarea',
+				'label' => 'Content',
 				'required' => true,
 				'tip' => 'This is the text displayed on your page.'
 			)
@@ -30,24 +30,24 @@ $content = array(
 				'type' => 'url',
 				'label' => 'Left Button Link',
 				'required' => true,
-				'tip' => 'The text for the left hand button link.'
+				'tip' => 'The link for the left hand button.'
 			)
 		)
 	),
-	'left-button-content' => array(
+	'right-button-content' => array(
 		'type' => 'fieldset',
 		'elements' => array(
-			'left-button-text' => array(
+			'right-button-text' => array(
 				'type' => 'text',
-				'label' => 'Left Button Text',
+				'label' => 'Right Button Text',
 				'required' => true,
-				'tip' => 'The text for the left hand button link.'
+				'tip' => 'The text for the right hand button link.'
 			),
-			'left-button-url' => array(
+			'right-button-url' => array(
 				'type' => 'url',
-				'label' => 'Left Button Link',
+				'label' => 'Right Button Link',
 				'required' => true,
-				'tip' => 'The text for the left hand button link.'
+				'tip' => 'The link for the right hand button.'
 			)
 		)
 	)

@@ -87,7 +87,7 @@ class LF_Router {
         if ( !file_exists( $path ) || !method_exists( $class, $this->action ) ) {
             $this->controller_name = 'error';
             $this->controller_class = 'LF_Controller_Error';
-            $this->action = '404';
+            $this->action = 'e404';
         }
         else {
             $this->controller_class = $class;

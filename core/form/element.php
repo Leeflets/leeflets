@@ -4,6 +4,7 @@ class LF_Form_Element {
 
     function __construct( $form, $id, $args = array() ) {
         $this->id = $id;
+        $this->form = $form;
 
         if ( !isset( $args['class'] ) ) {
             $args['class'] = '';
@@ -39,8 +40,12 @@ class LF_Form_Element {
 	}
 
 	function esc_att( $value ) {
-		return htmlentities( $value, null, $this->form->encoding );
+		return htmlspecialchars( $value, null, $this->form->get_encoding() );
 	}
+
+    function esc_html( $value ) {
+        return htmlentities( $value, null, $this->form->get_encoding() );
+    }
 
     function get_html() {
     	ob_start();

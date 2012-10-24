@@ -6,6 +6,7 @@ class Leeflets {
 
 	function __construct( $admin_path ) {
 		$this->check_php_version();
+		$this->check_magic_quotes();
 
 		require $admin_path . '/core/library/config.php';
 
@@ -40,9 +41,10 @@ class Leeflets {
 
         $view = new LF_View( $config, $router );
         $filesystem = new LF_Filesystem_Direct(array());
+        $template = new LF_Template( $config, $filesystem, $router );
 
 		$controller_class = $router->controller_class;
-		$controller = new $controller_class( $router, $view, $filesystem, $config, $user );
+		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template );
 		
 		//$view->controller = $controller;
 
@@ -58,6 +60,11 @@ class Leeflets {
 	function check_php_version() {
 		if ( version_compare( PHP_VERSION, self::PHP_VERSION_REQUIRED, '>=' ) ) return;
 		die( 'Leeflets requires that you run PHP version ' . self::PHP_VERSION_REQUIRED . ' or greater. You are currently running PHP ' . PHP_VERSION . '.' );
+	}
+
+	function check_magic_quotes() {
+		if ( !get_magic_quotes_gpc() ) return;
+		die( 'The PHP setting <a href="http://www.php.net/manual/en/info.configuration.php#ini.magic-quotes-gpc">magic_quotes_gpc</a> is currently on. Leeflets requires that you have it turned off.' );
 	}
 
 	function setup_error_reporting( $debug ) {

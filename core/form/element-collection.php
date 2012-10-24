@@ -4,7 +4,7 @@ class LF_Form_Element_Collection extends LF_Form_Element {
 
     function __construct( $form, $id, $args = array() ) {
         if ( isset( $args['elements'] ) ) {
-            $this->add_elements( $args['elements'] );
+            $this->add_elements( $args['elements'], $form );
             unset( $args['elements'] );
         }
         else {
@@ -23,7 +23,7 @@ class LF_Form_Element_Collection extends LF_Form_Element {
 			$class = 'LF_Form_' . LF_String::camelize( $el['type'] );
 			unset( $el['type'] );
 			$obj = new $class( $form, $id, $el );
-			$this->elements[] = $obj;
+			$this->elements[$id] = $obj;
 		}
 	}
 
@@ -37,5 +37,32 @@ class LF_Form_Element_Collection extends LF_Form_Element {
         }
         
         return $this->errors;
+    }
+
+    function get_values() {
+        $values = array();
+        foreach ( $this->elements as $el ) {
+            if ( method_exists( $el, 'get_values' ) ) {
+                $values = array_merge( $el->get_values(), $values );
+            }
+            else {
+                $values[$el->id] = $el->value;
+            }
+        }
+        return $values;
+    }
+
+    function set_values( $values ) {
+        foreach ( $values as $id => $value ) {
+            if ( isset( $this->elements[$id] ) ) {
+                $this->elements[$id]->value = $value;
+            }
+        }
+
+        foreach ( $this->elements as $el ) {
+            if ( method_exists( $el, 'set_values' ) ) {
+                $el->set_values( $values );
+            }
+        }
     }
 }

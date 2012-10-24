@@ -15,17 +15,23 @@ class LF_View {
             $file = $this->router->controller_name . '/' . $this->router->action;
         }
 
-        $path = $this->config->view_path . '/' . $file . '.php';
-        
-        if ( !file_exists( $path ) ) return;
+        if ( !isset( $vars['content'] ) ) {
+            $vars['content'] = '';
+        }
 
-        $vars['content'] = $content;
+        $path = $this->config->view_path . '/' . $file . '.php';
+
+        if ( file_exists( $path ) ) {
+            $content = $this->get_content( $path, $vars );
+            $vars['content'] .= $content;
+        }
 
         echo $this->get_content( $this->config->theme_path . '/layout.php', $vars );
     }
 
     function get_content( $path, $vars ) {
         if ( is_array( $vars ) ) $this->vars = $vars;
+        extract( $vars );
         ob_start();
         include $path;
         return ob_get_clean();

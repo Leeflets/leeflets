@@ -1,8 +1,8 @@
 <?php
-class LF_Form_Email extends LF_Form_Text {
+class LF_Form_Email extends LF_Form_Control {
     function html_middle() {
         ?>
-        <input type="email" class="text email" id="<?php echo $this->id; ?>" name="<?php echo $this->name; ?>" value="<?php echo htmlentities($this->value, null, $this->form->encoding) ?>"<?php $this->display_placeholder(); ?> />
+        <input type="email" <?php echo $this->atts_html(); ?> value="<?php echo $this->value_att(); ?>" />
         <?php
     }    
 }
