@@ -1,20 +1,13 @@
 <?php
 class LF_Data_File {
 
-	public $filename, $filepath, $config, $filesystem;
+	public $filepath, $config, $filesystem;
 
-	function __construct( $filename, LF_Config $config, LF_Filesystem $filesystem ) {
+	function __construct( $filepath, LF_Config $config, LF_Filesystem $filesystem ) {
 		$this->config = $config;
 		$this->filesystem = $filesystem;
 
-		if ( '/' == substr( $filename, 0, 1 ) ) {
-			$this->filepath = $filename;
-			$this->filename = basename( $filename );
-		}
-		else {
-			$this->filename = $filename;
-			$this->filepath = $this->config->data_path . '/' . $this->filename . '.json.php';
-		}
+		$this->filepath = $filepath;
 	}
 
 	function write( $data ) {

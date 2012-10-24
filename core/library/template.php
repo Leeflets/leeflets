@@ -17,8 +17,7 @@ class LF_Template {
 	}
 
 	function render() {
-		$content_file = $this->get_content_data_file();
-		$this->content = $content_file->read();
+		$this->content = $this->get_content_data();
 
 		$settings_file = new LF_Data_File( 'settings', $this->config, $this->filesystem );
 		$this->settings = $settings_file->read();
@@ -81,12 +80,28 @@ class LF_Template {
 		return '';
 	}
 
-	private function get_content_filename() {
-		return 'content-' . $this->active_template;
+	public function set_content_data( $values ) {
+		$file = new LF_Data_File( $this->get_content_data_file_path(), $this->config, $this->filesystem );
+		$file->write( $values );
 	}
 
-	public function get_content_data_file() {
-		return new LF_Data_File( $this->get_content_filename(), $this->config, $this->filesystem );
+	public function get_content_data() {
+		$file = $this->get_content_data_file_path();
+		if ( !file_exists( $file ) ) {
+			$file = $this->config->templates_path . '/' . $this->active_template . '/sample.json.php';
+		}
+
+		if ( !file_exists( $file ) ) {
+			return array();
+		}
+
+		$file = new LF_Data_File( $file, $this->config, $this->filesystem );
+
+		return $file->read();
+	}
+
+	private function get_content_data_file_path() {
+		return $this->config->data_path . '/content-' . $this->active_template . '.json.php';
 	}
 
 	private function template_file_path( $file ) {
