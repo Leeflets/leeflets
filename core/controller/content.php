@@ -29,6 +29,8 @@ class LF_Controller_Content extends LF_Controller {
 	}
 
 	function publish() {
-
+		$this->template->write();
+		$this->router->redirect( $this->router->admin_url( '?published=1' ) );
+		exit;
 	}
 }

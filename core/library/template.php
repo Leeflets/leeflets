@@ -10,6 +10,12 @@ class LF_Template {
 		$this->active_template = 'words';
 	}
 
+	function write() {
+		$output = $this->render();
+		$file = $this->config->root_path . '/index.html';
+		return $this->filesystem->put_contents( $file, $output );
+	}
+
 	function render() {
 		$content_file = $this->get_content_data_file();
 		$this->content = $content_file->read();
