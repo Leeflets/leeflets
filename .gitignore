@@ -1,6 +1,5 @@
 .DS_Store
-content/
-config.php
-data/
-uploads/
-core/theme/asset/.sass-cache/
+/config.php
+/data/
+/uploads/
+/core/theme/asset/.sass-cache/
