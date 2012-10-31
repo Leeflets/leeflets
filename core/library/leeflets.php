@@ -21,18 +21,18 @@ class Leeflets {
 
 		$this->setup_error_reporting();
 
-		$is_install = preg_match( '@setup/install/$@', $_SERVER['REQUEST_URI'] );
+		$is_login = preg_match( '@user/login/@', $_SERVER['REQUEST_URI'] );
 
-		$router = new LF_Router( $config );
-
-		if ( !$is_config_loaded && !$is_install ) {
-			LF_Router::redirect( $router->admin_url( '/setup/install/' ) );
-			exit;
+		if ( !$is_config_loaded ) {
+			$router = new LF_Router( $config, null, '/setup/install/' );
+			$is_install = true;
+		}
+		else {
+			$router = new LF_Router( $config );
+			$is_install = false;
 		}
 
 		$user = new LF_User( $config, $router );
-
-		$is_login = preg_match( '@user/login/@', $_SERVER['REQUEST_URI'] );
 
 		if ( !$user->is_logged_in() && !( $is_install || $is_login ) ) {
 			LF_Router::redirect( $router->admin_url( '/user/login/' ) );

@@ -109,6 +109,9 @@ class LF_Controller_Setup extends LF_Controller {
 
 			$this->config->write( $this->filesystem, $data );
 
+			$htaccess = new LF_Htaccess( $this->filesystem, $this->router, $this->config );
+			$htaccess->write();
+
 			LF_Router::redirect( $this->router->admin_url( '/user/login/' ) );
 			exit;
 		}

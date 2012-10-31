@@ -14,6 +14,7 @@ class LF_Config {
 		$this->theme_path = $this->core_path . '/theme';
 		$this->form_path = $this->core_path . '/form';
 		$this->third_party_path = $this->core_path . '/third-party';
+		$this->include_path = $this->core_path . '/include';
 
 		$this->templates_path = $this->admin_path . '/templates';
 		$this->data_path = $this->admin_path . '/data';
