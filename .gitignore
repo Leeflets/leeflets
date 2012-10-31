@@ -1,4 +1,5 @@
 .DS_Store
+.htaccess
 /config.php
 /data/
 /uploads/
