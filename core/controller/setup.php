@@ -115,8 +115,7 @@ class LF_Controller_Setup extends LF_Controller {
 			LF_Router::redirect( $this->router->admin_url( '/user/login/' ) );
 			exit;
 		}
-		else {
-			$form->html();
-		}
+
+		return compact( 'form' );
 	}
 }

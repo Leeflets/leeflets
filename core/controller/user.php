@@ -11,6 +11,7 @@ class LF_Controller_User extends LF_Controller {
 							'type' => 'text',
 							'label' => 'Username',
 							'required' => true,
+							'autofocus' => true,
 							'validation' => array(
 								array(
 									'callback' => array( $this, '_check_username' ),
@@ -49,9 +50,8 @@ class LF_Controller_User extends LF_Controller {
 			LF_Router::redirect( $this->router->admin_url() );
 			exit;
 		}
-		else {
-			$form->html();
-		}
+
+		return compact( 'form' );
 	}
 
 	function logout() {

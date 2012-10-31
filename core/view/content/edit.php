@@ -4,4 +4,6 @@
 	</div>
 <?php endif; ?>
 
+<h1>Content</h1>
+
 <?php $form->html() ?>
