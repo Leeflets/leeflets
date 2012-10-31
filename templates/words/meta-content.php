@@ -10,7 +10,7 @@ $content = array(
 				'tip' => 'This is the title displayed on your page.'
 			),
 			'intro-paragraph' => array(
-				'type' => 'textarea',
+				'type' => 'wysiwyg',
 				'label' => 'Content',
 				'required' => true,
 				'tip' => 'This is the text displayed on your page.'

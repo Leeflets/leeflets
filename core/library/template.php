@@ -130,7 +130,7 @@ class LF_Template {
 				'submit' => array(
 					'type' => 'button',
 					'button-type' => 'submit',
-					'value' => 'Submit'
+					'value' => 'Save'
 				)
 			)
 		);

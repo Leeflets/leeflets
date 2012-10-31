@@ -2,7 +2,7 @@
     <div class="inside">
         <h2><?php $this->content( 'page-title' ); ?></h2>
         
-        <p><?php echo nl2br( $this->get_content( 'intro-paragraph' ) ); ?></p>
+        <?php echo $this->get_content( 'intro-paragraph' ); ?>
     
         <ul>
             <li>

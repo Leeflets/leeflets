@@ -32,7 +32,7 @@ fieldset.buttons {
   font-size: 0.8em;
 }
 .field input, .field textarea {
-  width: 500px;
+  width: 30em;
   font-family: "Helvetica Neue", sans-serif;
   font-size: 1em;
   padding: 0.3em 0.5em;
@@ -40,7 +40,9 @@ fieldset.buttons {
 .field textarea {
   height: 6em;
 }
-
+.field .redactor_box {
+  width: 31em;
+}
 .message {
   margin-bottom: 1em;
 }

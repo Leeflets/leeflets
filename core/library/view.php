@@ -2,12 +2,21 @@
 class LF_View {
 
     public $router, $config;
+    public $enqueued_scripts, $enqueued_stylesheets;
 
     private $vars;
 
     function __construct( $config, $router ) {
         $this->config = $config;
         $this->router = $router;
+    }
+
+    function enqueue_script( $script ) {
+        $this->enqueued_scripts[] = $script;
+    }
+
+    function enqueue_stylesheet( $stylesheet ) {
+        $this->enqueued_stylesheets[] = $stylesheet;
     }
     
     function render( $vars = array(), $file = '' ) {

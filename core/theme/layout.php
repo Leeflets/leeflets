@@ -10,6 +10,9 @@
         
         <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/css/style.css' ); ?>">
 
+        <script src="<?php echo $this->router->admin_url( '/core/theme/asset/js/jquery-1.8.2.min.js' ); ?>"></script>
+        <script src="<?php echo $this->router->admin_url( '/core/theme/asset/js/script.js' ); ?>"></script>
+
         <link rel="shortcut icon" href="<?php echo $this->router->admin_url( '/core/theme/asset/img/favicon.png' ); ?>">
         
         <?php $this->out( 'head' ); ?>
