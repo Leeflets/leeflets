@@ -10,6 +10,7 @@ class LF_Controller_Settings extends LF_Controller {
 		}
 
 		$form = new LF_Form( 'settings-form', array(
+			'action' => $this->router->admin_url( 'settings/edit/' ),
 			'elements' => array(
 				'site-meta' => array(
 					'type' => 'fieldset',
