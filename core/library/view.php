@@ -28,6 +28,16 @@ class LF_View {
             $vars['content'] = '';
         }
 
+        if ( isset( $vars['layout'] ) ) {
+            $layout = $vars['layout'];
+        }
+        elseif ( $this->router->is_ajax ) {
+            $layout = 'ajax';
+        }
+        else {
+            $layout = 'default';
+        }
+
         $path = $this->config->view_path . '/' . $file . '.php';
 
         if ( file_exists( $path ) ) {
@@ -35,7 +45,7 @@ class LF_View {
             $vars['content'] .= $content;
         }
 
-        echo $this->get_content( $this->config->theme_path . '/layout.php', $vars );
+        echo $this->get_content( $this->config->theme_path . '/' . $layout . '.php', $vars );
     }
 
     function get_content( $path, $vars ) {

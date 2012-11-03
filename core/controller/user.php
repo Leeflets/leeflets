@@ -51,7 +51,9 @@ class LF_Controller_User extends LF_Controller {
 			exit;
 		}
 
-		return compact( 'form' );
+		$layout = 'logged-out';
+
+		return compact( 'form', 'layout' );
 	}
 
 	function logout() {
