@@ -116,6 +116,8 @@ class LF_Controller_Setup extends LF_Controller {
 			exit;
 		}
 
-		return compact( 'form' );
+		$layout = 'logged-out';
+
+		return compact( 'form', 'layout' );
 	}
 }
