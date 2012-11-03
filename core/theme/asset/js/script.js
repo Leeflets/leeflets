@@ -1,9 +1,6 @@
 $(document).ready(function() {
-
 	var leeflets = new LEEFLETS();
 	leeflets.init();
-
-	$('textarea.redactor').redactor();
 });
 
 function LEEFLETS() {
@@ -13,11 +10,10 @@ function LEEFLETS() {
 		$container = $('.container', $clip),
 		$viewer = $('.viewer', $container);
 
-	//console.log($viewer.get(0));
-
 	self.init = function() {
 		self.set_sizes();
 		self.nav_events();
+		self.content_events($('.content', $container));
 		on_resize(self.set_sizes);
 	};
 
@@ -38,6 +34,10 @@ function LEEFLETS() {
 		$nav.outerHeight(win_h);
 		$content.outerHeight(win_h);
 		$viewer.outerHeight(win_h);
+	};
+
+	self.content_events = function($content) {
+		$('textarea.redactor', $content).redactor();
 	};
 
 	self.nav_events = function() {
@@ -61,6 +61,7 @@ function LEEFLETS() {
 			$.get(href, {ajax:1}, function(data) {
 				$container.prepend(data);
 				var $content_new = $('.content', $container).eq(0);
+				self.content_events($content_new);
 				self.set_sizes();
 
 				var $to_animate;
