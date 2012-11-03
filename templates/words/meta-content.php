@@ -7,6 +7,7 @@ $content = array(
 				'type' => 'text',
 				'label' => 'Page Title',
 				'required' => true,
+				'autofocus' => true,
 				'tip' => 'This is the title displayed on your page.'
 			),
 			'intro-paragraph' => array(

@@ -9,8 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/css/style.css' ); ?>">
+    <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/third-party/redactor/css/redactor.css' ); ?>" />
 
     <script src="<?php echo $this->router->admin_url( '/core/theme/asset/js/jquery-1.8.2.min.js' ); ?>"></script>
+    <script src="<?php echo $this->router->admin_url( '/core/third-party/redactor/redactor.js' ); ?>"></script>
     <script src="<?php echo $this->router->admin_url( '/core/theme/asset/js/script.js' ); ?>"></script>
 
     <link rel="shortcut icon" href="<?php echo $this->router->admin_url( '/core/theme/asset/img/favicon.png' ); ?>">
@@ -33,9 +35,7 @@
 <div class="clip">
     <div class="container">
 
-        <section class="content">
-            <?php $this->out( 'content' ); ?>
-        </section>
+        <?php $this->out( 'content' ); ?>
 
         <iframe src="<?php echo $this->router->admin_url( '/content/view/' ); ?>" class="viewer" width="100%"></iframe>
 

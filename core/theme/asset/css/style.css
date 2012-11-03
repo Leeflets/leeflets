@@ -89,6 +89,7 @@ body > .clip {
 }
 body > .clip .container {
   overflow: hidden;
+  position: relative;
 }
 body > .clip .content {
   width: 38em;
@@ -97,6 +98,7 @@ body > .clip .content {
   box-shadow: 0 0 10px #000;
   overflow: scroll;
   z-index: 6;
+  background-color: #fff;
 }
 body > .clip .content > h1 {
   margin-top: 0;
@@ -104,6 +106,7 @@ body > .clip .content > h1 {
 body > .clip .viewer {
   float: left;
   border: 0;
+  z-index: 1;
 }
 
 .content.logged-out {

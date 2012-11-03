@@ -19,11 +19,6 @@ class LF_Controller_Content extends LF_Controller {
 			$form->set_values( $data );
 		}
 
-		$head = '
-			<link rel="stylesheet" href="' . $this->router->admin_url( '/core/third-party/redactor/css/redactor.css' ) . '" />
-			<script src="' . $this->router->admin_url( '/core/third-party/redactor/redactor.js' ) . '"></script>
-		';
-
 		return compact( 'form', 'head' );
 	}
 
