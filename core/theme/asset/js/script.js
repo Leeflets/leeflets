@@ -41,6 +41,17 @@ function LEEFLETS() {
 	};
 
 	self.nav_events = function() {
+		$('.home', $nav).click(function() {
+			var $content = $('.content', $container);
+			$container.animate({
+				'left': ($content.outerWidth() * -1) + 'px'
+			}, function() { 
+				$content.remove(); 
+				$container.css('left', '0px');
+			});
+			return false;
+		});
+
 		$('.settings, .content', $nav).click(function() {
 			var $content_old = $('.content', $container);
 
