@@ -1,6 +1,9 @@
+* { box-sizing: border-box; }
+
 body {
 	font-family: "Helvetica Neue", sans-serif;
-	padding: 2em;
+	padding: 0;
+	margin: 0;
 }
 
 p {
@@ -34,7 +37,7 @@ fieldset.buttons {
 	}
 
 	input, textarea {
-		width: 500px;
+		width: 30em;
 		font-family: "Helvetica Neue", sans-serif;
 		font-size: 1em;
 		padding: 0.3em 0.5em;
@@ -42,6 +45,14 @@ fieldset.buttons {
 
 	textarea {
 		height: 6em;
+	}
+
+	input[type=radio], input[type=checkbox] {
+		width: auto;
+	}
+
+	.redactor_box {
+  		width: 31em;
 	}
 }
 
@@ -51,4 +62,65 @@ fieldset.buttons {
 
 .home-link {
 	margin-bottom: 1em;
+}
+
+nav.primary {
+	background-color: #333;
+	color: #fff;
+	font-size: 12px;
+	width: 8em;
+	padding: 1.5em;
+	float: left;
+	box-shadow: 0 0 10px #000;
+	z-index: 10;
+
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		margin-bottom: 1em;
+	}
+
+	a {
+		color: #fff;
+		text-decoration: none;
+	}
+}
+
+body > .clip {
+	float: left;
+	overflow: hidden;
+
+	.container {
+		overflow: hidden;
+	}
+
+	.content {
+		width: 38em;
+		float: left;
+		padding: 2em;
+		box-shadow: 0 0 10px #000;
+		overflow: scroll;
+		z-index: 6;
+
+		> h1 {
+			margin-top: 0;
+		}
+	}
+
+	.viewer {
+		float: left;
+		border: 0;
+	}
+}
+
+.content.logged-out {
+	padding: 2em;
+
+	> h1 {
+		margin-top: 0;
+	}
 }

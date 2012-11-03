@@ -70,4 +70,12 @@ class LF_View {
             return '';
         }
     }
+
+    function header() {
+        include $this->config->theme_path . '/header.php';
+    }
+
+    function footer() {
+        include $this->config->theme_path . '/footer.php';
+    }
 }

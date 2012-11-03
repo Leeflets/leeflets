@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">    
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title><?php $this->out( 'page-title' ); ?></title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/css/style.css' ); ?>">
+
+    <script src="<?php echo $this->router->admin_url( '/core/theme/asset/js/jquery-1.8.2.min.js' ); ?>"></script>
+    <script src="<?php echo $this->router->admin_url( '/core/theme/asset/js/script.js' ); ?>"></script>
+
+    <link rel="shortcut icon" href="<?php echo $this->router->admin_url( '/core/theme/asset/img/favicon.png' ); ?>">
+    
+    <?php $this->out( 'head' ); ?>
+</head>
+
+<body>
+
+<section class="content logged-out">
+    <?php $this->out( 'content' ); ?>
+</section>
+
+<?php $this->out( 'foot' ); ?>
+
+</body> 
+</html>
