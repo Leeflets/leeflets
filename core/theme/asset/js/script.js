@@ -40,15 +40,19 @@ function LEEFLETS() {
 		$('textarea.redactor', $content).redactor();
 	};
 
+	self.show_home = function() {
+		var $content = $('.content', $container);
+		$container.animate({
+			'left': ($content.outerWidth() * -1) + 'px'
+		}, function() { 
+			$content.remove(); 
+			$container.css('left', '0px');
+		});
+	};
+
 	self.nav_events = function() {
 		$('.home', $nav).click(function() {
-			var $content = $('.content', $container);
-			$container.animate({
-				'left': ($content.outerWidth() * -1) + 'px'
-			}, function() { 
-				$content.remove(); 
-				$container.css('left', '0px');
-			});
+			self.show_home();
 			return false;
 		});
 
@@ -58,11 +62,21 @@ function LEEFLETS() {
 			var $anch = $(this),
 				href = $anch.attr('href');
 
+			if ($content_old.hasClass($anch.attr('container-name'))) {
+				self.show_home();
+				return false;
+			}
+
 			$.get(href, {ajax:1}, function(data) {
 				$container.prepend(data);
 				var $content_new = $('.content', $container).eq(0);
 				self.content_events($content_new);
 				self.set_sizes();
+
+				$content_new.css('overflow', 'hidden');
+				var set_scroll = function() {
+					$content_new.css('overflow', 'scroll');
+				};
 
 				var $to_animate;
 				var anim_callback;
@@ -78,10 +92,12 @@ function LEEFLETS() {
 							'position': 'relative',
 							'z-index': 6
 						});
+						set_scroll();
 					};
 				}
 				else {
 					$to_animate = $container;
+					anim_callback = set_scroll;
 				}
 
 				$to_animate.css({

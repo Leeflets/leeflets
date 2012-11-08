@@ -25,8 +25,8 @@
 <nav class="primary">
     <ul>
         <li><a class="home" href="<?php echo $this->router->admin_url(); ?>">Home</a></li>
-        <li><a class="content" href="<?php echo $this->router->admin_url( '/content/edit/' ); ?>">Content</a></li>
-        <li><a class="settings" href="<?php echo $this->router->admin_url( '/settings/edit/' ); ?>">Settings</a></li>
+        <li><a class="content" container-name="edit-content" href="<?php echo $this->router->admin_url( '/content/edit/' ); ?>">Content</a></li>
+        <li><a class="settings" container-name="edit-settings" href="<?php echo $this->router->admin_url( '/settings/edit/' ); ?>">Settings</a></li>
         <li><a class="logout" href="<?php echo $this->router->admin_url( '/user/logout/' ); ?>">Logout</a></li>
         <li><a class="publish" href="<?php echo $this->router->admin_url( '/content/publish/' ); ?>">Publish</a></li>
     </ul>
