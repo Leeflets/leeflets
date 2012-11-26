@@ -29,6 +29,7 @@
         <li><a class="settings" container-name="edit-settings" href="<?php echo $this->router->admin_url( '/settings/edit/' ); ?>">Settings</a></li>
         <li><a class="logout" href="<?php echo $this->router->admin_url( '/user/logout/' ); ?>">Logout</a></li>
         <li><a class="publish" href="<?php echo $this->router->admin_url( '/content/publish/' ); ?>">Publish</a></li>
+        <li><a class="view" href="<?php echo $this->router->site_url(); ?>" target="_blank">View</a></li>
     </ul>
 </nav>
 

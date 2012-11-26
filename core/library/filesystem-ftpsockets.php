@@ -21,7 +21,7 @@ class WP_Filesystem_ftpsockets extends WP_Filesystem {
 
 	function __construct($opt = '') {
 		$this->method = 'ftpsockets';
-		$this->errors = new WP_Error();
+		$this->errors = new LF_Error();
 
 		//Check if possible to use ftp functions.
 		if ( ! @include_once ABSPATH . 'wp-admin/includes/class-ftp.php' )

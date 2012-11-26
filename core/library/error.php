@@ -1,10 +1,10 @@
 <?php
 /**
- * Leeflets Error API. (borrowed from WordPress)
+ * Leeflets Error API. (inspired by WordPress)
  *
  * Contains the LF_Error class
  *
- * @package WordPress
+ * @package Leeflets
  */
 
 /**
@@ -15,27 +15,25 @@
  * Many core WordPress functions pass this class in the event of an error and
  * if not handled properly will result in code errors.
  *
- * @package WordPress
- * @since 2.1.0
+ * @package Leeflets
  */
-class WP_Error {
+class LF_Error {
 	/**
 	 * Stores the list of errors.
 	 *
-	 * @since 2.1.0
 	 * @var array
 	 * @access private
 	 */
-	var $errors = array();
+	private $errors = array();
 
 	/**
 	 * Stores the list of data for error codes.
 	 *
-	 * @since 2.1.0
+	 * @since 0.1
 	 * @var array
 	 * @access private
 	 */
-	var $error_data = array();
+	private $error_data = array();
 
 	/**
 	 * Constructor - Sets up error message.
@@ -47,42 +45,42 @@ class WP_Error {
 	 * All parameters are optional, but if the code parameter is set, then the
 	 * data parameter is optional.
 	 *
-	 * @since 2.1.0
+	 * @since 0.1
 	 *
-	 * @param string|int $code Error code
-	 * @param string $message Error message
-	 * @param mixed $data Optional. Error data.
-	 * @return WP_Error
+	 * @param string|int $code    Error code
+	 * @param string  $message Error message
+	 * @param mixed   $data    Optional. Error data.
+	 * @return LF_Error
 	 */
-	function __construct($code = '', $message = '', $data = '') {
-		if ( empty($code) )
+	function __construct( $code = '', $message = '', $data = '' ) {
+		if ( empty( $code ) )
 			return;
 
 		$this->errors[$code][] = $message;
 
-		if ( ! empty($data) )
+		if ( ! empty( $data ) )
 			$this->error_data[$code] = $data;
 	}
 
 	/**
 	 * Retrieve all error codes.
 	 *
-	 * @since 2.1.0
+	 * @since 0.1
 	 * @access public
 	 *
 	 * @return array List of error codes, if available.
 	 */
 	function get_error_codes() {
-		if ( empty($this->errors) )
+		if ( empty( $this->errors ) )
 			return array();
 
-		return array_keys($this->errors);
+		return array_keys( $this->errors );
 	}
 
 	/**
 	 * Retrieve first error code available.
 	 *
-	 * @since 2.1.0
+	 * @since 0.1
 	 * @access public
 	 *
 	 * @return string|int Empty string, if no error codes.
@@ -90,7 +88,7 @@ class WP_Error {
 	function get_error_code() {
 		$codes = $this->get_error_codes();
 
-		if ( empty($codes) )
+		if ( empty( $codes ) )
 			return '';
 
 		return $codes[0];
@@ -99,22 +97,22 @@ class WP_Error {
 	/**
 	 * Retrieve all error messages or error messages matching code.
 	 *
-	 * @since 2.1.0
+	 * @since 0.1
 	 *
 	 * @param string|int $code Optional. Retrieve messages matching code, if exists.
 	 * @return array Error strings on success, or empty array on failure (if using code parameter).
 	 */
-	function get_error_messages($code = '') {
+	function get_error_messages( $code = '' ) {
 		// Return all messages if no code specified.
-		if ( empty($code) ) {
+		if ( empty( $code ) ) {
 			$all_messages = array();
 			foreach ( (array) $this->errors as $code => $messages )
-				$all_messages = array_merge($all_messages, $messages);
+				$all_messages = array_merge( $all_messages, $messages );
 
 			return $all_messages;
 		}
 
-		if ( isset($this->errors[$code]) )
+		if ( isset( $this->errors[$code] ) )
 			return $this->errors[$code];
 		else
 			return array();
@@ -126,16 +124,16 @@ class WP_Error {
 	 * This will get the first message available for the code. If no code is
 	 * given then the first code available will be used.
 	 *
-	 * @since 2.1.0
+	 * @since 0.1
 	 *
 	 * @param string|int $code Optional. Error code to retrieve message.
 	 * @return string
 	 */
-	function get_error_message($code = '') {
-		if ( empty($code) )
+	function get_error_message( $code = '' ) {
+		if ( empty( $code ) )
 			$code = $this->get_error_code();
-		$messages = $this->get_error_messages($code);
-		if ( empty($messages) )
+		$messages = $this->get_error_messages( $code );
+		if ( empty( $messages ) )
 			return '';
 		return $messages[0];
 	}
@@ -143,16 +141,16 @@ class WP_Error {
 	/**
 	 * Retrieve error data for error code.
 	 *
-	 * @since 2.1.0
+	 * @since 0.1
 	 *
 	 * @param string|int $code Optional. Error code.
 	 * @return mixed Null, if no errors.
 	 */
-	function get_error_data($code = '') {
-		if ( empty($code) )
+	function get_error_data( $code = '' ) {
+		if ( empty( $code ) )
 			$code = $this->get_error_code();
 
-		if ( isset($this->error_data[$code]) )
+		if ( isset( $this->error_data[$code] ) )
 			return $this->error_data[$code];
 		return null;
 	}
@@ -160,16 +158,16 @@ class WP_Error {
 	/**
 	 * Append more error messages to list of error messages.
 	 *
-	 * @since 2.1.0
+	 * @since 0.1
 	 * @access public
 	 *
-	 * @param string|int $code Error code.
-	 * @param string $message Error message.
-	 * @param mixed $data Optional. Error data.
+	 * @param string|int $code    Error code.
+	 * @param string  $message Error message.
+	 * @param mixed   $data    Optional. Error data.
 	 */
-	function add($code, $message, $data = '') {
+	function add( $code, $message, $data = '' ) {
 		$this->errors[$code][] = $message;
-		if ( ! empty($data) )
+		if ( ! empty( $data ) )
 			$this->error_data[$code] = $data;
 	}
 
@@ -178,33 +176,32 @@ class WP_Error {
 	 *
 	 * The error code can only contain one error data.
 	 *
-	 * @since 2.1.0
+	 * @since 0.1
 	 *
-	 * @param mixed $data Error data.
+	 * @param mixed   $data Error data.
 	 * @param string|int $code Error code.
 	 */
-	function add_data($data, $code = '') {
-		if ( empty($code) )
+	function add_data( $data, $code = '' ) {
+		if ( empty( $code ) )
 			$code = $this->get_error_code();
 
 		$this->error_data[$code] = $data;
 	}
-}
 
-/**
- * Check whether variable is a WordPress Error.
- *
- * Looks at the object and if a WP_Error class. Does not check to see if the
- * parent is also WP_Error, so can't inherit WP_Error and still use this
- * function.
- *
- * @since 2.1.0
- *
- * @param mixed $thing Check if unknown variable is WordPress Error object.
- * @return bool True, if WP_Error. False, if not WP_Error.
- */
-function is_wp_error($thing) {
-	if ( is_object($thing) && is_a($thing, 'WP_Error') )
-		return true;
-	return false;
+	/**
+	 * Check whether variable is a Leeflets Error.
+	 *
+	 * Looks at the object and if a LF_Error class. Does not check to see if the
+	 * parent is also LF_Error, so can't inherit LF_Error and still use this
+	 * function.
+	 *
+	 * @param mixed   $thing Check if unknown variable is Leeflets Error object.
+	 * @return bool True, if LF_Error. False, if not LF_Error.
+	 */
+	function is_a( $thing ) {
+		if ( is_object( $thing ) && is_a( $thing, 'LP_Error' ) )
+			return true;
+		return false;
+	}
+
 }

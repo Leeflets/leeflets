@@ -40,11 +40,25 @@ class Leeflets {
 		}
 
         $view = new LF_View( $config, $router );
-        $filesystem = new LF_Filesystem_Direct(array());
-        $template = new LF_Template( $config, $filesystem, $router );
+        $settings = new LF_Settings( $config );
+        
+        if ( isset( $settings->data['connection-type'] ) && 'direct' != $settings->data['connection-type'] ) {
+			$class_name = LF_Filesystem::get_class_name( $settings->data['connection-type'] );
+			$filesystem = new $class_name( $config, array(
+				'connection_type' => $settings->data['connection-type'],
+				'hostname' => $settings->data['connection-hostname'],
+				'username' => $settings->data['connection-username'],
+				'password' => $settings->data['connection-password']
+			));
+        }
+        else {
+	        $filesystem = new LF_Filesystem_Direct( $config );
+        }
+
+        $template = new LF_Template( $config, $filesystem, $router, $settings );
 
 		$controller_class = $router->controller_class;
-		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template );
+		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template, $settings );
 		
 		//$view->controller = $controller;
 
@@ -67,16 +81,16 @@ class Leeflets {
 		die( 'The PHP setting <a href="http://www.php.net/manual/en/info.configuration.php#ini.magic-quotes-gpc">magic_quotes_gpc</a> is currently on. Leeflets requires that you have it turned off.' );
 	}
 
-	function setup_error_reporting( $debug ) {
-		if ( defined( 'LF_DEBUG' ) ) {
+	function setup_error_reporting() {
+		if ( $this->config->debug ) {
 			error_reporting( E_ALL & ~E_DEPRECATED & ~E_STRICT );
 
-			if ( defined( 'LF_DEBUG_DISPLAY' ) )
+			if ( $this->config->debug_display )
 				ini_set( 'display_errors', 1 );
 			else
 				ini_set( 'display_errors', 0 );
 
-			if ( defined( 'LF_DEBUG_LOG' ) ) {
+			if ( $this->config->debug_log ) {
 				ini_set( 'log_errors', 1 );
 				ini_set( 'error_log', LF_DEBUG_LOG );
 			}

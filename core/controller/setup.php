@@ -57,32 +57,9 @@ class LF_Controller_Setup extends LF_Controller {
 			)
 		) );
 
-		if ( $noaccess ) {
-			$elements['ftp'] = array(
-				'type' => 'fieldset',
-				'legend' => 'FTP Details',
-				'elements' => array(
-					'ftp-hostname' => array(
-						'type' => 'text',
-						'label' => 'FTP Hostname'
-					),
-					'ftp-username' => array(
-						'type' => 'text',
-						'label' => 'Username'
-					),
-					'ftp-password' => array(
-						'type' => 'password',
-						'label' => 'Password'
-					),
-					'ftp-connection' => array(
-						'type' => 'radiolist',
-						'options' => array(
-							'ftp' => 'FTP',
-							'sftp' => 'sFTP'
-						),
-						'value' => 'ftp'
-					)
-				)
+		if ( !$this->filesystem->have_direct_access() ) {
+			$elements['connection'] = $this->filesystem->get_connection_fields(
+				array( $this, '_check_connection' ), true
 			);
 		}
 
@@ -106,11 +83,15 @@ class LF_Controller_Setup extends LF_Controller {
 				'username' => $_POST['username'],
 				'password' => $hasher->HashPassword( $_POST['password1'] )
 			);
-
+			
 			$this->config->write( $this->filesystem, $data );
 
 			$htaccess = new LF_Htaccess( $this->filesystem, $this->router, $this->config );
 			$htaccess->write();
+
+			if ( isset( $_POST['connection-type'] ) ) {
+				$this->settings->save_connection_info( $_POST, $this->filesystem );
+			}
 
 			LF_Router::redirect( $this->router->admin_url( '/user/login/' ) );
 			exit;
@@ -119,5 +100,17 @@ class LF_Controller_Setup extends LF_Controller {
 		$layout = 'logged-out';
 
 		return compact( 'form', 'layout' );
+	}
+
+	function _check_connection() {
+		$class_name = $this->filesystem->get_class_name( $_POST['connection-type'] );
+		$this->filesystem = new $class_name( $this->config, array(
+			'connection_type' => $_POST['connection-type'],
+			'hostname' => $_POST['connection-hostname'],
+			'username' => $_POST['connection-username'],
+			'password' => $_POST['connection-password']
+		));
+
+		return $this->filesystem->connect();
 	}
 }

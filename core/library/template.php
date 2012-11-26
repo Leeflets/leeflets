@@ -3,24 +3,24 @@ class LF_Template {
 	private $config, $filesystem, $router,
 		$active_template, $content, $settings;
 
-	function __construct( LF_Config $config, LF_Filesystem $filesystem, LF_Router $router ) {
+	function __construct( LF_Config $config, LF_Filesystem $filesystem, LF_Router $router, LF_Settings $settings ) {
 		$this->config = $config;
 		$this->filesystem = $filesystem;
 		$this->router = $router;
+		$this->settings = $settings;
 		$this->active_template = 'words';
 	}
 
 	function write() {
+		$this->filesystem->connect();
 		$output = $this->render();
 		$file = $this->config->root_path . '/index.html';
+		$file = $this->filesystem->translate_path( $file );
 		return $this->filesystem->put_contents( $file, $output );
 	}
 
 	function render() {
 		$this->content = $this->get_content_data();
-
-		$settings_file = new LF_Data_File( 'settings', $this->config, $this->filesystem );
-		$this->settings = $settings_file->read();
 
 		$index_path = $this->template_file_path( 'index' );
 
@@ -61,8 +61,8 @@ class LF_Template {
 	}
 
 	public function get_setting( $key ) {
-		if ( isset( $this->settings[$key] ) ) {
-			return $this->settings[$key];
+		if ( isset( $this->settings->data[$key] ) ) {
+			return $this->settings->data[$key];
 		}
 
 		return '';
@@ -81,8 +81,8 @@ class LF_Template {
 	}
 
 	public function set_content_data( $values ) {
-		$file = new LF_Data_File( $this->get_content_data_file_path(), $this->config, $this->filesystem );
-		$file->write( $values );
+		$file = new LF_Data_File( $this->get_content_data_file_path(), $this->config );
+		$file->write( $values, $this->filesystem );
 	}
 
 	public function get_content_data() {
@@ -95,7 +95,7 @@ class LF_Template {
 			return array();
 		}
 
-		$file = new LF_Data_File( $file, $this->config, $this->filesystem );
+		$file = new LF_Data_File( $file, $this->config );
 
 		return $file->read();
 	}

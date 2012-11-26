@@ -1,6 +1,8 @@
 <?php
 class LF_Config {
-	public $path, $username, $password, $debug, $fs_method;
+	public $path, $username, $password;
+	public $debug, $debug_display, $debug_log;
+	public $tmp_path, $fs_chmod_dir, $fs_chmod_file;
 	public $admin_path, $root_path, $core_path, $controller_path, $library_path, $view_path, $theme_path, $form_path;
 	public $is_loaded = false;
 
@@ -21,6 +23,12 @@ class LF_Config {
 		$this->uploads_path = $this->admin_path . '/uploads';
 
 		$this->path = $this->admin_path . '/config.php';
+
+		$this->debug = false;
+		$this->debug_display = false;
+		$this->debug_log = false;
+		$this->fs_chmod_dir = 0755;
+		$this->fs_chmod_file = 0644;
 	}
 
 	function load() {
@@ -36,17 +44,20 @@ class LF_Config {
 
 		return true;
 	}
-	
-	function write( LF_Filesystem_Direct $fs, $data ) {
-		if ( file_exists( $this->path ) ) return false;
+
+	function write( $filesystem, $data ) {
+		$filesystem->connect();
+		$path = $filesystem->translate_path( $this->path );
+
+		if ( $filesystem->exists( $path ) ) return false;
 
 		$out = "<?php\n";
 
 		foreach ( $data as $key => $value ) {
 			$out .= "\$this->" . $key . " = '" . addslashes( $value ) . "';\n";
 		}
-		
-		return $fs->put_contents( $this->path, $out );
+
+		return $filesystem->put_contents( $path, $out );
 	}
 
 }

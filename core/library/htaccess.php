@@ -12,11 +12,16 @@ class LF_Htaccess {
 		$rewrite_base = parse_url( $this->router->admin_url() );
 		$rewrite_base = $rewrite_base['path'];
 
+		$this->filesystem->connect();
+
 		ob_start();
 		include $this->config->include_path . '/htaccess.php';
 		$out = ob_get_clean();
 
-		return $this->filesystem->put_contents( $this->config->admin_path . '/.htaccess', $out );
+		$filepath = $this->config->admin_path . '/.htaccess';
+		$filepath = $this->filesystem->translate_path( $filepath );
+		
+		return $this->filesystem->put_contents( $filepath, $out );
 	}
 
 }

@@ -21,7 +21,8 @@ class LF_Filesystem_Direct extends LF_Filesystem {
 	 *
 	 * @param mixed $arg ignored argument
 	 */
-	function __construct($arg) {
+	function __construct( $config, $arg = '' ) {
+		$this->config = $config;
 		$this->method = 'direct';
 		$this->errors = array();
 	}
@@ -118,9 +119,9 @@ class LF_Filesystem_Direct extends LF_Filesystem {
 	function chmod($file, $mode = false, $recursive = false) {
 		if ( ! $mode ) {
 			if ( $this->is_file($file) )
-				$mode = FS_CHMOD_FILE;
+				$mode = $this->config->fs_chmod_file;
 			elseif ( $this->is_dir($file) )
-				$mode = FS_CHMOD_DIR;
+				$mode = $this->config->fs_chmod_dir;
 			else
 				return false;
 		}
@@ -290,7 +291,7 @@ class LF_Filesystem_Direct extends LF_Filesystem {
 			return false;
 
 		if ( ! $chmod )
-			$chmod = FS_CHMOD_DIR;
+			$chmod = $this->config->fs_chmod_dir;
 
 		if ( ! @mkdir($path) )
 			return false;

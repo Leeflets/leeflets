@@ -1,83 +1,110 @@
 <?php
 class LF_Controller_Settings extends LF_Controller {
 	function edit() {
-		$path = $this->config->data_path . '/settings.json.php';
-		$file = new LF_Data_File( $path, $this->config, $this->filesystem );
-		$data = $file->read();
-
-		if ( false === $data ) {
-			$data = array();
+		if ( isset( $_POST['connection-type'] ) ) {
+			if ( 'direct' == $_POST['connection-type'] ) {
+				$_POST['connection-hostname'] = '';
+				$_POST['connection-username'] = '';
+				$_POST['connection-password'] = '';
+			}
+			elseif ( '' == $_POST['connection-password'] ) {
+				$_POST['connection-password'] = $this->settings->data['connection-password'];
+			}
 		}
 
-		$form = new LF_Form( 'settings-form', array(
-			'action' => $this->router->admin_url( 'settings/edit/' ),
+		$elements['site-meta'] = array(
+			'type' => 'fieldset',
 			'elements' => array(
-				'site-meta' => array(
-					'type' => 'fieldset',
-					'elements' => array(
-						'site-title' => array(
-							'type' => 'text',
-							'label' => 'Site Title',
-							'required' => true,
-							'autofocus' => true,
-						),
-						'site-author' => array(
-							'type' => 'text',
-							'label' => 'Site Author'
-						),
-						'site-description' => array(
-							'type' => 'text',
-							'label' => 'Site Description'
-						),
-					)
+				'site-title' => array(
+					'type' => 'text',
+					'label' => 'Site Title',
+					'autofocus' => true,
 				),
-				'privacy' => array(
-					'type' => 'fieldset',
-					'elements' => array(
-						'site-visibility' => array(
-							'type' => 'radiolist',
-							'label' => 'Would you like search engines to index this site?',
-							'options' => array(
-								'1' => 'Yes', 
-					            '2' => 'No'
-							)
-						)
-					)
+				'site-author' => array(
+					'type' => 'text',
+					'label' => 'Site Author'
 				),
-				'analytics' => array(
-					'type' => 'fieldset',
-					'elements' => array(
-						'analytics-code' => array(
-							'type' => 'textarea',
-							'label' => 'Analytics Code'
-						)
-					)
+				'site-description' => array(
+					'type' => 'text',
+					'label' => 'Site Description'
 				),
-				'buttons' => array(
-					'type' => 'fieldset',
-					'elements' => array(
-						'submit' => array(
-							'type' => 'button',
-							'button-type' => 'submit',
-							'value' => 'Save'
-						)
+			)
+		);
+
+		$elements['privacy'] = array(
+			'type' => 'fieldset',
+			'elements' => array(
+				'site-visibility' => array(
+					'type' => 'radiolist',
+					'label' => 'Would you like search engines to index this site?',
+					'value' => '1',
+					'options' => array(
+						'1' => 'Yes', 
+			            '2' => 'No'
 					)
 				)
 			)
+		);
+
+		$elements['analytics'] = array(
+			'type' => 'fieldset',
+			'elements' => array(
+				'analytics-code' => array(
+					'type' => 'textarea',
+					'label' => 'Analytics Code'
+				)
+			)
+		);
+
+		$elements['connection'] = $this->filesystem->get_connection_fields(
+			array( $this, '_check_connection' ), false
+		);
+
+		$elements['buttons'] = array(
+			'type' => 'fieldset',
+			'elements' => array(
+				'submit' => array(
+					'type' => 'button',
+					'button-type' => 'submit',
+					'value' => 'Save'
+				)
+			)
+		);
+
+		$form = new LF_Form( 'settings-form', array(
+			'action' => $this->router->admin_url( 'settings/edit/' ),
+			'elements' => $elements
 		) );
 
+		$error = '';
 		if ( $form->validate() ) {
-			$values = $form->get_values();
+			$values = array_merge( $this->settings->data, $form->get_values() );
+			unset( $values['submit'] );
 
-			$file->write( $values );
-
-			$this->router->redirect( $this->router->admin_url( 'settings/edit/?saved=1' ) );
-			exit;
+			if ( $this->settings->write( $values, $this->filesystem ) ) {
+				$this->router->redirect( $this->router->admin_url( 'settings/edit/?saved=1' ) );
+				exit;
+			}
+			else {
+				$error = 'Error saving the settings.';
+			}
 		}
-		else {
-			$form->set_values( $data );
+		elseif ( !$form->is_submitted() ) {
+			$form->set_values( $this->settings->data );
 		}
 
-		return compact( 'form' );
+		return compact( 'form', 'error' );
+	}
+
+	function _check_connection() {
+		$class_name = $this->filesystem->get_class_name( $_POST['connection-type'] );
+		$this->filesystem = new $class_name( $this->config, array(
+			'connection_type' => $_POST['connection-type'],
+			'hostname' => $_POST['connection-hostname'],
+			'username' => $_POST['connection-username'],
+			'password' => $_POST['connection-password']
+		));
+
+		return $this->filesystem->connect();
 	}
 }

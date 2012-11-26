@@ -6,6 +6,12 @@
 		</div>
 	<?php endif; ?>
 
+	<?php if ( $error ) : ?>
+		<div class="message error">
+			<p><strong><?php echo $error; ?></strong></p>
+		</div>
+	<?php endif; ?>
+
 	<h1>Settings</h1>
 
 	<?php $form->html() ?>

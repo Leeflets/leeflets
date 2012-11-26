@@ -44,7 +44,7 @@ class LF_Form_Control extends LF_Form_Element {
         if ( isset( $_POST[$this->name] ) ) {
             $this->value = $_POST[$this->name];
         }
-        else {
+        elseif ( is_null( $this->value ) ) {
             $this->value = '';
         }
     }
