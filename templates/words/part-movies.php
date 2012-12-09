@@ -9,7 +9,14 @@ if ( $movies ) :
     foreach ( $movies as $movie ) :
         ?>
 
-        <li><a href="<?php echo $movie['url']; ?>"><?php echo $movie['title']; ?></a></li>
+        <li>
+            <?php
+            for ( $i = 1; $i <= $movie['stars']; $i++ ) {
+                echo '&#9733;';
+            }
+            ?>
+            <a href="<?php echo $movie['url']; ?>"><?php echo $movie['title']; ?></a>
+        </li>
     
         <?php 
     endforeach;
