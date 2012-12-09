@@ -20,9 +20,9 @@ class LF_Settings extends LF_Data_File {
 	function save_connection_info( $data, $filesystem ) {
 		$settings = $this->read();
 
-		$fields = array( 'hostname', 'username', 'password', 'type' );
+		$fields = array( 'type', 'hostname', 'username', 'password' );
 		foreach ( $fields as $field ) {
-			$settings['connection-' . $field] = $data['connection-' . $field];
+			$settings['connection'][$field] = $data['connection'][$field];
 		}
 
 		$this->write( $settings, $filesystem );

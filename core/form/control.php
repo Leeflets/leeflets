@@ -1,11 +1,12 @@
 <?php
 class LF_Form_Control extends LF_Form_Element {
     public $required, $required_msg, $validation, $name, $label,
-        $tip, $errors, $value, $class, $pattern, $pattern_msg;
+        $tip, $errors, $value, $class, $pattern, $pattern_msg, 
+        $column_width;
     
-    function __construct( $form, $id, $args = array() ) {
+    function __construct( $parent, $id, $args = array() ) {
         $this->id = $id;
-        $this->form = $form;
+        $this->parent = $parent;
         $this->errors = array();
 
         if ( !isset( $args['class'] ) ) {
@@ -18,6 +19,8 @@ class LF_Form_Control extends LF_Form_Element {
             $args['name'] = $id;
         }
 
+        $args['name'] = $this->parent->id . '[' . $args['name'] . ']';
+
         if ( isset( $args['required'] ) && is_string( $args['required'] ) ) {
             $this->required_msg = $args['required'];
             $args['required'] = true;
@@ -29,7 +32,7 @@ class LF_Form_Control extends LF_Form_Element {
         }
 
         // Set class variables and remove from $args array
-        $this->special_args( 'validation, label, tip, value', &$args );
+        $this->special_args( 'validation, label, tip, value, column-width, repeatable', &$args );
 
         // Set class variables, but keep them in $args array
         $this->special_args( 'name, required, pattern', &$args, false );
@@ -41,11 +44,26 @@ class LF_Form_Control extends LF_Form_Element {
     }
 
     function load_post_value() {
-        if ( isset( $_POST[$this->name] ) ) {
-            $this->value = $_POST[$this->name];
-        }
-        elseif ( is_null( $this->value ) ) {
+        $this->value = $this->get_value_from_array( $_POST );
+
+        if ( is_null( $this->value ) ) {
             $this->value = '';
+        }
+    }
+
+    function get_value_from_array( $array ) {
+        return parent::get_value_from_array( $this->name, $array );
+    }
+
+    function set_value_from_array( $array ) {
+        $value = $this->get_value_from_array( $array );
+
+        if ( is_null( $value ) ) {
+            return false;
+        }
+        else {
+            $this->value = $value;
+            return true;
         }
     }
 
@@ -106,10 +124,23 @@ class LF_Form_Control extends LF_Form_Element {
         }
     }
 
+    function style_att() {
+        $styles = array();
+        if ( !is_null( $this->column_width ) ) {
+            $styles[] = 'width: ' . $this->column_width . ';';
+        }
+
+        if ( $styles ) {
+            return 'style="' . implode( ' ', $styles ) . '"';
+        }
+
+        return '';
+    }
+
     function html_start() {
         ?>
 
-        <div class="field <?php echo $this->class; ?>">
+        <div class="field <?php echo $this->class; ?>" <?php echo $this->style_att(); ?>>
             <?php if ( $this->label != '' ) : ?>
             <label for="<?php echo $this->id ?>"><?php echo $this->label; echo ($this->required) ? '<span class="req">*</span>' : '' ?></label>
             <?php endif; ?>

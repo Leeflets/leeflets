@@ -80,8 +80,8 @@ class LF_Controller_Setup extends LF_Controller {
 			$hasher = new PasswordHash( 8, false );
 
 			$data = array(
-				'username' => $_POST['username'],
-				'password' => $hasher->HashPassword( $_POST['password1'] )
+				'username' => $_POST['credentials']['username'],
+				'password' => $hasher->HashPassword( $_POST['credentials']['password1'] )
 			);
 			
 			$this->config->write( $this->filesystem, $data );
@@ -89,7 +89,7 @@ class LF_Controller_Setup extends LF_Controller {
 			$htaccess = new LF_Htaccess( $this->filesystem, $this->router, $this->config );
 			$htaccess->write();
 
-			if ( isset( $_POST['connection-type'] ) ) {
+			if ( isset( $_POST['connection']['type'] ) ) {
 				$this->settings->save_connection_info( $_POST, $this->filesystem );
 			}
 
@@ -100,17 +100,5 @@ class LF_Controller_Setup extends LF_Controller {
 		$layout = 'logged-out';
 
 		return compact( 'form', 'layout' );
-	}
-
-	function _check_connection() {
-		$class_name = $this->filesystem->get_class_name( $_POST['connection-type'] );
-		$this->filesystem = new $class_name( $this->config, array(
-			'connection_type' => $_POST['connection-type'],
-			'hostname' => $_POST['connection-hostname'],
-			'username' => $_POST['connection-username'],
-			'password' => $_POST['connection-password']
-		));
-
-		return $this->filesystem->connect();
 	}
 }

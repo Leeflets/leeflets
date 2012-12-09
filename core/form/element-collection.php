@@ -2,27 +2,29 @@
 class LF_Form_Element_Collection extends LF_Form_Element {
     public $elements, $errors;
 
-    function __construct( $form, $id, $args = array() ) {
+    function __construct( $parent, $id, $args = array() ) {
         if ( isset( $args['elements'] ) ) {
-            $this->add_elements( $args['elements'], $form );
+            $elements = $args['elements'];
             unset( $args['elements'] );
         }
         else {
-            $this->elements = array();
+            $elements = array();
         }
 
-        $this->errors = array();
+        parent::__construct( $parent, $id, $args );
 
-        parent::__construct( $form, $id, $args );
+        $this->add_elements( $elements, $parent );
+
+        $this->errors = array();
     }
 
-	function add_elements( $elements, $form = null ) {
-		if ( is_null( $form ) ) $form = $this;
-
+	function add_elements( $elements ) {
 		foreach ( $elements as $id => $el ) {
 			$class = 'LF_Form_' . LF_String::camelize( $el['type'] );
+
 			unset( $el['type'] );
-			$obj = new $class( $form, $id, $el );
+
+			$obj = new $class( $this, $id, $el );
 			$this->elements[$id] = $obj;
 		}
 	}
@@ -39,28 +41,12 @@ class LF_Form_Element_Collection extends LF_Form_Element {
         return $this->errors;
     }
 
-    function get_values() {
-        $values = array();
-        foreach ( $this->elements as $el ) {
-            if ( method_exists( $el, 'get_values' ) ) {
-                $values = array_merge( $el->get_values(), $values );
-            }
-            else {
-                $values[$el->id] = $el->value;
-            }
-        }
-        return $values;
-    }
-
     function set_values( $values ) {
-        foreach ( $values as $id => $value ) {
-            if ( isset( $this->elements[$id] ) ) {
-                $this->elements[$id]->value = $value;
-            }
-        }
-
         foreach ( $this->elements as $el ) {
-            if ( method_exists( $el, 'set_values' ) ) {
+            if ( method_exists( $el, 'set_value_from_array' ) ) {
+                $el->set_value_from_array( $values );
+            } 
+            elseif ( method_exists( $el, 'set_values' ) ) {
                 $el->set_values( $values );
             }
         }

@@ -1,9 +1,9 @@
 <?php
 $content = array(
-	'body-content' => array(
+	'page' => array(
 		'type' => 'fieldset',
 		'elements' => array(
-			'page-title' => array(
+			'title' => array(
 				'type' => 'text',
 				'label' => 'Page Title',
 				'required' => true,
@@ -18,16 +18,46 @@ $content = array(
 			)
 		)
 	),
-	'left-button-content' => array(
+	'movies' => array(
+		'type' => 'repeatable',
+		'title' => 'Movies',
+		'description' => 'Consume all the Sam Jackson movies!',
+		'empty-to-show' => 3,
+		'elements' => array(
+			'title' => array(
+				'type' => 'text',
+				'column-width' => '40%',
+				'placeholder' => "Title"
+			),
+			'url' => array(
+				'type' => 'url',
+				'column-width' => '40%',
+				'placeholder' => "IMDB URL"
+			),
+			'stars' => array(
+				'type' => 'select',
+				'column-width' => '20%',
+				'options' => array(
+					'' => 'Star Rating',
+					'1' => '1/5',
+					'2' => '2/5',
+					'3' => '3/5',
+					'4' => '4/5',
+					'5' => '5/5'
+				)
+			)
+		)
+	),
+	'left-button' => array(
 		'type' => 'fieldset',
 		'elements' => array(
-			'left-button-text' => array(
+			'text' => array(
 				'type' => 'text',
 				'label' => 'Left Button Text',
 				'required' => true,
 				'tip' => 'The text for the left hand button link.'
 			),
-			'left-button-url' => array(
+			'url' => array(
 				'type' => 'url',
 				'label' => 'Left Button Link',
 				'required' => true,
@@ -35,16 +65,16 @@ $content = array(
 			)
 		)
 	),
-	'right-button-content' => array(
+	'right-button' => array(
 		'type' => 'fieldset',
 		'elements' => array(
-			'right-button-text' => array(
+			'text' => array(
 				'type' => 'text',
 				'label' => 'Right Button Text',
 				'required' => true,
 				'tip' => 'The text for the right hand button link.'
 			),
-			'right-button-url' => array(
+			'url' => array(
 				'type' => 'url',
 				'label' => 'Right Button Link',
 				'required' => true,

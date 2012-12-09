@@ -7,15 +7,16 @@ class LF_Controller_Content extends LF_Controller {
 
 		$success = false;
 		if ( $form->validate() ) {
-			$values = $form->get_values();
+			$values = $_POST;
 			unset( $values['submit'] );
+			unset( $values['submission-edit-content'] );
 
 			$this->template->set_content_data( $values );
 
 			$this->router->redirect( $this->router->admin_url( 'content/edit/?saved=1' ) );
 			exit;
 		}
-		else {
+		elseif ( !$form->is_submitted() ) {
 			$form->set_values( $data );
 		}
 

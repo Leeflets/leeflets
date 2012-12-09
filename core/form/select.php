@@ -2,9 +2,9 @@
 class LF_Form_Select extends LF_Form_Control {
     public $options;
     
-    function __construct( $form, $id, $args = array() ) {
+    function __construct( $parent, $id, $args = array() ) {
         $this->special_args( 'options', $args );
-        parent::__construct( $form, $id, $args );
+        parent::__construct( $parent, $id, $args );
     }
     
     function html_middle() {

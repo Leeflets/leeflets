@@ -39,15 +39,6 @@ class LF_Form extends LF_Form_Element_Collection {
         <?php
     }
 
-    function values( $values = null ) {
-        if ( is_null( $values ) ) {
-            return $this->collection->values();
-        }
-        else {
-            $this->collection->values( $values );
-        }
-    }
-    
     function is_submitted() {
         return isset( $_REQUEST['submission-' . $this->id] );
     }
@@ -57,8 +48,12 @@ class LF_Form extends LF_Form_Element_Collection {
     }
 
     function validate() {
-        if ( !$this->is_submitted() ) return false;
+        if ( !$this->is_submitted() ) {
+            return false;
+        }
+
         parent::validate();
+        
         return empty( $this->errors );
     }
 

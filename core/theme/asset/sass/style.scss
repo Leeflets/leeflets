@@ -1,3 +1,5 @@
+@import 'compass';
+
 * { box-sizing: border-box; }
 
 body {
@@ -12,20 +14,61 @@ p {
 
 fieldset {
 	border: 0;
-	border-bottom: 1px solid #ccc;
-	padding: 2.5em 0 1.5em 0;
+	padding: 0;
+	margin: 0;
 }
 
-fieldset:first-of-type {
-	padding-top: 0;
+form > fieldset {
+	border-bottom: 1px solid #ccc;
+	padding: 2.5em 0 1.5em 0;
+
+	&:first-of-type {
+		padding-top: 0;
+	}
+
+	header {
+		h1 {
+			font-size: 1.2em;
+			margin: 0 0 0.3em 0;
+		}
+
+		p {
+			margin: 0 0 0.5em 0;
+		}
+	}
 }
 
 fieldset.buttons {
 	border: 0;
 }
 
+fieldset.repeatable {
+	fieldset {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.controls {
+		position: absolute;
+		top: 0;
+		right: 0;
+
+		a {
+			display: block;
+			text-decoration: none;
+			font-weight: bold;
+		}
+	}
+}
+
+legend {
+	position: relative;
+}
+
 .field {
-	margin-bottom: 1em;
+	float: left;
+	padding: 0.3em;
+	width: 100%;
 
 	> label {
 		display: block;
@@ -37,7 +80,7 @@ fieldset.buttons {
 	}
 
 	input, textarea {
-		width: 30em;
+		width: 100%;
 		font-family: "Helvetica Neue", sans-serif;
 		font-size: 1em;
 		padding: 0.3em 0.5em;
@@ -49,10 +92,6 @@ fieldset.buttons {
 
 	input[type=radio], input[type=checkbox] {
 		width: auto;
-	}
-
-	.redactor_box {
-  		width: 31em;
 	}
 }
 
@@ -122,6 +161,7 @@ body > .clip {
 
 .content.logged-out {
 	padding: 2em;
+	width: 20em;
 
 	> h1 {
 		margin-top: 0;

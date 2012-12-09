@@ -27,4 +27,16 @@ class LF_Controller {
         	$this->view->render( $out );
         }
     }
+
+    function _check_connection() {
+        $class_name = $this->filesystem->get_class_name( $_POST['connection']['type'] );
+        $this->filesystem = new $class_name( $this->config, array(
+            'connection_type' => $_POST['connection']['type'],
+            'hostname' => $_POST['connection']['hostname'],
+            'username' => $_POST['connection']['username'],
+            'password' => $_POST['connection']['password']
+        ));
+
+        return $this->filesystem->connect();
+    }
 }

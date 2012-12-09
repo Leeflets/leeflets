@@ -43,8 +43,14 @@ class LF_User {
 	}
 
 	function validate_cookie( $cookie = null ) {
+		$cookie_name = $this->get_cookie_name();
 		if ( is_null( $cookie ) ) {
-			$cookie = $_COOKIE[$this->get_cookie_name()];
+			if ( isset( $_COOKIE[$cookie_name] ) ) {
+				$cookie = $_COOKIE[$cookie_name];
+			}
+			else {
+				return false;
+			}
 		}
 
 		$cookie_parts = explode( '|', $cookie );

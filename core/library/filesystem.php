@@ -81,9 +81,11 @@ class LF_Filesystem {
 			$methods[ 'ftps' ] = 'FTPS (SSL)';
 		}
 
+		/* Haven't tested this sucka yet.
 		if ( extension_loaded( 'ssh2' ) && function_exists( 'stream_get_contents' ) ) {
 			$methods[ 'ssh' ] = 'SSH2';
 		}
+		*/
 
 		return $methods;
 	}
@@ -137,7 +139,7 @@ class LF_Filesystem {
 		return array(
 			'type' => 'fieldset',
 			'elements' => array(
-				'connection-type' => array(
+				'type' => array(
 					'required' => true,
 					'type' => 'radiolist',
 					'options' => $methods,
@@ -146,21 +148,21 @@ class LF_Filesystem {
 						array(
 							'callback' => $connection_callback,
 							'msg' => 'Sorry, the connection to the server failed. 
-								Please verify the details above and try again.'
+								Please verify the connection details and try again.'
 						)
 					)
 				),
-				'connection-hostname' => array(
+				'hostname' => array(
 					'required' => $required,
 					'type' => 'text',
 					'label' => $label . ' Hostname'
 				),
-				'connection-username' => array(
+				'username' => array(
 					'required' => $required,
 					'type' => 'text',
 					'label' => $label . ' Username'
 				),
-				'connection-password' => array(
+				'password' => array(
 					'required' => $required,
 					'type' => 'password',
 					'label' => $label . ' Password'

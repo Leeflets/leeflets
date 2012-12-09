@@ -1,9 +1,9 @@
 <?php
 class LF_Form_Button extends LF_Form_Element {
-    function __construct( $form, $id, $args = array() ) {
+    function __construct( $parent, $id, $args = array() ) {
     	$this->special_args( 'button-type', $args );
 
-    	parent::__construct( $form, $id, $args );
+    	parent::__construct( $parent, $id, $args );
 	}
 
 	function html() {

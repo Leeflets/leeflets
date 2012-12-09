@@ -1,16 +1,18 @@
 <?php
 class LF_Form_Element {
-	public $form, $id, $atts;
+	public $parent, $id, $atts;
 
-    function __construct( $form, $id, $args = array() ) {
+    function __construct( $parent, $id, $args = array() ) {
         $this->id = $id;
-        $this->form = $form;
+        $this->parent = $parent;
 
         if ( !isset( $args['class'] ) ) {
             $args['class'] = '';
         }
 
-        $args['class'] = trim( $id . ' ' . $args['class'] );
+        $id_class = preg_replace('@[^a-zA-Z0-9\-_]@', '-', $id );
+        $id_class = trim( $id_class, '-' );
+        $args['class'] = trim( $id_class . ' ' . $args['class'] );
 
         $this->special_args( 'value', $args );
 
@@ -23,7 +25,8 @@ class LF_Form_Element {
         foreach ( $vars as $var ) {
             $var = trim( $var );
             if ( isset( $args[$var] ) ) {
-                $this->$var = $args[$var];
+                $class_var = str_replace( '-', '_', $var );
+                $this->$class_var = $args[$var];
                 if ( $unset ) unset( $args[$var] );
             }
         }
@@ -33,18 +36,20 @@ class LF_Form_Element {
 		$out[] = '';
 		foreach ( $this->atts as $key => $val ) {
 			if ( $val == '' ) continue;
-			if ( is_bool( $val ) ) $val = ( $val ) ? 'true' : 'false';
+			if ( is_bool( $val ) ) {
+                $val = ( $val ) ? 'true' : 'false';
+            }
 			$out[] = $key . '="' . htmlspecialchars( $val ) . '"';
 		}
 		return implode( ' ', $out );
 	}
 
 	function esc_att( $value ) {
-		return htmlspecialchars( $value, null, $this->form->get_encoding() );
+		return htmlspecialchars( $value, null, $this->get_encoding() );
 	}
 
     function esc_html( $value ) {
-        return htmlentities( $value, null, $this->form->get_encoding() );
+        return htmlentities( $value, null, $this->get_encoding() );
     }
 
     function get_html() {
@@ -54,4 +59,34 @@ class LF_Form_Element {
     }
 
     function validate() { return array(); }
+
+    function get_encoding() {
+        return $this->parent->get_encoding();
+    }
+
+    function get_value_from_array( $name, $array ) {
+        if ( !preg_match( '@^([^\[]+)@', $name, $matches ) ) {
+            return null;
+        }
+
+        $value = null;
+        $var = $matches[1];
+        if ( isset( $array[$var] ) ) {
+            $value = $array[$var];
+        }
+
+        if ( !preg_match_all( '@\[([^\]]+)\]@', $name, $matches ) ) {
+            return $value;
+        }
+
+        foreach ( $matches[1] as $var ) {
+            if ( !isset( $value[$var] ) ) {
+                return null;
+            }
+
+            $value = $value[$var];
+        }
+
+        return $value;
+    }
 }

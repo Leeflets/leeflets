@@ -68,16 +68,26 @@ class LF_Template {
 		return '';
 	}
 
-	public function content( $key ) {
-		echo $this->get_content( $key );
+	public function content() {
+		echo $this->vget_content( func_get_args() );
 	}
 
-	public function get_content( $key ) {
-		if ( isset( $this->content[$key] ) ) {
-			return $this->content[$key];
+	public function get_content() {
+		return $this->vget_content( func_get_args() );
+	}
+
+	public function vget_content( $keys ) {
+		$content = $this->content;
+		
+		foreach ( $keys as $key ) {
+			if ( !isset( $content[$key] ) ) {
+				return '';
+			}
+
+			$content = $content[$key];
 		}
 
-		return '';
+		return $content;
 	}
 
 	public function set_content_data( $values ) {

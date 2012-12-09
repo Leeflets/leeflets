@@ -38,14 +38,54 @@ function LEEFLETS() {
 
 	self.content_events = function($content) {
 		$('textarea.redactor', $content).redactor();
+		self.repeatable();
+	};
+
+	self.repeatable = function() {
+		var $content = $('.content.edit-content', $container);
+		if (!$content.get(0)) return;
+		
+		$('fieldset.repeatable fieldset', $content).each(function() {
+			$(this).append('<div class="controls"><a href="" class="remove">x</a><a href="" class="add">+</a></div>');
+			self.field_group_events($(this));
+		});
+	};
+
+	self.field_group_events = function( $group ) {
+
+		$('.add', $group).click(function() {
+			var $new = $group.clone();
+			$('input, textarea, select', $new).val('');
+			$group.after($new);
+			self.field_group_events($new);
+			self.sequence_fields($group.parents('fieldset.repeatable'));
+			return false;
+		});
+
+		$('.remove', $group).click(function() {
+			var $repeatable = $group.parents('fieldset.repeatable');
+			$group.remove();
+			self.sequence_fields($repeatable);
+			return false;
+		});
+	};
+
+	self.sequence_fields = function( $repeatable ) {
+		$('fieldset', $repeatable).each(function(i) {
+			var $fieldset = $(this);
+			$('input, textarea, select', $fieldset).each(function() {
+				var new_name = $(this).attr('name').replace(/\[[0-9]+\]/, '[' + i + ']');
+				$(this).attr('name', new_name);
+			});
+		});
 	};
 
 	self.show_home = function() {
 		var $content = $('.content', $container);
 		$container.animate({
 			'left': ($content.outerWidth() * -1) + 'px'
-		}, function() { 
-			$content.remove(); 
+		}, function() {
+			$content.remove();
 			$container.css('left', '0px');
 		});
 	};
