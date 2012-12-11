@@ -32,10 +32,10 @@ class LF_Form_Control extends LF_Form_Element {
         }
 
         // Set class variables and remove from $args array
-        $this->special_args( 'validation, label, tip, value, column-width, repeatable', &$args );
+        $this->special_args( 'validation, label, tip, value, column-width, repeatable', $args );
 
         // Set class variables, but keep them in $args array
-        $this->special_args( 'name, required, pattern', &$args, false );
+        $this->special_args( 'name, required, pattern', $args, false );
 
         // Set control attributes to variables leftover in $args
         $this->atts = $args;
