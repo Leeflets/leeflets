@@ -5,9 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
         <!-- Site Meta -->
-        <title><?php $this->setting( 'site-title' ); ?></title>
-        <meta name="description" content="<?php $this->setting( 'site-description' ); ?>">
-        <meta name="author" content="<?php $this->setting( 'site-author' ); ?>">
+        <title><?php $this->setting( 'site-meta', 'title' ); ?></title>
+        <meta name="description" content="<?php $this->setting( 'site-meta', 'description' ); ?>">
+        <meta name="author" content="<?php $this->setting( 'site-meta', 'author' ); ?>">
 
         <!-- For Mobile Browsers -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,6 +29,6 @@
 
         <?php $this->part( 'footer' ); ?>
 
-        <?php $this->setting( 'analytics-code' ); ?>
+        <?php $this->setting( 'analytics', 'code' ); ?>
     </body>
 </html>

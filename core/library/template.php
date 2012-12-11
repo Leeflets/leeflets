@@ -56,16 +56,26 @@ class LF_Template {
 		return ob_get_clean();
 	}
 
-	public function setting( $key ) {
-		echo $this->get_setting( $key );
+	public function setting() {
+		echo $this->vget_setting( func_get_args() );
 	}
 
-	public function get_setting( $key ) {
-		if ( isset( $this->settings->data[$key] ) ) {
-			return $this->settings->data[$key];
+	public function get_setting() {
+		return $this->vget_setting( func_get_args() );
+	}
+
+	public function vget_setting( $keys ) {
+		$settings = $this->settings->data;
+		
+		foreach ( $keys as $key ) {
+			if ( !isset( $settings[$key] ) ) {
+				return '';
+			}
+
+			$settings = $settings[$key];
 		}
 
-		return '';
+		return $settings;
 	}
 
 	public function content() {
