@@ -44,8 +44,25 @@ function LEEFLETS() {
 	self.repeatable = function() {
 		var $content = $('.content.edit-content', $container);
 		if (!$content.get(0)) return;
-		
-		$('fieldset.repeatable fieldset', $content).each(function() {
+
+		var $repeatable = $('fieldset.repeatable', $content);
+
+		$repeatable.each(function() {
+			var $control = $(this);
+			var $add_new = $('<p class="add-first"><a href="">Add new</a></p>');
+			$control.append($add_new);
+			$('a', $add_new).click(function() {
+				$('fieldset', $control).show();
+				$add_new.hide();
+				return false;
+			});
+
+			if ($('fieldset', $control).length > 0) {
+				$add_new.hide();
+			}
+		});
+
+		$('fieldset', $repeatable).each(function() {
 			$(this).append('<div class="controls"><a href="" class="remove">x</a><a href="" class="add">+</a></div>');
 			self.field_group_events($(this));
 		});
@@ -64,7 +81,14 @@ function LEEFLETS() {
 
 		$('.remove', $group).click(function() {
 			var $repeatable = $group.parents('fieldset.repeatable');
-			$group.remove();
+			if ( $('fieldset', $repeatable).length == 1 ) {
+				$('input, textarea, select', $group).val('');
+				$group.hide();
+				$('.add-first', $repeatable).show();
+			}
+			else {
+				$group.remove();
+			}
 			self.sequence_fields($repeatable);
 			return false;
 		});
