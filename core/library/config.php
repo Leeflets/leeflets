@@ -19,6 +19,7 @@ class LF_Config {
 		$this->include_path = $this->core_path . '/include';
 
 		$this->templates_path = $this->admin_path . '/templates';
+		$this->addons_path = $this->admin_path . '/addons';
 		$this->data_path = $this->admin_path . '/data';
 		$this->uploads_path = $this->admin_path . '/uploads';
 

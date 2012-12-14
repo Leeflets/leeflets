@@ -22,14 +22,70 @@
 
 <body>
 
+<?php
+$nav = array(
+    array(
+        'text' => 'Home',
+        'atts' => array(
+            'class' => 'home',
+            'href' => $this->router->admin_url()
+        )
+    ),
+    array(
+        'text' => 'Content',
+        'atts' => array(
+            'class' => 'content',
+            'href' => $this->router->admin_url( '/content/edit/' ),
+            'container-name' => 'edit-content'
+        )
+    ),
+    array(
+        'text' => 'Settings',
+        'atts' => array(
+            'class' => 'settings',
+            'href' => $this->router->admin_url( '/settings/edit/' ),
+            'container-name' => 'edit-settings'
+        )
+    ),
+    array(
+        'text' => 'Logout',
+        'atts' => array(
+            'class' => 'logout',
+            'href' => $this->router->admin_url( '/user/logout/' )
+        )
+    ),
+    array(
+        'text' => 'Publish',
+        'atts' => array(
+            'class' => 'publish',
+            'href' => $this->router->admin_url( '/content/publish/' )
+        )
+    ),
+    array(
+        'text' => 'View',
+        'atts' => array(
+            'class' => 'view',
+            'href' => $this->router->site_url(),
+            'target' => '_blank'
+        )
+    ),
+);
+
+$nav = $this->hook->apply( 'primary_menu', $nav );
+?>
+
 <nav class="primary">
     <ul>
-        <li><a class="home" href="<?php echo $this->router->admin_url(); ?>">Home</a></li>
-        <li><a class="content" container-name="edit-content" href="<?php echo $this->router->admin_url( '/content/edit/' ); ?>">Content</a></li>
-        <li><a class="settings" container-name="edit-settings" href="<?php echo $this->router->admin_url( '/settings/edit/' ); ?>">Settings</a></li>
-        <li><a class="logout" href="<?php echo $this->router->admin_url( '/user/logout/' ); ?>">Logout</a></li>
-        <li><a class="publish" href="<?php echo $this->router->admin_url( '/content/publish/' ); ?>">Publish</a></li>
-        <li><a class="view" href="<?php echo $this->router->site_url(); ?>" target="_blank">View</a></li>
+        <?php 
+        foreach ( $nav as $n ) {
+            $_atts = array();
+            foreach ( $n['atts'] as $name => $value ) {
+                $_atts[] = $name . '="' . $value . '"';
+            }
+
+            printf("<li><a %s>%s</a></li>", join( ' ', $_atts ), $n['text'] );
+        }
+        ?>
     </ul>
 </nav>
 

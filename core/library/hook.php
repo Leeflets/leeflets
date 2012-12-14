@@ -1,38 +1,61 @@
 <?php
 class LF_Hook {
-    
-    static $hooks = array();
-        
-    static function add($tag, $func, $priority = 10, $num_args = 1) {
-        self::$hooks[$tag][$priority][$func] = array('name' => $func, 'num_args' => $num_args);
+
+    private $hooks = array();
+
+    function add( $key, $callback, $num_args = 1, $priority = 10 ) {
+        $callback_id = $this->get_callback_id( $key, $callback, $priority );
+        $this->hooks[$key][$priority][$callback_id] = array( 'name' => $callback, 'num_args' => $num_args );
         return true;
     }
-    
-    static function apply($tag, $string = '') {
-        if (!isset(self::$hooks[$tag])) {
-            return $string;
+
+    function remove( $key, $callback, $num_args = 1, $priority = 10 ) {
+        $callback_id = $this->get_callback_id( $key, $callback, $priority );
+        
+        $return = isset( $this->hooks[$key][$priority][$callback_id] );
+
+        unset( $this->hooks[$key][$priority][$callback_id] );
+
+        return $return;
+    }
+
+    function apply( $key, $value = '' ) {
+        if ( !isset( $this->hooks[$key] ) ) {
+            return $value;
         }
-        
+
         $args = func_get_args();
-        
-        foreach (self::$hooks[$tag] as $priority => $funcs) {
-            foreach ($funcs as $func) {
-                if (!is_null($func['name'])) {
-                    $args[1] = $string;
-                    $string = call_user_func_array($func['name'], array_slice($args, 1, (int) $func['num_args']));
+
+        foreach ( $this->hooks[$key] as $priority => $callbacks ) {
+            foreach ( $callbacks as $callback ) {
+                if ( !is_null( $callback['name'] ) ) {
+                    $args[1] = $value;
+                    $value = call_user_func_array( $callback['name'], array_slice( $args, 1, (int) $callback['num_args'] ) );
                 }
             }
         }
-        
-        return $string;
+
+        return $value;
     }
-    
-    function remove($tag, $func, $priority = 10, $num_args = 1) {
-        $return = isset(self::$hooks[$tag][$priority][$func]);
-        
-        unset(self::$hooks[$tag][$priority][$func]);
-        
-        return $return;
-    }    
-    
+
+    private function get_callback_id( $key, $callback, $priority ) {
+        if ( is_string( $callback ) ) {
+            return $callback;
+        }
+
+        if ( is_object( $callback ) ) {
+            // Closures are currently implemented as objects
+            $callback = array( $callback, '' );
+        } else {
+            $callback = (array) $callback;
+        }
+
+        if ( is_object( $callback[0] ) ) {
+            return spl_object_hash( $callback[0] ) . $callback[1];
+        } 
+
+        if ( is_string( $callback[0] ) ) {
+            return $callback[0].$callback[1];
+        }
+    }
 }

@@ -1,14 +1,15 @@
 <?php
 class LF_View {
 
-    public $router, $config;
+    public $router, $config, $hook;
     public $enqueued_scripts, $enqueued_stylesheets;
 
     private $vars;
 
-    function __construct( $config, $router ) {
+    function __construct( LF_Config $config, LF_Router $router, LF_Hook $hook ) {
         $this->config = $config;
         $this->router = $router;
+        $this->hook = $hook;
     }
 
     function enqueue_script( $script ) {

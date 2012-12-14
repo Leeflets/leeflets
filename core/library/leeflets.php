@@ -23,6 +23,8 @@ class Leeflets {
 
 		$is_login = preg_match( '@user/login/@', $_SERVER['REQUEST_URI'] );
 
+		$hook = new LF_Hook();
+
 		if ( !$is_config_loaded ) {
 			$router = new LF_Router( $config, null, '/setup/install/' );
 			$is_install = true;
@@ -39,8 +41,12 @@ class Leeflets {
 			exit;
 		}
 
-		$view = new LF_View( $config, $router );
 		$settings = new LF_Settings( $config );
+		
+		$addon = new LF_Addon( $config, $settings, $hook );
+		$addon->load_active();
+		
+		$view = new LF_View( $config, $router, $hook );
 
 		if ( isset( $settings->data['connection-type'] ) && 'direct' != $settings->data['connection-type'] ) {
 			$class_name = LF_Filesystem::get_class_name( $settings->data['connection-type'] );
