@@ -165,7 +165,7 @@ class LF_Form_Control extends LF_Form_Element {
     
     function tip_html() {
         if ( !$this->tip ) return;
-        echo '<p class="tip">', $this->tip, '</p>';
+        echo '<p class="help-block">', $this->tip, '</p>';
     }
     
     function errors_html() {

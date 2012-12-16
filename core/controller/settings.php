@@ -13,45 +13,54 @@ class LF_Controller_Settings extends LF_Controller {
 		}
 
 		$elements['site-meta'] = array(
+			'title' => 'Meta Information',
+			'description' => 'Inserted into the <head> tag of the site. Used by search engines.',
 			'type' => 'fieldset',
 			'elements' => array(
+				'author' => array(
+					'type' => 'text',
+					'label' => 'Site Author',
+					'class' => 'input-large'
+				),
 				'title' => array(
 					'type' => 'text',
 					'label' => 'Site Title',
 					'autofocus' => true,
-				),
-				'author' => array(
-					'type' => 'text',
-					'label' => 'Site Author'
+					'class' => 'input-block-level'
 				),
 				'description' => array(
 					'type' => 'text',
-					'label' => 'Site Description'
+					'label' => 'Site Description',
+					'class' => 'input-block-level',
+					'tip' => 'Keep it short and sweet'
 				),
 			)
 		);
 
 		$elements['privacy'] = array(
+			'title' => 'Privacy Settings',
 			'type' => 'fieldset',
 			'elements' => array(
 				'visibility' => array(
 					'type' => 'radiolist',
-					'label' => 'Would you like search engines to index this site?',
 					'value' => '1',
 					'options' => array(
-						'1' => 'Yes', 
-			            '2' => 'No'
+						'1' => 'Allow search engines to index this site.', 
+			            '2' => 'Don\'t allow search engines to index this site.'
 					)
 				)
 			)
 		);
 
 		$elements['analytics'] = array(
+			'title' => 'Analytics Settings',
 			'type' => 'fieldset',
 			'elements' => array(
 				'code' => array(
 					'type' => 'textarea',
-					'label' => 'Analytics Code'
+					'label' => 'Tracking Code',
+					'class' => 'input-block-level',
+					'rows' => 5
 				)
 			)
 		);
@@ -60,13 +69,19 @@ class LF_Controller_Settings extends LF_Controller {
 			array( $this, '_check_connection' ), false
 		);
 
+		$elements['connection']['title'] = 'Filesystem Settings';
+		$elements['connection']['elements']['hostname']['class'] = 'input-xlarge';
+		$elements['connection']['elements']['username']['class'] = 'input-xlarge';
+		$elements['connection']['elements']['password']['class'] = 'input-xlarge';
+
 		$elements['buttons'] = array(
 			'type' => 'fieldset',
 			'elements' => array(
 				'submit' => array(
 					'type' => 'button',
 					'button-type' => 'submit',
-					'value' => 'Save'
+					'class' => 'btn btn-primary',
+					'value' => 'Save Changes'
 				)
 			)
 		);

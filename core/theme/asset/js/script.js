@@ -16,11 +16,29 @@ function LEEFLETS() {
 
 	self.panel_events = function($panel) {
 		$('textarea.redactor', $panel).redactor();
+		
 		self.repeatable($panel);
 
 		$('.close.panel', $panel).click(function() {
 			self.toggle_panel($panel);
 		});
+
+		$('fieldset.connection').each(function() {
+			var $fieldset = $(this);
+			//self.hide_show_connection_fields($fieldset);
+			$('select', $fieldset).change(function() {
+				self.hide_show_connection_fields($fieldset);
+			});
+		});
+	};
+
+	self.hide_show_connection_fields = function($fieldset) {
+		if('direct' == $('select', $fieldset).val()) {
+			$('.field', $fieldset).not('.type').hide();
+		}
+		else {
+			$('.field', $fieldset).not('.type').show();
+		}
 	};
 
 	self.repeatable = function($panel) {

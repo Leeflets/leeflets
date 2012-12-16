@@ -141,7 +141,7 @@ class LF_Filesystem {
 			'elements' => array(
 				'type' => array(
 					'required' => true,
-					'type' => 'radiolist',
+					'type' => 'select',
 					'options' => $methods,
 					'value' => $default_method,
 					'validation' => array(
@@ -152,20 +152,30 @@ class LF_Filesystem {
 						)
 					)
 				),
+				'port' => array(
+					'required' => $required,
+					'type' => 'text',
+					'label' => 'Port:',
+					'placeholder' => 'Default',
+					'class' => 'input-mini'
+				),
 				'hostname' => array(
 					'required' => $required,
 					'type' => 'text',
-					'label' => $label . ' Hostname'
+					'placeholder' => 'Hostname',
+					'class' => 'input-block-level'
 				),
 				'username' => array(
 					'required' => $required,
 					'type' => 'text',
-					'label' => $label . ' Username'
+					'placeholder' => 'Username',
+					'class' => 'input-block-level'
 				),
 				'password' => array(
 					'required' => $required,
 					'type' => 'password',
-					'label' => $label . ' Password'
+					'placeholder' => 'Password',
+					'class' => 'input-block-level'
 				)
 			)
 		);
