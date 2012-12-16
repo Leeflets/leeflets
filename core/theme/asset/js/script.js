@@ -5,47 +5,28 @@ $(document).ready(function() {
 
 function LEEFLETS() {
 	var self = this,
-		$nav = $('nav.primary'),
-		$clip = $('body > .clip'),
-		$container = $('.container', $clip),
-		$viewer = $('.viewer', $container);
+		$nav = $('.primary-menu'),
+		$viewer = $('.viewer');
 
 	self.init = function() {
-		self.set_sizes();
 		self.nav_events();
-		self.content_events($('.content', $container));
+		self.panel_events($('.panel'));
 		on_resize(self.set_sizes);
 	};
 
-	self.set_sizes = function() {
-		var $content = $('.content', $container),
+	self.panel_events = function($panel) {
+		$('textarea.redactor', $panel).redactor();
+		self.repeatable($panel);
 
-			win_w = $(document).width(),
-			win_h = $(window).height(),
-			nav_w = $nav.outerWidth(),
-			content_w = $content.outerWidth(),
-			viewer_w = win_w - nav_w,
-			container_w = content_w + viewer_w;
-
-		$viewer.outerWidth(viewer_w);
-		$clip.outerWidth(win_w - nav_w);
-		$container.outerWidth(container_w);
-
-		$nav.outerHeight(win_h);
-		$content.outerHeight(win_h);
-		$viewer.outerHeight(win_h);
+		$('.close.panel', $panel).click(function() {
+			self.toggle_panel($panel);
+		});
 	};
 
-	self.content_events = function($content) {
-		$('textarea.redactor', $content).redactor();
-		self.repeatable();
-	};
+	self.repeatable = function($panel) {
+		if (!$panel.length) return;
 
-	self.repeatable = function() {
-		var $content = $('.content.edit-content', $container);
-		if (!$content.get(0)) return;
-
-		var $repeatable = $('fieldset.repeatable', $content);
+		var $repeatable = $('fieldset.repeatable', $panel);
 
 		$repeatable.each(function() {
 			var $control = $(this);
@@ -104,70 +85,107 @@ function LEEFLETS() {
 		});
 	};
 
-	self.show_home = function() {
-		var $content = $('.content', $container);
-		$container.animate({
-			'left': ($content.outerWidth() * -1) + 'px'
-		}, function() {
-			$content.remove();
-			$container.css('left', '0px');
+	self.slide_visible = function($el, offset) {
+		var current = $el.css('left');
+		if (typeof current == 'undefined' || 'auto' == current) {
+			current = (-1 * ($el.outerWidth() + offset)) + 'px';
+			$el.css({left: current}).show();
+		}
+
+		return (offset == current.replace('px', ''));
+	};
+
+	self.toggle_slide = function($el, offset, duration) {
+		var left;
+
+		if (self.slide_visible($el, offset)) {
+			left = -1 * ($el.outerWidth() + offset);
+		}
+		else {
+			left = offset;
+		}
+
+		var css = {left: left + 'px'};
+
+		$el.animate(css, duration);
+	};
+
+	self.toggle_nav = function() {
+		self.toggle_slide($nav, 0, 200);
+	};
+
+	self.toggle_panel = function($panel) {
+		var offset = $nav.outerWidth();
+		self.toggle_slide($panel, offset, 400);
+	};
+
+	self.hide_panels = function() {
+		var offset = $nav.outerWidth();
+		$('.panel').each(function() {
+			if (self.slide_visible($(this), offset)) {
+				self.toggle_panel($(this));
+			}
 		});
 	};
 
 	self.nav_events = function() {
+		if ($('.panel').length) {
+			self.toggle_nav();
+			self.toggle_panel($('.panel'));
+		}
+
+        $('.show-primary-nav').click(function(){
+            self.toggle_nav();
+            return false;
+        });
+
 		$('.home', $nav).click(function() {
-			self.show_home();
+			self.toggle_nav();
+			self.hide_panels();
 			return false;
 		});
 
 		$('.settings, .content', $nav).click(function() {
-			var $content_old = $('.content', $container);
+			var id = $(this).attr('id').replace('nav-', ''),
+				$panel = $('#admin-' + id);
+
+			if ($panel.length) {
+				self.hide_panels();
+				self.toggle_panel($panel);
+				return false;
+			}
 
 			var $anch = $(this),
 				href = $anch.attr('href');
 
-			if ($content_old.hasClass($anch.attr('container-name'))) {
-				self.show_home();
-				return false;
-			}
-
 			$.get(href, {ajax:1}, function(data) {
-				$container.prepend(data);
-				var $content_new = $('.content', $container).eq(0);
-				self.content_events($content_new);
-				self.set_sizes();
+				$nav.after(data);
 
-				$content_new.css('overflow', 'hidden');
-				var set_scroll = function() {
-					$content_new.css('overflow', 'scroll');
-				};
+				var $panel = $('.panel').eq(0);
+				self.panel_events($panel);
+				self.hide_panels();
+				self.toggle_panel($panel);
+			});
 
-				var $to_animate;
-				var anim_callback;
-				if ($content_old.get(0)) {
-					$to_animate = $content_new;
-					$content_new.css({
-						'position': 'absolute',
-						'z-index': 7
-					});
-					anim_callback = function() {
-						$content_old.remove();
-						$content_new.css({
-							'position': 'relative',
-							'z-index': 6
-						});
-						set_scroll();
-					};
-				}
-				else {
-					$to_animate = $container;
-					anim_callback = set_scroll;
-				}
+			return false;
+		});
 
-				$to_animate.css({
-					'left': ($content_new.outerWidth() * -1) + 'px'
+		$('.publish', $nav).click(function() {
+			var pos = $(this).offset(),
+				y = pos.top,
+				x = $nav.outerWidth();
+
+			$.get($(this).attr('href'), {ajax:1}, function(data) {
+				var $box = $('<div class="alert-box">Published! :)</div>');
+				$('body').append($box);
+				$box.hide().css({
+					top: y + 'px',
+					left: x + 'px'
+				}).fadeIn(function() {
+					window.setTimeout(function() {
+						$box.fadeOut();
+					}, 1000);
 				});
-				$to_animate.animate({'left': '0px'}, 200, anim_callback);
 			});
 
 			return false;

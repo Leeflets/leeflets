@@ -79,4 +79,64 @@ class LF_View {
     function footer() {
         include $this->config->theme_path . '/footer.php';
     }
+
+    function get_primary_nav() {
+        $nav = array(
+            array(
+                'text' => 'Home',
+                'atts' => array(
+                    'id' => 'nav-home',
+                    'class' => 'home',
+                    'href' => $this->router->admin_url()
+                )
+            ),
+            array(
+                'text' => 'Content',
+                'atts' => array(
+                    'id' => 'nav-content',
+                    'class' => 'content',
+                    'href' => $this->router->admin_url( '/content/edit/' ),
+                    'container-name' => 'edit-content'
+                )
+            ),
+            array(
+                'text' => 'Settings',
+                'atts' => array(
+                    'id' => 'nav-settings',
+                    'class' => 'settings',
+                    'href' => $this->router->admin_url( '/settings/edit/' ),
+                    'container-name' => 'edit-settings'
+                )
+            ),
+            array(
+                'text' => 'Logout',
+                'atts' => array(
+                    'id' => 'nav-logout',
+                    'class' => 'logout',
+                    'href' => $this->router->admin_url( '/user/logout/' )
+                )
+            ),
+            array(
+                'text' => 'View',
+                'atts' => array(
+                    'id' => 'nav-view',
+                    'class' => 'view',
+                    'href' => $this->router->site_url(),
+                    'target' => '_blank'
+                )
+            ),
+            array(
+                'text' => 'Publish',
+                'atts' => array(
+                    'id' => 'nav-publish',
+                    'class' => 'publish',
+                    'href' => $this->router->admin_url( '/content/publish/' )
+                )
+            ),
+        );
+
+        $nav = $this->hook->apply( 'primary_menu', $nav );
+
+        return $nav;
+    }
 }
