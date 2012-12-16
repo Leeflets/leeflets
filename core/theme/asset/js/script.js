@@ -25,7 +25,7 @@ function LEEFLETS() {
 
 		$('fieldset.connection').each(function() {
 			var $fieldset = $(this);
-			//self.hide_show_connection_fields($fieldset);
+			self.hide_show_connection_fields($fieldset);
 			$('select', $fieldset).change(function() {
 				self.hide_show_connection_fields($fieldset);
 			});
