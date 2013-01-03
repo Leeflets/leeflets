@@ -426,6 +426,12 @@ fieldset.connection {
 	z-index: 2000;
 }
 
+.login-form {
+	fieldset {
+		margin-bottom: 0;
+	}
+}
+
 /* Admin Bar*********************************************************************************************/
 .show-primary-nav {
 	background:url('../img/logo-small.png') top left no-repeat;

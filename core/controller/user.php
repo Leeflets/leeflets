@@ -8,8 +8,9 @@ class LF_Controller_User extends LF_Controller {
 					'type' => 'fieldset',
 					'elements' => array(
 						'username' => array(
-							'type' => 'text',
-							'label' => 'Username',
+							'type' => 'email',
+							'placeholder' => 'Email Address',
+							'class' => 'input-block-level',
 							'required' => true,
 							'autofocus' => true,
 							'validation' => array(
@@ -21,7 +22,8 @@ class LF_Controller_User extends LF_Controller {
 						),
 						'password' => array(
 							'type' => 'password',
-							'label' => 'Password',
+							'placeholder' => 'Password',
+							'class' => 'input-block-level',
 							'required' => true,
 							'validation' => array(
 								array(
@@ -38,7 +40,8 @@ class LF_Controller_User extends LF_Controller {
 						'submit' => array(
 							'type' => 'button',
 							'button-type' => 'submit',
-							'value' => 'Submit'
+							'class' => 'btn btn-primary',
+							'value' => 'Login'
 						)
 					)
 				)
