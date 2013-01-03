@@ -61,7 +61,8 @@ $content = array(
 				'type' => 'url',
 				'label' => 'Left Button Link',
 				'required' => true,
-				'tip' => 'The link for the left hand button.'
+				'tip' => 'The link for the left hand button.',
+				'class' => 'input-block-level'
 			)
 		)
 	),
@@ -78,7 +79,8 @@ $content = array(
 				'type' => 'url',
 				'label' => 'Right Button Link',
 				'required' => true,
-				'tip' => 'The link for the right hand button.'
+				'tip' => 'The link for the right hand button.',
+				'class' => 'input-block-level'
 			)
 		)
 	)

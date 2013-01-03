@@ -13,7 +13,7 @@ class LF_Router {
     function __construct( $config, $base_request_url = null, $request_path = null, $is_ajax = null ) {
         if ( is_null( $base_request_url ) ) $base_request_url = self::base_request_url();
         if ( is_null( $request_path ) ) $request_path = $_SERVER['REQUEST_URI'];
-        if ( is_null( $is_ajax ) ) $is_ajax = isset( $_GET['ajax'] );
+        if ( is_null( $is_ajax ) ) $is_ajax = isset( $_REQUEST['ajax'] );
 
         $this->base_request_url = $base_request_url;
         $this->request_path = $request_path;

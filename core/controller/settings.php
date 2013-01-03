@@ -20,12 +20,12 @@ class LF_Controller_Settings extends LF_Controller {
 				'author' => array(
 					'type' => 'text',
 					'label' => 'Site Author',
+					'autofocus' => true,
 					'class' => 'input-large'
 				),
 				'title' => array(
 					'type' => 'text',
 					'label' => 'Site Title',
-					'autofocus' => true,
 					'class' => 'input-block-level'
 				),
 				'description' => array(
@@ -98,11 +98,7 @@ class LF_Controller_Settings extends LF_Controller {
 			unset( $values['submission-settings-form'] );
 			$values = array_merge( $this->settings->data, $values );
 
-			if ( $this->settings->write( $values, $this->filesystem ) ) {
-				$this->router->redirect( $this->router->admin_url( 'settings/edit/?saved=1' ) );
-				exit;
-			}
-			else {
+			if ( !$this->settings->write( $values, $this->filesystem ) ) {
 				$error = 'Error saving the settings.';
 			}
 		}

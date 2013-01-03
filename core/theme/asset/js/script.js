@@ -23,21 +23,34 @@ function LEEFLETS() {
 			self.toggle_panel($panel);
 		});
 
-		$('fieldset.connection').each(function() {
+		$('fieldset.connection', $panel).each(function() {
 			var $fieldset = $(this);
 			self.hide_show_connection_fields($fieldset);
 			$('select', $fieldset).change(function() {
 				self.hide_show_connection_fields($fieldset);
 			});
 		});
+
+		$('.alert', $panel).hide().fadeIn();
+
+		$('form', $panel).submit(function() {
+			var request_data = $(this).serialize();
+			request_data += '&ajax=1';
+			$.post($(this).attr('action'), request_data, function(data) {
+				$('.span12', $panel).html(data);
+				$viewer[0].src = $viewer[0].src;
+				self.panel_events($panel);
+			});
+			return false;
+		});
 	};
 
 	self.hide_show_connection_fields = function($fieldset) {
 		if('direct' == $('select', $fieldset).val()) {
-			$('.field', $fieldset).not('.type').hide();
+			$('.control-group', $fieldset).not('.type').hide();
 		}
 		else {
-			$('.field', $fieldset).not('.type').show();
+			$('.control-group', $fieldset).not('.type').show();
 		}
 	};
 
@@ -118,6 +131,7 @@ function LEEFLETS() {
 
 		if (self.slide_visible($el, offset)) {
 			left = -1 * ($el.outerWidth() + offset);
+			$('.alert', $el).fadeOut();
 		}
 		else {
 			left = offset;

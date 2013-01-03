@@ -140,7 +140,7 @@ class LF_Form_Control extends LF_Form_Element {
     function html_start() {
         ?>
 
-        <div class="field <?php echo $this->class; ?>" <?php echo $this->style_att(); ?>>
+        <div class="control-group <?php echo $this->class; if ( !empty( $this->errors ) ) echo ' error'; ?>" <?php echo $this->style_att(); ?>>
             <?php if ( $this->label != '' ) : ?>
             <label for="<?php echo $this->id ?>"><?php echo $this->label; echo ($this->required) ? '<span class="req">*</span>' : '' ?></label>
             <?php endif; ?>
@@ -157,7 +157,7 @@ class LF_Form_Control extends LF_Form_Element {
     function html_end() {
         ?>
 
-            <?php $this->tip_html(); $this->errors_html(); ?>
+            <?php $this->errors_html(); $this->tip_html(); ?>
         </div>
 
         <?php
@@ -174,7 +174,7 @@ class LF_Form_Control extends LF_Form_Element {
         
         foreach ( $this->errors as $error ) {
             ?>
-            <p class="error"><?php echo $error; ?></p>
+            <p class="error-msg"><?php echo $error; ?></p>
             <?php
         }
     }

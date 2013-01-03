@@ -5,7 +5,7 @@ class LF_Form_Repeatable extends LF_Form_Fieldset {
     function __construct( $parent, $id, $args = array() ) {
         // Defaults
         $args = array_merge( array(
-            'empty-to-show' => 0
+            'empty-to-show' => 1
         ), $args );
 
         $this->special_args( 'empty-to-show', $args );

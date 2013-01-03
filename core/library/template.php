@@ -149,8 +149,9 @@ class LF_Template {
 			'elements' => array(
 				'submit' => array(
 					'type' => 'button',
+					'class' => 'btn btn-primary',
 					'button-type' => 'submit',
-					'value' => 'Save'
+					'value' => 'Save Changes'
 				)
 			)
 		);
