@@ -292,7 +292,7 @@ fieldset {
 
 fieldset.connection {
 	.port {
-		width: 180px;
+		width: 120px;
 		float: left;
 		clear: right;
 
@@ -426,7 +426,7 @@ fieldset.connection {
 	z-index: 2000;
 }
 
-.login-form {
+.login-form, .install-form {
 	fieldset {
 		margin-bottom: 0;
 	}

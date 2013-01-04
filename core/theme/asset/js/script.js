@@ -14,6 +14,20 @@ function LEEFLETS() {
 		on_resize(self.set_sizes);
 	};
 
+	self.install_events = function() {
+		if ( !$('body.logged-out').length ) return;
+	};
+
+	self.connection_field_events = function() {
+		$('fieldset.connection').each(function() {
+			var $fieldset = $(this);
+			self.hide_show_connection_fields($fieldset);
+			$('select', $fieldset).change(function() {
+				self.hide_show_connection_fields($fieldset);
+			});
+		});
+	};
+
 	self.panel_events = function($panel) {
 		$('textarea.redactor', $panel).redactor();
 		
@@ -23,13 +37,7 @@ function LEEFLETS() {
 			self.toggle_panel($panel);
 		});
 
-		$('fieldset.connection', $panel).each(function() {
-			var $fieldset = $(this);
-			self.hide_show_connection_fields($fieldset);
-			$('select', $fieldset).change(function() {
-				self.hide_show_connection_fields($fieldset);
-			});
-		});
+		self.connection_field_events();
 
 		$('.alert', $panel).hide().fadeIn();
 

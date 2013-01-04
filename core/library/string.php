@@ -1,5 +1,9 @@
 <?php
 class LF_String {
+    static function valid_email( $string ) {
+        return ( false !== strpos( $string, '@' ) );
+    }
+
     static function camelize($str) {
         $str[0] = strtoupper($str[0]);
         $func = create_function('$c', 'return "_" . strtoupper($c[1]);');

@@ -18,14 +18,15 @@ class LF_Controller_Setup extends LF_Controller {
 					'type' => 'fieldset',
 					'elements' => array(
 						'username' => array(
-							'type' => 'text',
-							'label' => 'Username',
-							'pattern' => array( '/^[a-z0-9\.]+$/', 'Lowercase letters, numbers, and periods only.' ),
+							'type' => 'email',
+							'placeholder' => 'Email Address',
+							'class' => 'input-block-level',
 							'required' => true
 						),
 						'password1' => array(
 							'type' => 'password',
-							'label' => 'Password',
+							'placeholder' => 'Password',
+							'class' => 'input-block-level',
 							'required' => true,
 							'validation' => array(
 								array(
@@ -42,7 +43,8 @@ class LF_Controller_Setup extends LF_Controller {
 						),
 						'password2' => array(
 							'type' => 'password',
-							'label' => 'Confirm Password',
+							'placeholder' => 'Confirm Password',
+							'class' => 'input-block-level',
 							'required' => true,
 							'validation' => array(
 								array(
@@ -58,6 +60,11 @@ class LF_Controller_Setup extends LF_Controller {
 		) );
 
 		if ( !$this->filesystem->have_direct_access() ) {
+			$elements['warning'] = array(
+				'type' => 'html',
+				'value' => $this->_ftp_warning_html()
+			);
+
 			$elements['connection'] = $this->filesystem->get_connection_fields(
 				array( $this, '_check_connection' ), true
 			);
@@ -69,7 +76,8 @@ class LF_Controller_Setup extends LF_Controller {
 				'submit' => array(
 					'type' => 'button',
 					'button-type' => 'submit',
-					'value' => 'Submit'
+					'class' => 'btn btn-primary',
+					'value' => 'Install Leeflets'
 				)
 			)
 		);
@@ -100,5 +108,15 @@ class LF_Controller_Setup extends LF_Controller {
 		$layout = 'logged-out';
 
 		return compact( 'form', 'layout' );
+	}
+
+	function _ftp_warning_html() {
+		ob_start();
+		?>
+        <div class="alert alert-warning">
+            Leeflets has detected that it does not have access to save files to the server. Please enter your FTP details below to continue.
+        </div>
+		<?php
+		return ob_get_clean();
 	}
 }
