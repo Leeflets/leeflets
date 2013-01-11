@@ -3,6 +3,7 @@ class LF_Form_Control extends LF_Form_Element {
     public $required, $required_msg, $validation, $name, $label,
         $tip, $errors, $value, $class, $pattern, $pattern_msg, 
         $column_width;
+    public $has_multiple_values = false;
     
     function __construct( $parent, $id, $args = array() ) {
         $this->id = $id;
@@ -20,6 +21,10 @@ class LF_Form_Control extends LF_Form_Element {
         }
 
         $args['name'] = $this->parent->id . '[' . $args['name'] . ']';
+
+        if ( $this->has_multiple_values ) {
+            $args['name'] .= '[]';
+        }
 
         if ( isset( $args['required'] ) && is_string( $args['required'] ) ) {
             $this->required_msg = $args['required'];

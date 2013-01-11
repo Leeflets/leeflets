@@ -1,4 +1,12 @@
 <?php
+$colors = array(
+	'Blue',
+	'Green',
+	'Black',
+	'Purple',
+	'Yellow'
+);
+
 $content = array(
 	'page' => array(
 		'type' => 'fieldset',
@@ -50,6 +58,17 @@ $content = array(
 					'4' => '4/5',
 					'5' => '5/5'
 				)
+			)
+		)
+	),
+	'test-fields' => array(
+		'title' => 'Testing Fields',
+		'type' => 'fieldset',
+		'elements' => array(
+			'fav-color' => array(
+				'type' => 'checklist',
+				'label' => 'Favorite Color',
+				'options' => array_combine( $colors, $colors )
 			)
 		)
 	),

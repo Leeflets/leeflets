@@ -1,46 +1,34 @@
 <?php
 class LF_Form_Checklist extends LF_Form_Select {
-    
-    function html($print = false) {
-        if (!$print) ob_start();
-        ?>
+    public $label_class = '';
 
-        <div class="field field-checklist field-<?php echo $this->id; echo (!empty($this->errors)) ? ' field-error' : '' ?>">
-            <label class="prime"><?php echo $this->lbl; echo ($this->req) ? '<span class="req">*</span>' : '' ?></label>
-            <ul>
-                <?php
-                foreach ($this->options as $val => $txt) :
-                    $html_id = htmlentities($this->id . '_' . $this->slug($val));
-                    ?>
-                    <li class="option-<?php echo $val; ?>">
-                        <input type="checkbox" class="checkbox" name="<?php echo $this->name ?>[]"
-                            id="<?php echo $html_id ?>" value="<?php echo $val ?>"
-                            <?php echo ( ( $val == $this->value ) || ( is_array($this->value) && in_array($val, $this->value) ) ) ? 'checked="checked"' : '' ?> />
-                        <label for="<?php echo $html_id ?>"><?php echo $txt ?></label>
-                    </li>
-                    <?php
-                endforeach;
-                ?>
-            </ul>
-            <?php $this->display_tip(); $this->display_errors(); ?>
-        </div>
-        
-        <?php
-        if (!$print) return ob_get_clean();
+    function __construct( $parent, $id, $args = array() ) {
+        $this->special_args( 'label-class', $args );
+
+        $this->label_class = trim( 'checkbox ' . $this->label_class );
+
+        $this->has_multiple_values = true;
+
+        parent::__construct( $parent, $id, $args );
     }
+   
+    function html_middle() {
+        ?>
 
-
-    function table($print = false) {
-        if ($this->hide_in_table) return;
-        if (!$print) ob_start();
+        <?php
+        foreach ( $this->options as $value => $label ) :
+            $html_id = htmlspecialchars( $this->id . '-' . $this->slug( $value ) );
+            ?>
+            <label for="<?php echo $html_id; ?>" class="<?php echo $this->label_class; ?>">
+                <input type="checkbox" <?php echo $this->atts_html(); ?>
+                    id="<?php echo $html_id; ?>" value="<?php echo $value; ?>"
+                    <?php echo ( ( $value == $this->value ) || ( is_array( $this->value ) && in_array( $value, $this->value ) ) ) ? 'checked="checked"' : '' ?> />
+                <?php echo htmlspecialchars( $label ); ?>
+            </label>
+            <?php
+        endforeach;
         ?>
         
-        <tr>
-            <th style="text-align: left; vertical-align: top;"><?php echo $this->lbl; ?>:</th>
-            <td><?php echo ($this->value) ? nl2br(htmlentities(join(', ', $this->value), null, $this->form->encoding)) : ''; ?></td>
-        </tr>
-            
         <?php
-        if (!$print) return ob_get_clean();
     }
 }
