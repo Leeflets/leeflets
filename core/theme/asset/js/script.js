@@ -30,6 +30,7 @@ function LEEFLETS() {
 
 	self.panel_events = function($panel) {
 		$('textarea.redactor', $panel).redactor();
+		$('input.datepicker', $panel).datepicker();
 		
 		self.repeatable($panel);
 

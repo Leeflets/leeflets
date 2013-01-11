@@ -69,6 +69,11 @@ $content = array(
 				'type' => 'checklist',
 				'label' => 'Favorite Color',
 				'options' => array_combine( $colors, $colors )
+			),
+			'birthday' => array(
+				'type' => 'date',
+				'label' => 'Birthday',
+				'data-date-format' => 'yy/mm/dd'
 			)
 		)
 	),
