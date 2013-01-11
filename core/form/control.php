@@ -179,7 +179,10 @@ class LF_Form_Control extends LF_Form_Element {
         
         foreach ( $this->errors as $error ) {
             ?>
-            <p class="error-msg"><?php echo $error; ?></p>
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <?php echo $error; ?>
+            </div>
             <?php
         }
     }

@@ -39,6 +39,7 @@ $content = array(
 			),
 			'title' => array(
 				'type' => 'text',
+				'required' => true,
 				'column-width' => '40%',
 				'placeholder' => 'Title'
 			),
