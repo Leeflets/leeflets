@@ -24,15 +24,20 @@ $content = array(
 		'description' => 'Consume all the Sam Jackson movies!',
 		'empty-to-show' => 3,
 		'elements' => array(
+			'show' => array(
+				'type' => 'checkbox',
+				'column-width' => '10%',
+				'title' => 'Check to show on site'
+			),
 			'title' => array(
 				'type' => 'text',
 				'column-width' => '40%',
-				'placeholder' => "Title"
+				'placeholder' => 'Title'
 			),
 			'url' => array(
 				'type' => 'url',
-				'column-width' => '40%',
-				'placeholder' => "IMDB URL"
+				'column-width' => '30%',
+				'placeholder' => 'IMDB URL'
 			),
 			'stars' => array(
 				'type' => 'select',

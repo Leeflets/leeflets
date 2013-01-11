@@ -7,6 +7,7 @@ if ( $movies ) :
 
     <?php
     foreach ( $movies as $movie ) :
+        if ( !isset( $movie['show'] ) || !$movie['show'] ) return;
         ?>
 
         <li>
