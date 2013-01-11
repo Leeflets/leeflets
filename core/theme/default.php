@@ -16,13 +16,15 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/bootstrap/css/bootstrap.min.css' ); ?>">
-    <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/bootstrap/css/bootstrap-responsive.min.css' ); ?>">
+    <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/bootstrap/core/css/bootstrap.min.css' ); ?>">
+    <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/bootstrap/core/css/bootstrap-responsive.min.css' ); ?>">
+    <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/bootstrap/datepicker/css/datepicker.css' ); ?>">
     <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/css/style.css' ); ?>">
     <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/third-party/redactor/css/redactor.css' ); ?>" />
 
     <script src="<?php echo $this->router->admin_url( '/core/theme/asset/js/jquery-1.8.2.min.js' ); ?>"></script>
-    <script src="<?php echo $this->router->admin_url( '/core/theme/asset/bootstrap/js/bootstrap.min.js' ); ?>"></script>
+    <script src="<?php echo $this->router->admin_url( '/core/theme/asset/bootstrap/core/js/bootstrap.min.js' ); ?>"></script>
+    <script src="<?php echo $this->router->admin_url( '/core/theme/asset/bootstrap/datepicker/js/bootstrap-datepicker.min.js' ); ?>"></script>
     <script src="<?php echo $this->router->admin_url( '/core/third-party/redactor/redactor.js' ); ?>"></script>
     <script src="<?php echo $this->router->admin_url( '/core/theme/asset/js/script.js' ); ?>"></script>
     
