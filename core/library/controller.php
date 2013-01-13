@@ -1,12 +1,13 @@
 <?php
 class LF_Controller {
 
-    public $router, $view, $filesystem, $config, $user, $template, $settings;
+    public $router, $view, $filesystem, $config, $user, 
+        $template, $settings, $hook;
 
     function __construct( 
         LF_Router $router, LF_View $view, LF_Filesystem $filesystem,
         LF_Config $config, LF_User $user, LF_Template $template, 
-        LF_Settings $settings
+        LF_Settings $settings, LF_Hook $hook
     ) {
         $this->router = $router;
         $this->view = $view;
@@ -15,6 +16,7 @@ class LF_Controller {
         $this->user = $user;
         $this->template = $template;
         $this->settings = $settings;
+        $this->hook = $hook;
     }
 
     function call_action() {

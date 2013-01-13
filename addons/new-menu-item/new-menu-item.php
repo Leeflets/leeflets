@@ -1,7 +1,7 @@
 <?php
 class My_New_Menu_Item {
 	function __construct( $hook ) {
-		$hook->add( 'primary_menu', array( $this, 'add_menu_item' ) );
+		$hook->add( 'lf_primary_menu', array( $this, 'add_menu_item' ) );
 	}
 
 	function add_menu_item( $menu ) {

@@ -2,6 +2,49 @@
 class LF_Hook {
 
     private $hooks = array();
+    private $styles, $scripts;
+
+    function __construct( $styles, $scripts ) {
+        $this->styles = $styles;
+        $this->scripts = $scripts;
+        $this->default_assets();
+    }
+
+    function enqueue_script( $id, $url = false, $dependencies = array(), $version = false, $in_footer = false ) {
+        $this->scripts->add( $id, $url, $dependencies, $version, $in_footer );
+        $this->scripts->enqueue( $id );
+    }
+
+    function dequeue_script( $id ) {
+        $this->script->dequeue( $id );
+    }
+
+    function enqueue_style( $id, $url = false, $dependencies = array(), $version = false, $media = 'all' ) {
+        $this->styles->add( $id, $url, $dependencies, $version, $media );
+        $this->styles->enqueue( $id );
+    }
+
+    function dequeue_style( $id ) {
+        $this->styles->dequeue( $id );
+    }
+
+    function default_assets() {
+        $this->enqueue_script( 'jquery', '/core/theme/asset/js/jquery-1.8.2.min.js', array(), '1.8.2' );
+        $this->enqueue_script( 'bootstrap', '/core/theme/asset/bootstrap/core/js/bootstrap.min.js', array(), '2.2.1' );
+        $this->enqueue_script( 'bootstrap-datepicker', '/core/theme/asset/bootstrap/datepicker/js/bootstrap-datepicker.min.js', array( 'bootstrap' ) );
+        $this->enqueue_script( 'redactor', '/core/third-party/redactor/redactor.js' );
+        $this->enqueue_script( 'lf-script', '/core/theme/asset/js/script.js' );
+
+        $this->enqueue_style( 'bootstrap', '/core/theme/asset/bootstrap/core/css/bootstrap.min.css', array(), '2.2.1' );
+        $this->enqueue_style( 'bootstrap-responsive', '/core/theme/asset/bootstrap/core/css/bootstrap-responsive.min.css', array( 'bootstrap' ), '2.2.1' );
+        $this->enqueue_style( 'bootstrap-datepicker', '/core/theme/asset/bootstrap/datepicker/css/datepicker.css', array( 'bootstrap' ) );
+        $this->enqueue_style( 'redactor', '/core/third-party/redactor/css/redactor.css' );
+        $this->enqueue_style( 'lf-style', '/core/theme/asset/css/style.css' );
+
+        $this->add( 'lf_head', array( $this->styles, 'do_items' ), 0, 10 );
+        $this->add( 'lf_head', array( $this->scripts, 'do_head_items' ), 0, 10 );
+        $this->add( 'lf_footer', array( $this->scripts, 'do_footer_items' ), 0, 10 );
+    }
 
     function add( $key, $callback, $num_args = 1, $priority = 10 ) {
         $callback_id = $this->get_callback_id( $key, $callback, $priority );

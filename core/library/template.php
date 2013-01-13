@@ -1,13 +1,18 @@
 <?php
 class LF_Template {
 	private $config, $filesystem, $router,
-		$active_template, $content, $settings;
+		$active_template, $content, $settings,
+		$hook;
 
-	function __construct( LF_Config $config, LF_Filesystem $filesystem, LF_Router $router, LF_Settings $settings ) {
+	function __construct(
+		LF_Config $config, LF_Filesystem $filesystem, LF_Router $router, 
+		LF_Settings $settings, LF_Hook $hook
+	) {
 		$this->config = $config;
 		$this->filesystem = $filesystem;
 		$this->router = $router;
 		$this->settings = $settings;
+		$this->hook = $hook;
 		$this->active_template = 'words';
 	}
 
@@ -156,9 +161,9 @@ class LF_Template {
 			)
 		);
 
-		return new LF_Form( 'edit-content', array( 
-			'elements' => $content, 
-			'action' => $this->router->admin_url( '/content/edit/' ) 
+		return new LF_Form( $this->hook, 'edit-content', array(
+			'elements' => $content,
+			'action' => $this->router->admin_url( '/content/edit/' )
 		) );
 	}
 }

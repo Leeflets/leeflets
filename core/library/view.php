@@ -135,7 +135,7 @@ class LF_View {
             ),
         );
 
-        $nav = $this->hook->apply( 'primary_menu', $nav );
+        $nav = $this->hook->apply( 'lf_primary_menu', $nav );
 
         return $nav;
     }

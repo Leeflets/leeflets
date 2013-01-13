@@ -23,8 +23,6 @@ class Leeflets {
 
 		$is_login = preg_match( '@user/login/@', $_SERVER['REQUEST_URI'] );
 
-		$hook = new LF_Hook();
-
 		if ( !$is_config_loaded ) {
 			$router = new LF_Router( $config, null, '/setup/install/' );
 			$is_install = true;
@@ -33,6 +31,10 @@ class Leeflets {
 			$router = new LF_Router( $config );
 			$is_install = false;
 		}
+
+		$scripts = new LF_Assets_Scripts( $router->admin_url );
+		$styles = new LF_Assets_Styles( $router->admin_url );
+		$hook = new LF_Hook( $styles, $scripts );
 
 		$user = new LF_User( $config, $router );
 
@@ -61,10 +63,10 @@ class Leeflets {
 			$filesystem = new LF_Filesystem_Direct( $config );
 		}
 
-		$template = new LF_Template( $config, $filesystem, $router, $settings );
+		$template = new LF_Template( $config, $filesystem, $router, $settings, $hook );
 
 		$controller_class = $router->controller_class;
-		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template, $settings );
+		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template, $settings, $hook );
 
 		//$view->controller = $controller;
 
