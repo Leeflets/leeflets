@@ -39,6 +39,7 @@
 		this.isRTL = dates[this.language].rtl||false;
 		this.format = DPGlobal.parseFormat(options.format||this.element.data('date-format')||dates[this.language].format||'mm/dd/yyyy');
 		this.isInline = false;
+		this.attachTo = options.attachTo || $('body');
 		this.isInput = this.element.is('input');
 		this.component = this.element.is('.date') ? this.element.find('.add-on') : false;
 		this.hasInput = this.component && this.element.find('input').length;
@@ -56,7 +57,7 @@
 
 
 		this.picker = $(DPGlobal.template)
-							.appendTo(this.isInline ? this.element : 'body')
+							.appendTo(this.isInline ? this.element : this.attachTo)
 							.on({
 								click: $.proxy(this.click, this),
 								mousedown: $.proxy(this.mousedown, this)
@@ -309,7 +310,7 @@
 			var zIndex = parseInt(this.element.parents().filter(function() {
 							return $(this).css('z-index') != 'auto';
 						}).first().css('z-index'))+10;
-			var offset = this.component ? this.component.offset() : this.element.offset();
+			var offset = this.component ? this.component.position() : this.element.position();
 			var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(true);
 			this.picker.css({
 				top: offset.top + height,
