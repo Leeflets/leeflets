@@ -27,7 +27,8 @@ class LF_File {
 		$files = array(
 			'PasswordHash' => 'phpass',
 			'PclZip' => 'pclzip',
-			'ftp_base' => 'ftp'
+			'ftp_base' => 'ftp',
+			'UploadHandler' => 'upload-handler'
 		);
 
 		if ( isset( $files[$class] ) ) {

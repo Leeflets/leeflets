@@ -12,6 +12,32 @@ function LEEFLETS() {
 		self.nav_events();
 		self.panel_events($('.panel'));
 		on_resize(self.set_sizes);
+		self.drag_events();
+	};
+
+	self.drag_events = function() {
+		// disable the default browser action for file drops on the document
+		$(document).bind('drop dragover', function (e) {
+			e.preventDefault();
+		});
+
+		$(document).bind('dragover', function (e) {
+			var $uploads = $('div.file-upload');
+
+			var timeout = window.dropZoneTimeout;
+
+			if (!timeout) {
+				$('.drop-pad', $uploads).show();
+			}
+			else {
+				clearTimeout(timeout);
+			}
+
+			window.dropZoneTimeout = setTimeout(function () {
+				window.dropZoneTimeout = null;
+				$('.drop-pad', $uploads).hide();
+			}, 100);
+		});
 	};
 
 	self.install_events = function() {
@@ -30,8 +56,71 @@ function LEEFLETS() {
 
 	self.panel_events = function($panel) {
 		$('textarea.redactor', $panel).redactor();
-		$('input.datepicker', $panel).datepicker();
-		
+		$('input.datepicker', $panel).datepicker({attachTo: $panel});
+
+		$('div.file-upload').each(function() {
+			var $div = $(this),
+				$filename = $('.filename', $div),
+				$remove = $('.btn-remove', $div),
+				$input_append = $('.input-append', $div);
+
+			$('input', this).fileupload({
+				url: $(this.form).data('upload-url'),
+				paramName: 'files',
+				formData: [{
+					name: 'input-name',
+					value: $('input[type=file]', $div).attr('name')
+				}],
+				dataType: 'json',
+				dropZone: $div,
+				done: function (e, data) {
+					$('.progress', $div).hide();
+
+					$.each(data.result.files, function (index, file) {
+						$filename.text(file.name);
+					});
+
+					$input_append.append($remove);
+				},
+				progressall: function (e, data) {
+					var progress = parseInt(data.loaded / data.total * 100, 10);
+					$('.progress .bar', $div).css('width', progress + '%');
+				},
+				start: function(e) {
+					$('.alert-error', $div).remove();
+					$('.progress', $div).show();
+					$('.progress .bar', $div).css('width', '1%');
+				}
+			});
+
+			$remove.click(function() {
+				if (!$filename.text()) return;
+				var url = $(this.form).data('upload-url');
+				url += '?file=' + encodeURIComponent( $filename.text() );
+				url += '&input-name=' + encodeURIComponent( $('input[type=file]', $div).attr('name') );
+				$.ajax(url, {
+					type: 'DELETE',
+					dataType: 'json',
+					success: function(data, status, xhr) {
+						if (data.success) {
+							$filename.text('');
+							$remove = $remove.detach();
+						}
+						else {
+							$('.alert-error', $div).remove();
+							var $error = $(self.get_error_html('Failed to remove file.'));
+							$div.append($error);
+							$error.hide().fadeIn();
+						}
+					}
+				});
+			});
+
+			if (!$filename.text()) {
+				$remove = $remove.detach();
+			}
+		});
+			
 		self.repeatable($panel);
 
 		$('.close.panel', $panel).click(function() {
@@ -52,6 +141,15 @@ function LEEFLETS() {
 			});
 			return false;
 		});
+	};
+
+	self.get_error_html = function(msg) {
+		return '\
+			<div class="alert alert-error">\
+				<button type="button" class="close" data-dismiss="alert">×</button>\
+				' + msg + '\
+			</div>\
+		';
 	};
 
 	self.hide_show_connection_fields = function($fieldset) {
@@ -175,10 +273,10 @@ function LEEFLETS() {
 			self.toggle_panel($('.panel'));
 		}
 
-        $('.show-primary-nav').click(function(){
-            self.toggle_nav();
-            return false;
-        });
+		$('.show-primary-nav').click(function(){
+			self.toggle_nav();
+			return false;
+		});
 
 		$('.home', $nav).click(function() {
 			self.toggle_nav();

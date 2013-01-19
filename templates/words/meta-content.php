@@ -8,6 +8,32 @@ $colors = array(
 );
 
 $content = array(
+	'test-fields' => array(
+		'title' => 'Testing Fields',
+		'type' => 'fieldset',
+		'elements' => array(
+			'cover-letter' => array(
+				'label' => 'Cover Letter',
+				'type' => 'file',
+				'data-url' => $this->router->admin_url( '/content/upload/' )
+			),
+			'fav-color' => array(
+				'type' => 'checklist',
+				'label' => 'Favorite Color',
+				'options' => array_combine( $colors, $colors )
+			),
+			'birthday' => array(
+				'type' => 'date',
+				'label' => 'Birthday',
+				'data-date-format' => 'yy/mm/dd'
+			),
+			'resume' => array(
+				'label' => 'Resume',
+				'type' => 'file',
+				'data-url' => $this->router->admin_url( '/content/upload/' )
+			)
+		)
+	),
 	'page' => array(
 		'type' => 'fieldset',
 		'elements' => array(
@@ -59,22 +85,6 @@ $content = array(
 					'4' => '4/5',
 					'5' => '5/5'
 				)
-			)
-		)
-	),
-	'test-fields' => array(
-		'title' => 'Testing Fields',
-		'type' => 'fieldset',
-		'elements' => array(
-			'fav-color' => array(
-				'type' => 'checklist',
-				'label' => 'Favorite Color',
-				'options' => array_combine( $colors, $colors )
-			),
-			'birthday' => array(
-				'type' => 'date',
-				'label' => 'Birthday',
-				'data-date-format' => 'yy/mm/dd'
 			)
 		)
 	),

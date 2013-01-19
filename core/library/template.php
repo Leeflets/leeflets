@@ -161,9 +161,10 @@ class LF_Template {
 			)
 		);
 
-		return new LF_Form( $this->hook, 'edit-content', array(
+		return new LF_Form( 'edit-content', array(
 			'elements' => $content,
-			'action' => $this->router->admin_url( '/content/edit/' )
+			'action' => $this->router->admin_url( '/content/edit/' ),
+			'data-upload-url' => $this->router->admin_url( '/content/upload/' )
 		) );
 	}
 }

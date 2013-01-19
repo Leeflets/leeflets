@@ -16,6 +16,43 @@ class LF_String {
         return preg_replace_callback( '/_([A-Z])/', $func, $str );
     }
 
+    /**
+     * Converts a string representing an array to a PHP array.
+     * Typically used in form field names.
+     *
+     * e.g. page-meta[title] becomes array( 'page-meta' => array( 'title' => '' ) ) 
+     *
+     * @since 0.1
+     *
+     * @param string $rep String representing an array
+     * @param string $value (optional) Value to set the array variable
+     * @return array PHP array of the string representation
+     */
+    static function convert_representation_to_array( $rep, $value = '' ) {
+        // No square brackets, not an array representation
+        if ( !preg_match( '@^([^\[]+)@', $rep, $matches ) ) {
+            return false;
+        }
+
+        $keys = array();
+
+        $keys[] = $matches[1];
+
+        if ( !preg_match_all( '@\[([^\]]+)\]@', $rep, $matches ) ) {
+            return false;
+        }
+
+        $keys = array_merge( $keys, $matches[1] );
+        $keys = array_reverse( $keys );
+
+        foreach ( $keys as $key ) {
+            $result = array( $key => $value );
+            $value = $result;
+        }
+
+        return $value;
+    }
+
     static function json_prettify( $json ) {
         $result      = '';
         $pos         = 0;
