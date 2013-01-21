@@ -46,7 +46,9 @@ $content = array(
 			),
 			'intro-paragraph' => array(
 				'type' => 'wysiwyg',
+				'class' => 'input-block-level',
 				'label' => 'Content',
+				'rows' => 14,
 				'required' => true,
 				'tip' => 'This is the text displayed on your page.'
 			)

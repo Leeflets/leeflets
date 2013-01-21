@@ -1,3 +1,8 @@
+var JS_SELF_URL = (function() {
+    var script_tags = document.getElementsByTagName('script');
+    return script_tags[script_tags.length-1].src;
+})();
+
 $(document).ready(function() {
 	var leeflets = new LEEFLETS();
 	leeflets.init();
@@ -7,6 +12,13 @@ function LEEFLETS() {
 	var self = this,
 		$nav = $('.primary-menu'),
 		$viewer = $('.viewer');
+
+	self.assets_url = (function(url) {
+		var pos = url.lastIndexOf('/');
+		url = url.substr(0,pos);
+		pos = url.lastIndexOf('/');
+		return url.substr(0,pos);
+	})(JS_SELF_URL);
 
 	self.init = function() {
 		self.nav_events();
@@ -55,7 +67,16 @@ function LEEFLETS() {
 	};
 
 	self.panel_events = function($panel) {
-		$('textarea.redactor', $panel).redactor();
+		$('textarea.wysihtml5', $panel).wysihtml5({
+			"html": true,
+			"useLineBreaks": false,
+			stylesheets: [self.assets_url + "/css/editor.css"],
+			parserRules: {
+				tags: {
+					"p": {}
+				}
+			}
+		});
 		$('input.datepicker', $panel).datepicker({attachTo: $panel});
 
 		$('div.file-upload').each(function() {

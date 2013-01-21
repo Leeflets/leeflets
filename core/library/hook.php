@@ -29,20 +29,21 @@ class LF_Hook {
     }
 
     function default_assets() {
+        $this->enqueue_script( 'wysihtml5', '/core/theme/asset/bootstrap/wysihtml5/js/wysihtml5.js', array(), '0.3.0' );
         $this->enqueue_script( 'jquery', '/core/theme/asset/js/jquery.js', array(), '1.8.2' );
         $this->enqueue_script( 'jquery-ui-widget', '/core/theme/asset/js/jquery.ui.widget.js', array( 'jquery' ), '1.9.1' );
         $this->enqueue_script( 'jquery-iframe-transport', '/core/theme/asset/js/jquery.iframe-transport.js', array( 'jquery' ), '1.6.1' );
         $this->enqueue_script( 'jquery-fileupload', '/core/theme/asset/js/jquery.fileupload.js', array( 'jquery' ), '5.19.8' );
         $this->enqueue_script( 'bootstrap', '/core/theme/asset/bootstrap/core/js/bootstrap.js', array(), '2.2.1' );
         $this->enqueue_script( 'bootstrap-datepicker', '/core/theme/asset/bootstrap/datepicker/js/bootstrap-datepicker.js', array( 'bootstrap' ) );
-        $this->enqueue_script( 'redactor', '/core/third-party/redactor/redactor.js' );
+        $this->enqueue_script( 'bootstrap-wysihtml5', '/core/theme/asset/bootstrap/wysihtml5/js/bootstrap-wysihtml5.js', array( 'bootstrap' ) );
         $this->enqueue_script( 'lf-script', '/core/theme/asset/js/script.js' );
 
         $this->enqueue_style( 'bootstrap', '/core/theme/asset/bootstrap/core/css/bootstrap.css', array(), '2.2.1' );
         $this->enqueue_style( 'bootstrap-responsive', '/core/theme/asset/bootstrap/core/css/bootstrap-responsive.css', array( 'bootstrap' ), '2.2.1' );
         $this->enqueue_style( 'bootstrap-datepicker', '/core/theme/asset/bootstrap/datepicker/css/datepicker.css', array( 'bootstrap' ) );
+        $this->enqueue_style( 'bootstrap-wysihtml5', '/core/theme/asset/bootstrap/wysihtml5/css/bootstrap-wysihtml5.css', array( 'bootstrap' ) );
         $this->enqueue_style( 'jquery-fileupload', '/core/theme/asset/css/jquery.fileupload-ui.css', array(), '6.10' );
-        $this->enqueue_style( 'redactor', '/core/third-party/redactor/css/redactor.css' );
         $this->enqueue_style( 'lf-style', '/core/theme/asset/css/style.css' );
 
         $this->add( 'lf_head', array( $this->styles, 'do_items' ), 0, 10 );
