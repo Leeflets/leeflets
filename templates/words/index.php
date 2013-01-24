@@ -12,17 +12,8 @@
         <!-- For Mobile Browsers -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Base Template Styles -->
-        <link rel="stylesheet" href="<?php $this->template_url( 'css/base.css' ); ?>">
-
-        <!-- Current Template Styles -->
-        <link rel="stylesheet" href="<?php $this->template_url( 'css/style.css' ); ?>">
-
         <!-- Current Template Icons -->
         <link rel="shortcut icon" href="<?php $this->template_url( 'images/favicon.png' ); ?>">
-
-        <!-- Some Custom Font Action -->
-        <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
 
         <?php $this->hook->apply( 'head' ); ?>
     </head>
@@ -34,6 +25,6 @@
 
         <?php $this->setting( 'analytics', 'code' ); ?>
 
-        <?php $this->hook->apply( 'foot' ); ?>
+        <?php $this->hook->apply( 'footer' ); ?>
     </body>
 </html>

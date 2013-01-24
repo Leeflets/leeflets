@@ -32,9 +32,21 @@ class Leeflets {
 			$is_install = false;
 		}
 
-		$scripts = new LF_Assets_Scripts( $router->admin_url );
-		$styles = new LF_Assets_Styles( $router->admin_url );
-		$hook = new LF_Hook( $styles, $scripts );
+		$hook = new LF_Hook();
+
+		$admin_script = new LF_Admin_Scripts( $router->admin_url );
+		$admin_style = new LF_Admin_Styles( $router->admin_url );
+
+        $hook->add( 'admin_head', array( $admin_style, 'do_items' ), 0, 10 );
+        $hook->add( 'admin_head', array( $admin_script, 'do_head_items' ), 0, 10 );
+        $hook->add( 'admin_footer', array( $admin_script, 'do_footer_items' ), 0, 10 );
+
+		$template_script = new LF_Template_Scripts( '' );
+		$template_style = new LF_Template_Styles( '' );
+
+        $hook->add( 'head', array( $template_style, 'do_items' ), 0, 10 );
+        $hook->add( 'head', array( $template_script, 'do_head_items' ), 0, 10 );
+        $hook->add( 'footer', array( $template_script, 'do_footer_items' ), 0, 10 );
 
 		$user = new LF_User( $config, $router );
 
@@ -45,7 +57,7 @@ class Leeflets {
 
 		$settings = new LF_Settings( $config );
 		
-		$addon = new LF_Addon( $config, $settings, $hook );
+		$addon = new LF_Addon( $config, $settings, $hook, $admin_script, $admin_style, $template_script, $template_style );
 		$addon->load_active();
 		
 		$view = new LF_View( $config, $router, $hook );
@@ -63,7 +75,7 @@ class Leeflets {
 			$filesystem = new LF_Filesystem_Direct( $config );
 		}
 
-		$template = new LF_Template( $config, $filesystem, $router, $settings, $hook );
+		$template = new LF_Template( $config, $filesystem, $router, $settings, $hook, $template_script, $template_style );
 
 		$controller_class = $router->controller_class;
 		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template, $settings, $hook );

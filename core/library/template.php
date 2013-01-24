@@ -2,29 +2,36 @@
 class LF_Template {
 	private $config, $filesystem, $router,
 		$active_template, $content, $settings,
-		$hook;
+		$hook, $script, $style;
 
 	function __construct(
 		LF_Config $config, LF_Filesystem $filesystem, LF_Router $router, 
-		LF_Settings $settings, LF_Hook $hook
+		LF_Settings $settings, LF_Hook $hook, LF_Template_Scripts $script, 
+		LF_Template_Styles $style
 	) {
 		$this->config = $config;
 		$this->filesystem = $filesystem;
 		$this->router = $router;
 		$this->settings = $settings;
 		$this->hook = $hook;
+		$this->script = $script;
+		$this->style = $style;
 		$this->active_template = $this->settings->data['template']['active'];
+
+		$this->script->base_url = $this->style->base_url = $this->get_template_url();
 	}
 
 	function write() {
 		$this->filesystem->connect();
-		$output = $this->render();
+		$output = $this->render( true );
 		$file = $this->config->root_path . '/index.html';
 		$file = $this->filesystem->translate_path( $file );
 		return $this->filesystem->put_contents( $file, $output );
 	}
 
-	function render() {
+	function render( $is_write = false ) {
+		$this->include_code_file();
+
 		$this->content = $this->get_content_data();
 
 		$index_path = $this->template_file_path( 'index' );
@@ -47,7 +54,7 @@ class LF_Template {
 		echo $this->get_template_url( $url );
 	}
 
-	public function get_template_url( $url ) {
+	public function get_template_url( $url = '' ) {
 		return $this->router->admin_url() . 'templates/' . $this->active_template . '/' . ltrim( $url, '/' );
 	}
 
@@ -110,6 +117,24 @@ class LF_Template {
 		$file->write( $values, $this->filesystem );
 	}
 
+    function enqueue_script( $handle, $src, $deps = array(), $ver = false, $args = null ) {
+        $this->script->add_enqueue( $handle, $src, $deps, $ver, $args );
+    }
+
+    function enqueue_style( $handle, $src, $deps = array(), $ver = false, $args = null ) {
+        $this->style->add_enqueue( $handle, $src, $deps, $ver, $args );
+    }
+
+	public function include_code_file() {
+		$file = $this->config->templates_path . '/' . $this->active_template . '/code.php';
+		if ( !file_exists( $file ) ) {
+			return false;
+		}
+
+		include $file;
+		return true;
+	}
+
 	public function get_content_data() {
 		$file = $this->get_content_data_file_path();
 		if ( !file_exists( $file ) ) {
@@ -137,7 +162,7 @@ class LF_Template {
 		return $path;
 	}
 
-	function get_form() {
+	function get_form( $fieldset_ids ) {
 		$content_file = $this->template_file_path( 'meta-content' );
 		if ( !$content_file ) {
 			die( "Can't load meta-content.php from active template." );
@@ -147,6 +172,15 @@ class LF_Template {
 
 		if ( !isset( $content ) ) {
 			die( "Can't load $content variable in the active template's meta-content.php." );
+		}
+
+		foreach ( $content as $id => $fieldset ) {
+			if ( in_array( $id, $fieldset_ids ) ) continue;
+			unset( $content[$id] );
+		}
+
+		if ( !$content ) {
+			die( "Cannot find those form fieldsets." );
 		}
 
 		$content['buttons'] = array(
@@ -163,7 +197,7 @@ class LF_Template {
 
 		return new LF_Form( 'edit-content', array(
 			'elements' => $content,
-			'action' => $this->router->admin_url( '/content/edit/' ),
+			'action' => $this->router->admin_url( '/content/edit/' . urlencode( implode( '+', $fieldset_ids ) ) . '/' ),
 			'data-upload-url' => $this->router->admin_url( '/content/upload/' )
 		) );
 	}

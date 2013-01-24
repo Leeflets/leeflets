@@ -3,15 +3,19 @@ class LF_Controller_Content extends LF_Controller {
 	function edit() {
 		$data = $this->template->get_content_data();
 
-		$form = $this->template->get_form();
+		$fieldset_ids = func_get_args();
+
+		$form = $this->template->get_form( $fieldset_ids );
 
 		$success = false;
 		if ( $form->validate() ) {
 			$values = $_POST;
 			unset( $values['submit'] );
 			unset( $values['submission-edit-content'] );
+			unset( $values['_wysihtml5_mode'] );
+			unset( $values['ajax'] );
 
-			$data = array_replace_recursive( $data, $values );
+			$data = array_merge( $data, $values );
 
 			$this->template->set_content_data( $data );
 		}

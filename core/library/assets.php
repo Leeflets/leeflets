@@ -12,6 +12,7 @@ class LF_Assets {
     var $args = array();
     var $groups = array();
     var $group = 0;
+    public $base_url;
 
     function __construct( $base_url ) {
         $this->base_url = $base_url;
@@ -121,6 +122,11 @@ class LF_Assets {
             return false;
         $this->registered[$handle] = new LF_Asset( $handle, $src, $deps, $ver, $args );
         return true;
+    }
+
+    function add_enqueue( $handle, $src, $deps = array(), $ver = false, $args = null ) {
+        $this->add( $handle, $src, $deps, $ver, $args );
+        $this->enqueue( $handle );
     }
 
     /**

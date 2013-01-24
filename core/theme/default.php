@@ -16,7 +16,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <?php $this->hook->apply( 'lf_head' ); ?>
+    <?php $this->hook->apply( 'admin_head' ); ?>
 </head>
 
 <body>
@@ -41,7 +41,7 @@
 
 <iframe src="<?php echo $this->router->admin_url( '/content/view/' ); ?>" class="viewer" width="100%"></iframe>
 
-<?php $this->hook->apply( 'lf_footer' ); ?>
+<?php $this->hook->apply( 'admin_footer' ); ?>
 
 </body> 
 </html>
