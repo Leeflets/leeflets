@@ -18,17 +18,20 @@ class LF_Scripts extends LF_Assets {
 	var $ext_version = '';
 	var $default_dirs;
 
-	function __construct( $base_url ) {
+	private $router;
+
+	function __construct( $base_url, LF_Router $router ) {
+		$this->router = $router;
 		parent::__construct( $base_url );
 		
-		$this->add( 'wysihtml5', '/core/theme/asset/bootstrap/wysihtml5/js/wysihtml5.js', array(), '0.3.0' );
-		$this->add( 'jquery', '/core/theme/asset/js/jquery.js', array(), '1.8.2' );
-		$this->add( 'jquery-ui-widget', '/core/theme/asset/js/jquery.ui.widget.js', array( 'jquery' ), '1.9.1' );
-		$this->add( 'jquery-iframe-transport', '/core/theme/asset/js/jquery.iframe-transport.js', array( 'jquery' ), '1.6.1' );
-		$this->add( 'jquery-fileupload', '/core/theme/asset/js/jquery.fileupload.js', array( 'jquery' ), '5.19.8' );
-		$this->add( 'bootstrap', '/core/theme/asset/bootstrap/core/js/bootstrap.js', array(), '2.2.1' );
-		$this->add( 'bootstrap-datepicker', '/core/theme/asset/bootstrap/datepicker/js/bootstrap-datepicker.js', array( 'bootstrap' ) );
-		$this->add( 'bootstrap-wysihtml5', '/core/theme/asset/bootstrap/wysihtml5/js/bootstrap-wysihtml5.js', array( 'bootstrap' ) );
+		$this->add( 'wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/js/wysihtml5.js' ), array(), '0.3.0' );
+		$this->add( 'jquery', $router->admin_url( '/core/theme/asset/js/jquery.js' ), array(), '1.8.2' );
+		$this->add( 'jquery-ui-widget', $router->admin_url( '/core/theme/asset/js/jquery.ui.widget.js' ), array( 'jquery' ), '1.9.1' );
+		$this->add( 'jquery-iframe-transport', $router->admin_url( '/core/theme/asset/js/jquery.iframe-transport.js' ), array( 'jquery' ), '1.6.1' );
+		$this->add( 'jquery-fileupload', $router->admin_url( '/core/theme/asset/js/jquery.fileupload.js' ), array( 'jquery' ), '5.19.8' );
+		$this->add( 'bootstrap', $router->admin_url( '/core/theme/asset/bootstrap/core/js/bootstrap.js' ), array(), '2.2.1' );
+		$this->add( 'bootstrap-datepicker', $router->admin_url( '/core/theme/asset/bootstrap/datepicker/js/bootstrap-datepicker.js' ), array( 'bootstrap' ) );
+		$this->add( 'bootstrap-wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/js/bootstrap-wysihtml5.js' ), array( 'bootstrap' ) );
 	}
 
 	/**

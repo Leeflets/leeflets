@@ -1,7 +1,7 @@
 <?php
 class LF_Admin_Scripts extends LF_Scripts {
-	function __construct( $base_url ) {
-		parent::__construct( $base_url );
+	function __construct( $base_url, LF_Router $router ) {
+		parent::__construct( $base_url, $router );
 
 		$this->enqueue( 'wysihtml5' );
 		$this->enqueue( 'jquery' );

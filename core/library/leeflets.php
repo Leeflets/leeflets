@@ -34,15 +34,15 @@ class Leeflets {
 
 		$hook = new LF_Hook();
 
-		$admin_script = new LF_Admin_Scripts( $router->admin_url );
-		$admin_style = new LF_Admin_Styles( $router->admin_url );
+		$admin_script = new LF_Admin_Scripts( $router->admin_url, $router );
+		$admin_style = new LF_Admin_Styles( $router->admin_url, $router );
 
         $hook->add( 'admin_head', array( $admin_style, 'do_items' ), 0, 10 );
         $hook->add( 'admin_head', array( $admin_script, 'do_head_items' ), 0, 10 );
         $hook->add( 'admin_footer', array( $admin_script, 'do_footer_items' ), 0, 10 );
 
-		$template_script = new LF_Template_Scripts( '' );
-		$template_style = new LF_Template_Styles( '' );
+		$template_script = new LF_Template_Scripts( '', $router );
+		$template_style = new LF_Template_Styles( '', $router );
 
         $hook->add( 'head', array( $template_style, 'do_items' ), 0, 10 );
         $hook->add( 'head', array( $template_script, 'do_head_items' ), 0, 10 );

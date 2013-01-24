@@ -1,7 +1,7 @@
 <?php
 class LF_Admin_Styles extends LF_Styles {
-	function __construct( $base_url ) {
-		parent::__construct( $base_url );
+	function __construct( $base_url, LF_Router $router ) {
+		parent::__construct( $base_url, $router );
 
         $this->enqueue( 'bootstrap' );
         $this->enqueue( 'bootstrap-responsive' );
