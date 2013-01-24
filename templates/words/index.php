@@ -21,7 +21,10 @@
         <!-- Current Template Icons -->
         <link rel="shortcut icon" href="<?php $this->template_url( 'images/favicon.png' ); ?>">
 
-        <?php $this->part( 'head' ); ?>
+        <!-- Some Custom Font Action -->
+        <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+
+        <?php $this->hook->apply( 'head' ); ?>
     </head>
 
     <body>
@@ -30,5 +33,7 @@
         <?php $this->part( 'footer' ); ?>
 
         <?php $this->setting( 'analytics', 'code' ); ?>
+
+        <?php $this->hook->apply( 'foot' ); ?>
     </body>
 </html>
