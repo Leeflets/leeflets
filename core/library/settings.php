@@ -15,6 +15,10 @@ class LF_Settings extends LF_Data_File {
 		if ( !$this->data ) {
 			$this->data = array();
 		}
+
+		if ( !isset( $this->data['template']['active'] ) ) {
+			$this->data['template']['active'] = 'words';
+		}
 	}
 
 	function save_connection_info( $data, $filesystem ) {

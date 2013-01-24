@@ -13,7 +13,7 @@ class LF_Template {
 		$this->router = $router;
 		$this->settings = $settings;
 		$this->hook = $hook;
-		$this->active_template = 'words';
+		$this->active_template = $this->settings->data['template']['active'];
 	}
 
 	function write() {
