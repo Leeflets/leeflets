@@ -1,7 +1,7 @@
 <?php
 class My_New_Menu_Item {
 	function __construct( $hook ) {
-		$hook->add( 'lf_primary_menu', array( $this, 'add_menu_item' ) );
+		$hook->add( 'admin_menu', array( $this, 'add_menu_item' ) );
 	}
 
 	function add_menu_item( $menu ) {
@@ -9,7 +9,7 @@ class My_New_Menu_Item {
 			array(
 				'text' => 'Backups',
 				'atts' => array(
-					'href' => ''
+					'href' => 'http://google.com'
 				)
 			)
 		);
