@@ -24,6 +24,10 @@ class LF_Template {
 	function write() {
 		$this->filesystem->connect();
 		$output = $this->render( true );
+
+		// Strip out Leeflets data attributes
+		$output = preg_replace( '@ data-lf-edit="(.*?)"@', '', $output );
+
 		$file = $this->config->root_path . '/index.html';
 		$file = $this->filesystem->translate_path( $file );
 		return $this->filesystem->put_contents( $file, $output );
