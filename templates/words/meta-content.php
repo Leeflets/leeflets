@@ -61,24 +61,22 @@ $content = array(
 		'empty-to-show' => 3,
 		'elements' => array(
 			'show' => array(
+				'label' => 'Show/hide',
 				'type' => 'checkbox',
-				'column-width' => '10%',
 				'title' => 'Check to show on site'
 			),
 			'title' => array(
 				'type' => 'text',
-				'required' => true,
-				'column-width' => '40%',
-				'placeholder' => 'Title'
+				'label' => 'Title'
 			),
 			'url' => array(
 				'type' => 'url',
-				'column-width' => '30%',
-				'placeholder' => 'IMDB URL'
+				'class' => 'input-block-level',
+				'label' => 'IMDB URL'
 			),
 			'stars' => array(
 				'type' => 'select',
-				'column-width' => '20%',
+				'label' => 'Rating',
 				'options' => array(
 					'' => 'Star Rating',
 					'1' => '1/5',

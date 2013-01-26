@@ -765,3 +765,90 @@ fieldset.connection {
 	}
 
 }
+
+
+/* Repeatable Fields *********************************************************************************************/
+
+.well {
+	background-color: #fff;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.01);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.01);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.01);
+	position: relative;
+}
+
+.repeatable {
+	.well {
+		border-bottom: none;
+		-webkit-border-radius: 0px;
+		-moz-border-radius: 0px;
+		border-radius: 0px;
+		margin-bottom: 0;
+	}
+}
+
+.well:first-of-type {
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+
+}
+
+.well:last-of-type {
+	-webkit-border-bottom-right-radius: 4px;
+	-webkit-border-bottom-left-radius: 4px;
+	-moz-border-radius-bottomright: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+	border: 1px solid #e3e3e3;
+}
+
+.repeatable {
+	.btn-toolbar {
+	    position: absolute;
+	    top: -11px;
+	    right: -1px;
+	}
+
+	.btn-toolbar .btn-group > .btn:first-child {
+	    -webkit-border-radius: 0px;
+	    -webkit-border-bottom-left-radius: 4px;
+	    -moz-border-radius: 0px;
+	    -moz-border-radius-bottomleft: 4px;
+	    border-radius: 0px;
+	    border-bottom-left-radius: 4px;
+	}
+
+	.btn-toolbar .btn-group > .btn:last-child {
+	    -webkit-border-radius: 0px;
+	    -moz-border-radius: 0px;
+	    border-radius: 0px;
+	}
+
+	.well:first-of-type {
+		.btn-group {
+			.up {
+				display: none;
+			}
+			
+			 .down {
+			    -webkit-border-radius: 0px;
+			    -webkit-border-top-right-radius: 4px;
+			    -moz-border-radius: 0px;
+			    -moz-border-radius-topright: 4px;
+			    border-radius: 0px;
+			    border-top-right-radius: 4px;
+			}
+		}
+	}
+
+	.well:last-of-type {
+		.btn-group .down {
+			display: none;
+		}
+	}
+}

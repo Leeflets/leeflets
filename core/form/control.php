@@ -147,7 +147,7 @@ class LF_Form_Control extends LF_Form_Element {
 
         <div class="control-group <?php echo $this->class; if ( !empty( $this->errors ) ) echo ' error'; ?>" <?php echo $this->style_att(); ?>>
             <?php if ( $this->label != '' ) : ?>
-            <label for="<?php echo $this->id ?>"><?php echo $this->label; echo ($this->required) ? '<span class="req">*</span>' : '' ?></label>
+            <label><?php echo $this->label; echo ($this->required) ? '<span class="req">*</span>' : '' ?></label>
             <?php endif; ?>
         
         <?php

@@ -244,7 +244,16 @@ function LEEFLETS() {
 		});
 
 		$('fieldset', $repeatable).each(function() {
-			$(this).append('<div class="controls"><a href="" class="remove">x</a><a href="" class="add">+</a></div>');
+			$(this).prepend('\
+				<div class="btn-toolbar">\
+					<div class="btn-group">\
+						<a class="btn remove" href="#"><i class="icon-minus"></i></a>\
+						<a class="btn add" href="#"><i class="icon-plus"></i></a>\
+						<a class="btn down" href="#"><i class="icon-arrow-down"></i></a>\
+						<a class="btn up" href="#"><i class="icon-arrow-up"></i></a>\
+					</div>\
+				</div>\
+			');
 			self.field_group_events($(this));
 		});
 	};
@@ -270,6 +279,20 @@ function LEEFLETS() {
 			else {
 				$group.remove();
 			}
+			self.sequence_fields($repeatable);
+			return false;
+		});
+
+		$('.down', $group).click(function() {
+			$group.next().after($group);
+			var $repeatable = $group.parents('fieldset.repeatable');
+			self.sequence_fields($repeatable);
+			return false;
+		});
+
+		$('.up', $group).click(function() {
+			$group.prev().before($group);
+			var $repeatable = $group.parents('fieldset.repeatable');
 			self.sequence_fields($repeatable);
 			return false;
 		});
