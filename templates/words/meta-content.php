@@ -27,8 +27,8 @@ $content = array(
 				'label' => 'Birthday',
 				'data-date-format' => 'yy/mm/dd'
 			),
-			'resume' => array(
-				'label' => 'Resume',
+			'background-image' => array(
+				'label' => 'Background Image',
 				'type' => 'file',
 				'data-url' => $this->router->admin_url( '/content/upload/' )
 			)

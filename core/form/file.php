@@ -23,13 +23,16 @@ class LF_Form_File extends LF_Form_Control {
 
         parent::__construct( $parent, $id, $args );
 
-        //$this->atts['name'] = 'files';
+        // We don't want this saved on form submit
+        $this->atts['data-name'] = $this->atts['name'];
+        $this->atts['name'] = 'files';
     }
    
     function html_middle() {
         ?>
         <div class="input-append">
             <div class="uneditable-input span4"><i class="icon-file"></i> <span class="filename"><?php echo $this->esc_html( $this->value ); ?></span></div>
+            <input type="hidden" name="<?php echo $this->esc_att( $this->atts['data-name'] ); ?>" class="filename-hidden" value="<?php echo $this->esc_att( $this->value ); ?>" />
             <span class="btn btn-primary fileinput-button">
                 <span>Browse</span>
                 <input type="file" <?php echo $this->atts_html(); ?> />

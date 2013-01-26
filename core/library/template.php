@@ -32,6 +32,13 @@ class LF_Template {
 	function render( $is_write = false ) {
 		$this->include_code_file();
 
+		if ( !$is_write ) {
+			$url = $this->router->admin_url( '/core/theme/asset/js/frontend-edit.js' );
+			$this->enqueue_script( 'lf-frontend-edit', $url, array( 'jquery' ) );
+			$url = $this->router->admin_url( '/core/theme/asset/css/frontend-edit.css' );
+			$this->enqueue_style( 'lf-frontend-edit', $url );
+		}
+
 		$this->content = $this->get_content_data();
 
 		$index_path = $this->template_file_path( 'index' );
@@ -50,12 +57,20 @@ class LF_Template {
 		return ob_get_clean();
 	}
 
-	public function template_url( $url ) {
+	public function template_url( $url = '' ) {
 		echo $this->get_template_url( $url );
 	}
 
 	public function get_template_url( $url = '' ) {
-		return $this->router->admin_url() . 'templates/' . $this->active_template . '/' . ltrim( $url, '/' );
+		return $this->router->admin_url( 'templates/' . $this->active_template . '/' . ltrim( $url, '/' ) );
+	}
+
+	public function uploads_url( $url = '' ) {
+		echo $this->get_uploads_url( $url );
+	}
+
+	public function get_uploads_url( $url = '' ) {
+		return $this->router->admin_url( 'uploads/' . ltrim( $url, '/' ) );
 	}
 
 	public function part( $file ) {
@@ -174,9 +189,11 @@ class LF_Template {
 			die( "Can't load $content variable in the active template's meta-content.php." );
 		}
 
-		foreach ( $content as $id => $fieldset ) {
-			if ( in_array( $id, $fieldset_ids ) ) continue;
-			unset( $content[$id] );
+		if ( $fieldset_ids ) {
+			foreach ( $content as $id => $fieldset ) {
+				if ( in_array( $id, $fieldset_ids ) ) continue;
+				unset( $content[$id] );
+			}
 		}
 
 		if ( !$content ) {
@@ -195,9 +212,14 @@ class LF_Template {
 			)
 		);
 
+		$url = '';
+		foreach ( $fieldset_ids as $id ) {
+			$url .= urlencode( $id ) . '/';
+		}
+
 		return new LF_Form( 'edit-content', array(
 			'elements' => $content,
-			'action' => $this->router->admin_url( '/content/edit/' . urlencode( implode( '+', $fieldset_ids ) ) . '/' ),
+			'action' => $this->router->admin_url( '/content/edit/' . $url ),
 			'data-upload-url' => $this->router->admin_url( '/content/upload/' )
 		) );
 	}

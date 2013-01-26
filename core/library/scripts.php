@@ -32,6 +32,7 @@ class LF_Scripts extends LF_Assets {
 		$this->add( 'bootstrap', $router->admin_url( '/core/theme/asset/bootstrap/core/js/bootstrap.js' ), array(), '2.2.1' );
 		$this->add( 'bootstrap-datepicker', $router->admin_url( '/core/theme/asset/bootstrap/datepicker/js/bootstrap-datepicker.js' ), array( 'bootstrap' ) );
 		$this->add( 'bootstrap-wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/js/bootstrap-wysihtml5.js' ), array( 'bootstrap' ) );
+		$this->add( 'md5', $router->admin_url( '/core/theme/asset/js/md5.js' ), array() );
 	}
 
 	/**

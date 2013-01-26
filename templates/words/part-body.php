@@ -1,12 +1,16 @@
 <div id="words">        
     <div class="inside">
-        <h2><?php $this->content( 'page', 'title' ); ?></h2>
+        <h2 data-lf-edit="page"><?php $this->content( 'page', 'title' ); ?></h2>
         
-        <?php echo $this->get_content( 'page', 'intro-paragraph' ); ?>
+        <div class="intro" data-lf-edit="page">
+            <?php $this->content( 'page', 'intro-paragraph' ); ?>
+        </div>
 
-        <?php $this->part( 'movies' ); ?>
+        <div data-lf-edit="movies" class="movies">
+            <?php $this->part( 'movies' ); ?>
+        </div>
     
-        <ul>
+        <ul data-lf-edit="left-button right-button" class="buttons">
             <li>
                 <a class="small black button left" href="<?php $this->content( 'left-button', 'url' ); ?>" title="<?php $this->content( 'left-button', 'text' ); ?>"><?php $this->content( 'left-button', 'text' ); ?></a>
                 <a class="small charcoal button right" href="<?php $this->content( 'right-button', 'url' ); ?>" title="<?php $this->content( 'right-button', 'text' ); ?>"><?php $this->content( 'right-button', 'text' ); ?></a>

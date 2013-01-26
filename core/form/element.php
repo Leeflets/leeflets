@@ -39,7 +39,7 @@ class LF_Form_Element {
 			if ( is_bool( $val ) ) {
                 $val = ( $val ) ? 'true' : 'false';
             }
-			$out[] = $key . '="' . htmlspecialchars( $val ) . '"';
+			$out[] = $key . '="' . $this->esc_att( $val ) . '"';
 		}
 		return implode( ' ', $out );
 	}

@@ -34,7 +34,8 @@ class LF_Controller_Content extends LF_Controller {
 		$uh = new UploadHandler( array(
 			'script_url' => $this->router->admin_url( '/content/upload/' ),
 			'upload_url' => $this->router->admin_url( '/uploads/' ),
-			'upload_dir' => $this->config->uploads_path . '/'
+			'upload_dir' => $this->config->uploads_path . '/',
+			'image_versions' => array()
 		) );
 		echo $response = ob_get_clean();
 

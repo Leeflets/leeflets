@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-lf-edit="test-fields">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -18,7 +18,14 @@
         <?php $this->hook->apply( 'head' ); ?>
     </head>
 
-    <body>
+    <?php
+    $bg = '';
+    if ( $image = $this->get_content( 'test-fields', 'background-image' ) ) {
+        $bg = ' style="background-image: url(' . $this->get_uploads_url( rawurlencode( $image ) ) . ')"';
+    }
+    ?>
+
+    <body <?php echo $bg; ?>>
         <?php $this->part( 'body' ); ?>
 
         <?php $this->part( 'footer' ); ?>

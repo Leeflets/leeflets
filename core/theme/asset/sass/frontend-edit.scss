@@ -1,0 +1,30 @@
+.lf-edit-box {
+	position: absolute;
+	overflow: hidden;
+
+	h1 {
+		$font-size: 40px;
+
+		font-size: $font-size;
+		line-height: $font-size;
+		color: rgb(185,185,0);
+		color: rgba(185,185,0,0.15);
+		display: none;
+		text-align: center;
+		position: relative;
+		top: 50%;
+		margin-top: ($font-size/2)*-1;
+	}
+}
+
+.lf-edit-box:hover {
+	background-color: #ffff00;
+	background-color: rgba(255,255,0,0.15);
+	border: 1px solid #b9b900;
+	border-color: rgba(185,185,0,0.15);
+	cursor: pointer;
+	
+	h1 {
+		display: block;
+	}
+}

@@ -11,6 +11,7 @@ class LF_Admin_Scripts extends LF_Scripts {
 		$this->enqueue( 'bootstrap' );
 		$this->enqueue( 'bootstrap-datepicker' );
 		$this->enqueue( 'bootstrap-wysihtml5' );
+		$this->enqueue( 'md5' );
 		
 		$this->add_enqueue( 'lf-script', '/core/theme/asset/js/script.js' );
 	}

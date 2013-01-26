@@ -3,8 +3,10 @@ var JS_SELF_URL = (function() {
 	return script_tags[script_tags.length-1].src;
 })();
 
+var leeflets;
+
 $(document).ready(function() {
-	var leeflets = new LEEFLETS();
+	leeflets = new LEEFLETS();
 	leeflets.init();
 });
 
@@ -112,6 +114,7 @@ function LEEFLETS() {
 		$('div.file-upload').each(function() {
 			var $div = $(this),
 				$filename = $('.filename', $div),
+				$hidden = $('.filename-hidden', $div),
 				$remove = $('.btn-remove', $div),
 				$input_append = $('.input-append', $div);
 
@@ -120,7 +123,7 @@ function LEEFLETS() {
 				paramName: 'files',
 				formData: [{
 					name: 'input-name',
-					value: $('input[type=file]', $div).attr('name')
+					value: $('input[type=file]', $div).data('name')
 				}],
 				dataType: 'json',
 				dropZone: $div,
@@ -129,9 +132,11 @@ function LEEFLETS() {
 
 					$.each(data.result.files, function (index, file) {
 						$filename.text(file.name);
+						$hidden.val(file.name);
 					});
 
 					$input_append.append($remove);
+					self.reload_viewer();
 				},
 				progressall: function (e, data) {
 					var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -148,14 +153,16 @@ function LEEFLETS() {
 				if (!$filename.text()) return;
 				var url = $(this.form).data('upload-url');
 				url += '?file=' + encodeURIComponent( $filename.text() );
-				url += '&input-name=' + encodeURIComponent( $('input[type=file]', $div).attr('name') );
+				url += '&input-name=' + encodeURIComponent( $('input[type=file]', $div).data('name') );
 				$.ajax(url, {
 					type: 'DELETE',
 					dataType: 'json',
 					success: function(data, status, xhr) {
 						if (data.success) {
 							$filename.text('');
+							$hidden.val('');
 							$remove = $remove.detach();
+							self.reload_viewer();
 						}
 						else {
 							$('.alert-error', $div).remove();
@@ -187,11 +194,15 @@ function LEEFLETS() {
 			request_data += '&ajax=1';
 			$.post($(this).attr('action'), request_data, function(data) {
 				$('.span12', $panel).html(data);
-				$viewer[0].src = $viewer[0].src;
+				self.reload_viewer();
 				self.panel_events($panel);
 			});
 			return false;
 		});
+	};
+
+	self.reload_viewer = function() {
+		$viewer[0].src = $viewer[0].src;
 	};
 
 	self.get_error_html = function(msg) {
@@ -304,6 +315,10 @@ function LEEFLETS() {
 		self.toggle_slide($nav, 0, 200);
 	};
 
+	self.nav_visible = function() {
+		return self.slide_visible($nav, 0);
+	};
+
 	self.toggle_panel = function($panel) {
 		var offset = $nav.outerWidth();
 		self.toggle_slide($panel, offset, 400);
@@ -316,6 +331,37 @@ function LEEFLETS() {
 				self.toggle_panel($(this));
 			}
 		});
+	};
+
+	self.load_panel = function(url) {
+		var id = md5(url),
+			$panel = $('#admin-' + id);
+
+		if ($panel.length) {
+			self.hide_panels();
+			self.toggle_panel($panel);
+			return false;
+		}
+
+		$.get(url, {ajax:1}, function(data) {
+			var $panel = $(data);
+			$panel.attr('id', 'admin-' + id);
+			$nav.after($panel);
+			self.panel_events($panel);
+			self.hide_panels();
+			self.toggle_panel($panel);
+		});
+
+		return false;
+	};
+
+	self.load_content_panel = function(fieldsets) {
+		var url = $('.content', $nav).attr('href');
+		url = url + fieldsets.replace(/\s+/, '/') + '/';
+		self.load_panel(url);
+		if (!self.nav_visible()) {
+			self.toggle_nav();
+		}
 	};
 
 	self.nav_events = function() {
@@ -336,27 +382,7 @@ function LEEFLETS() {
 		});
 
 		$('.settings, .content', $nav).click(function() {
-			var id = $(this).attr('id').replace('nav-', ''),
-				$panel = $('#admin-' + id);
-
-			if ($panel.length) {
-				self.hide_panels();
-				self.toggle_panel($panel);
-				return false;
-			}
-
-			var $anch = $(this),
-				href = $anch.attr('href');
-
-			$.get(href, {ajax:1}, function(data) {
-				$nav.after(data);
-
-				var $panel = $('.panel').eq(0);
-				self.panel_events($panel);
-				self.hide_panels();
-				self.toggle_panel($panel);
-			});
-
+			self.load_panel($(this).attr('href'));
 			return false;
 		});
 
