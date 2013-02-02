@@ -74,7 +74,7 @@ class LF_Template {
 	}
 
 	public function get_uploads_url( $url = '' ) {
-		return $this->router->admin_url( 'uploads/' . ltrim( $url, '/' ) );
+		return $this->router->admin_url( 'uploads/' . rawurlencode( ltrim( $url, '/' ) ) );
 	}
 
 	public function part( $file ) {

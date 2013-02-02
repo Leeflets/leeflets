@@ -21,7 +21,7 @@
     <?php
     $bg = '';
     if ( $image = $this->get_content( 'test-fields', 'background-image' ) ) {
-        $bg = ' style="background-image: url(' . $this->get_uploads_url( rawurlencode( $image ) ) . ')"';
+        $bg = ' style="background-image: url(' . $this->get_uploads_url( $image ) . ')"';
     }
     ?>
 
