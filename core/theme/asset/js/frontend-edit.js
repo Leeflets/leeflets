@@ -1,6 +1,6 @@
 (function($) {
 
-	$(document).ready(function() {
+	$(window).load(function() {
 		// Check if elements are visible
 		$('[data-lf-edit]').each(function() {
 			if ($(this).outerHeight() > 0 && $(this).outerWidth() > 0) {
