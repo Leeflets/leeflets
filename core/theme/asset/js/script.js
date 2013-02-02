@@ -69,45 +69,47 @@ function LEEFLETS() {
 	};
 
 	self.panel_events = function($panel) {
-		$('textarea.wysihtml5', $panel).wysihtml5({
-			"html": true,
-			"useLineBreaks": false,
-			stylesheets: [self.assets_url + "/css/editor.css"],
-			parserRules: {
-				tags: {
-					"b":  {},
-					"i":  {},
-					"br": {},
-					"ol": {},
-					"ul": {},
-					"li": {},
-					"h1": {},
-					"h2": {},
-					"h3": {},
-					"blockquote": {},
-					"p": {},
-					"u": 1,
-					"img": {
-						"check_attributes": {
-							"width": "numbers",
-							"alt": "alt",
-							"src": "url",
-							"height": "numbers"
-						}
-					},
-					"a":  {
-						set_attributes: {
-							target: "_blank",
-							rel:    "nofollow"
+		$('textarea.wysihtml5', $panel).each(function() {
+			$(this).wysihtml5({
+				"html": true,
+				"useLineBreaks": false,
+				stylesheets: [self.assets_url + "/css/editor.css"],
+				parserRules: {
+					tags: {
+						"b":  {},
+						"i":  {},
+						"br": {},
+						"ol": {},
+						"ul": {},
+						"li": {},
+						"h1": {},
+						"h2": {},
+						"h3": {},
+						"blockquote": {},
+						"p": {},
+						"u": 1,
+						"img": {
+							"check_attributes": {
+								"width": "numbers",
+								"alt": "alt",
+								"src": "url",
+								"height": "numbers"
+							}
 						},
-						check_attributes: {
-							href:   "url" // important to avoid XSS
-						}
-					},
-					"span": 1,
-					"div": 1
+						"a":  {
+							set_attributes: {
+								target: "_blank",
+								rel:    "nofollow"
+							},
+							check_attributes: {
+								href:   "url" // important to avoid XSS
+							}
+						},
+						"span": 1,
+						"div": 1
+					}
 				}
-			}
+			});
 		});
 		$('input.datepicker', $panel).datepicker({attachTo: $panel});
 
