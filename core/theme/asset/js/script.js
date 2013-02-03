@@ -72,6 +72,7 @@ function LEEFLETS() {
 		$('textarea.wysihtml5', $panel).each(function() {
 			$(this).wysihtml5({
 				"html": true,
+				"image": false,
 				"useLineBreaks": false,
 				stylesheets: [self.assets_url + "/css/editor.css"],
 				parserRules: {
