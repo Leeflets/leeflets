@@ -22,6 +22,36 @@ function LEEFLETS() {
 		return url.substr(0,pos);
 	})(JS_SELF_URL);
 
+	self.wysihtml5_options = {
+		"html": true,
+		"image": false,
+		"useLineBreaks": false,
+		stylesheets: [self.assets_url + "/css/editor.css"],
+		parserRules: {
+			tags: {
+				"b":  {}, "i":  {},	"br": {}, "ol": {},	"ul": {}, "li": {},	"h1": {}, "h2": {}, "h3": {}, "blockquote": {}, "p": {},
+				"u": 1, "span": 1, "div": 1,
+				"img": {
+					"check_attributes": {
+						"width": "numbers",
+						"alt": "alt",
+						"src": "url",
+						"height": "numbers"
+					}
+				},
+				"a":  {
+					set_attributes: {
+						target: "_blank",
+						rel:    "nofollow"
+					},
+					check_attributes: {
+						href:   "url" // important to avoid XSS
+					}
+				}
+			}
+		}
+	};
+
 	self.init = function() {
 		self.nav_events();
 		self.panel_events($('.panel'));
@@ -70,48 +100,9 @@ function LEEFLETS() {
 
 	self.panel_events = function($panel) {
 		$('textarea.wysihtml5', $panel).each(function() {
-			$(this).wysihtml5({
-				"html": true,
-				"image": false,
-				"useLineBreaks": false,
-				stylesheets: [self.assets_url + "/css/editor.css"],
-				parserRules: {
-					tags: {
-						"b":  {},
-						"i":  {},
-						"br": {},
-						"ol": {},
-						"ul": {},
-						"li": {},
-						"h1": {},
-						"h2": {},
-						"h3": {},
-						"blockquote": {},
-						"p": {},
-						"u": 1,
-						"img": {
-							"check_attributes": {
-								"width": "numbers",
-								"alt": "alt",
-								"src": "url",
-								"height": "numbers"
-							}
-						},
-						"a":  {
-							set_attributes: {
-								target: "_blank",
-								rel:    "nofollow"
-							},
-							check_attributes: {
-								href:   "url" // important to avoid XSS
-							}
-						},
-						"span": 1,
-						"div": 1
-					}
-				}
-			});
+			$(this).wysihtml5(self.wysihtml5_options);
 		});
+		
 		$('input.datepicker', $panel).datepicker({attachTo: $panel});
 
 		$('div.file-upload').each(function() {
