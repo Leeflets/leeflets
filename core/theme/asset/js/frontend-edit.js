@@ -1,5 +1,11 @@
 (function($) {
 
+	$(document).ready(function() {
+		// Add container so that any overflow
+		// will not create horizontal scroll
+		$('body').append('<div class="lf-edit-container"></div>');
+	});
+
 	$(window).load(function() {
 		// Check if elements are visible
 		$('[data-lf-edit]').each(function() {
@@ -41,7 +47,7 @@
 				'width': width + 'px',
 				'height': height + 'px' 
 			});
-			$box.appendTo('body');
+			$box.appendTo('.lf-edit-container');
 
 			$box.click(function() {
 				window.parent.leeflets.load_content_panel(fieldsets);
