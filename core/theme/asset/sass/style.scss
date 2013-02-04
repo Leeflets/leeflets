@@ -778,12 +778,15 @@ fieldset.connection {
 }
 
 .repeatable {
+	position: relative;
+	
 	.well {
 		border-bottom: none;
 		-webkit-border-radius: 0px;
 		-moz-border-radius: 0px;
 		border-radius: 0px;
 		margin-bottom: 0;
+		position: relative;
 	}
 }
 

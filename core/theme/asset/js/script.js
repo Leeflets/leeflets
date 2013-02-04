@@ -278,17 +278,35 @@ function LEEFLETS() {
 		});
 
 		$('.down', $group).click(function() {
-			$group.next().after($group);
+			self.swap($group.next(), $group);
 			var $repeatable = $group.parents('fieldset.repeatable');
 			self.sequence_fields($repeatable);
 			return false;
 		});
 
 		$('.up', $group).click(function() {
-			$group.prev().before($group);
+			self.swap($group, $group.prev());
 			var $repeatable = $group.parents('fieldset.repeatable');
 			self.sequence_fields($repeatable);
 			return false;
+		});
+	};
+
+	self.swap = function($el1, $el2) {
+		var height = $el1.outerHeight() + $el2.outerHeight();
+		var $placeholder = $('<div />');
+		$placeholder.css({
+			'height': height + 'px'
+		});
+		//$el1.posi
+		var pos1 = $el1.position(),
+			pos2 = $el2.position();
+
+		$el1.animate({'top': ($el1.outerHeight() * -1) + 'px'}, 1000);
+		$el2.animate({'top': $el2.outerHeight() + 'px'}, 1000, function() {
+			$el2.before($el1);
+			$el1.css({'top': 'auto'});
+			$el2.css({'top': 'auto'});
 		});
 	};
 
@@ -296,6 +314,7 @@ function LEEFLETS() {
 		$('fieldset', $repeatable).each(function(i) {
 			var $fieldset = $(this);
 			$('input, textarea, select', $fieldset).each(function() {
+				if (!$(this).attr('name')) return;
 				var new_name = $(this).attr('name').replace(/\[[0-9]+\]/, '[' + i + ']');
 				$(this).attr('name', new_name);
 			});
