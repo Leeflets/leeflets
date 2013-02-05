@@ -300,10 +300,11 @@ function LEEFLETS() {
 		});
 		//$el1.posi
 		var pos1 = $el1.position(),
-			pos2 = $el2.position();
+			pos2 = $el2.position(),
+			speed = 500;
 
-		$el1.animate({'top': ($el1.outerHeight() * -1) + 'px'}, 1000);
-		$el2.animate({'top': $el2.outerHeight() + 'px'}, 1000, function() {
+		$el1.animate({'top': ($el1.outerHeight() * -1) + 'px'}, speed);
+		$el2.animate({'top': $el2.outerHeight() + 'px'}, speed, function() {
 			$el2.before($el1);
 			$el1.css({'top': 'auto'});
 			$el2.css({'top': 'auto'});
