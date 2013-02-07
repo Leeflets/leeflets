@@ -96,6 +96,20 @@ class LF_Controller_Settings extends LF_Controller {
 		$elements['connection']['elements']['username']['class'] = 'input-xlarge';
 		$elements['connection']['elements']['password']['class'] = 'input-xlarge';
 
+		if ( $this->config->debug ) {
+			$elements['debug'] = array(
+				'title' => 'Debug Options',
+				'description' => 'These settings only have an effect when in debug mode.',
+				'type' => 'fieldset',
+				'elements' => array(
+					'disable-overlays' => array(
+						'type' => 'checkbox',
+						'label' => 'Disable click-to-edit preview overlays'
+					)
+				)
+			);
+		}
+
 		$elements['buttons'] = array(
 			'type' => 'fieldset',
 			'elements' => array(
@@ -118,6 +132,11 @@ class LF_Controller_Settings extends LF_Controller {
 			$values = $_POST;
 			unset( $values['submit'] );
 			unset( $values['submission-settings-form'] );
+
+			if ( !isset( $values['debug'] ) ) {
+				$values['debug'] = array();
+			}
+
 			$values = array_merge( $this->settings->data, $values );
 
 			if ( !$this->settings->write( $values, $this->filesystem ) ) {
