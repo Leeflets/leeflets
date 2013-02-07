@@ -527,13 +527,17 @@ fieldset.connection {
 			}
 		}
 
-		&.content,&.settings,&.logout,&.view {
+		&.content,&.store,&.settings,&.logout,&.view {
 			height: 30px;
 			width: 30px;
 			margin:0 auto 16px auto;
 		}
 
 		&.content {
+			@include nav-sprite(content);
+		}
+
+		&.store {
 			@include nav-sprite(template);
 		}
 

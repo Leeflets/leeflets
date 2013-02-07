@@ -100,6 +100,15 @@ class LF_View {
                 )
             ),
             array(
+                'text' => 'Store',
+                'atts' => array(
+                    'id' => 'nav-store',
+                    'class' => 'store',
+                    'href' => $this->router->admin_url( '/store/templates/' ),
+                    'container-name' => 'store-templates'
+                )
+            ),
+            array(
                 'text' => 'Settings',
                 'atts' => array(
                     'id' => 'nav-settings',
@@ -134,6 +143,11 @@ class LF_View {
                 )
             ),
         );
+
+        // Remove the content menu if we're not debugging
+        if ( !$this->config->debug ) {
+            unset( $nav[1] );
+        }
 
         $nav = $this->hook->apply( 'admin_menu', $nav );
 
