@@ -16,14 +16,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/bootstrap/core/css/bootstrap.min.css' ); ?>">
-    <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/bootstrap/core/css/bootstrap-responsive.min.css' ); ?>">
-    <link rel="stylesheet" href="<?php echo $this->router->admin_url( '/core/theme/asset/css/style.css' ); ?>">
-
-    <script src="<?php echo $this->router->admin_url( '/core/theme/asset/js/jquery-1.8.2.min.js' ); ?>"></script>
-    <script src="<?php echo $this->router->admin_url( '/core/theme/asset/js/script.js' ); ?>"></script>
-    
-    <?php $this->out( 'head' ); ?>
+    <?php $this->hook->apply( 'admin_head' ); ?>
 </head>
 
 <body class="logged-out">
@@ -32,7 +25,7 @@
     <?php $this->out( 'content' ); ?>
 </section>
 
-<?php $this->out( 'foot' ); ?>
+<?php $this->hook->apply( 'admin_footer' ); ?>
 
 <script>
     $.backstretch("<?php echo $this->router->admin_url( '/core/theme/asset/img/bg.jpg' ); ?>");
