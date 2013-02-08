@@ -65,28 +65,6 @@ class LF_Controller_Settings extends LF_Controller {
 			)
 		);
 
-		$templates = array();
-		$folders = glob( $this->config->templates_path . '/*' );
-		foreach ( $folders as $folder ) {
-			if ( !file_exists( $folder . '/meta-about.php' ) ) continue;
-			include $folder . '/meta-about.php';
-			if ( !isset( $about['name'] ) || !isset( $about['version'] ) ) continue;
-			$folder = basename( $folder );
-			$templates[$folder] = $about['name'] . ' ' . $about['version'];
-			unset( $about );
-		}
-
-		$elements['template'] = array(
-			'title' => 'Template',
-			'type' => 'fieldset',
-			'elements' => array(
-				'active' => array(
-					'type' => 'radiolist',
-					'options' => $templates
-				)
-			)
-		);
-
 		$elements['connection'] = $this->filesystem->get_connection_fields(
 			array( $this, '_check_connection' ), false
 		);

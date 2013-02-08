@@ -418,7 +418,7 @@ function LEEFLETS() {
 			return false;
 		});
 
-		$('.settings, .content', $nav).click(function() {
+		$('.settings, .content, .store', $nav).click(function() {
 			self.load_panel($(this).attr('href'));
 			return false;
 		});
