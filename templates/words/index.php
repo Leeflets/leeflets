@@ -18,14 +18,7 @@
         <?php $this->hook->apply( 'head' ); ?>
     </head>
 
-    <?php
-    $bg = '';
-    if ( $image = $this->get_content( 'test-fields', 'background-image' ) ) {
-        $bg = ' style="background-image: url(' . $this->get_uploads_url( $image ) . ')"';
-    }
-    ?>
-
-    <body <?php echo $bg; ?>>
+    <body>
         <?php $this->part( 'body' ); ?>
 
         <?php $this->part( 'footer' ); ?>
@@ -33,5 +26,23 @@
         <?php $this->setting( 'analytics', 'code' ); ?>
 
         <?php $this->hook->apply( 'footer' ); ?>
+
+        <?php
+        if ( $image = $this->get_content( 'test-fields', 'background-image' ) ) {
+            $image_url = $this->get_uploads_url( $image );
+        }
+        else {
+            $image_url = $this->get_template_url( 'images/samueljacksonbeer-bg.jpg' );
+        }
+        ?>
+
+        <script>
+        (function($) {
+            $(document).ready(function() {
+                $.backstretch('<?php echo addslashes( $image_url ); ?>')
+            })
+        })(jQuery);
+        </script>
+
     </body>
 </html>

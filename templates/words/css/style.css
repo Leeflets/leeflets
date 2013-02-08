@@ -8,20 +8,26 @@ html,body {
 
 body {
     font: 18px/28px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    color: #656565;
+    color: #fff;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
+    text-shadow: 1px 1px 0 #000;
+    background-color: #999;
+}
+
+.backstretch {
+    -webkit-filter: blur(20px);
 }
 
 a {
     text-decoration: none;
-    color: #656565;
+    color: #fff;
 }
 
 h2 {
     font-family: "Merriweather";
-    color: #444444;
+    color: #fff;
     font-size: 26px;
     line-height: 36px;
 }
@@ -207,6 +213,12 @@ b {
 #words p {
     width: 70%;
     margin-bottom: 15px;
+}
+
+#words img {
+    float: left;
+    width: 30%;
+    margin-right: 20px;
 }
 
 /* Anything Under 480 Pixels
