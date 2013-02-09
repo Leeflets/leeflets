@@ -1,0 +1,73 @@
+@import "retina-sprites";
+
+$nav: sprite-map("nav/*.png");
+$nav2x: sprite-map("nav2x/*.png");
+
+@mixin nav-sprite($name, $hover: true, $active: true) {
+	@include _retina-sprite($name, $nav, $nav2x, $hover, $active);
+}
+
+.primary-menu {
+	background:#222526;
+	width:80px;
+	display: none;
+
+	a {
+		display: block;
+		text-indent: -5000px;
+
+		&.home {
+			@include nav-sprite(logomark, false, false);
+			margin:16px auto;
+			opacity:1;
+
+			&:hover {
+				opacity:0.8;
+			}
+		}
+
+		&.content,&.store,&.settings,&.logout,&.view {
+			height: 30px;
+			width: 30px;
+			margin:0 auto 16px auto;
+		}
+
+		&.content {
+			@include nav-sprite(content);
+		}
+
+		&.store {
+			@include nav-sprite(template);
+		}
+
+		&.settings {
+			@include nav-sprite(settings);
+		}
+
+		&.logout {
+			@include nav-sprite(logout);
+		}
+
+		&.view {
+			@include nav-sprite(preview);
+			position:absolute;
+			bottom: 60px;
+			left: 0;
+			right: 0;
+		}
+
+		&.publish {
+			@include nav-sprite(publish, false, false);
+			opacity:1;
+			position:absolute;
+			bottom:16px;
+			left:0;
+			right: 0;
+			margin: 0 auto;
+			
+			&:hover {
+				opacity:0.8;
+			}
+		}
+	}
+}
