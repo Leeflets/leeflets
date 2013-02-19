@@ -57,6 +57,15 @@ function LEEFLETS() {
 		self.panel_events($('.panel'));
 		on_resize(self.set_sizes);
 		self.drag_events();
+		self.shortcut_keys();
+	};
+
+	self.shortcut_keys = function() {
+		$(document).keyup(function(e) {
+			if ( e.keyCode == 27 ) { // Escape key
+				self.hide_all();
+			}
+		});
 	};
 
 	self.drag_events = function() {
@@ -370,6 +379,11 @@ function LEEFLETS() {
 		});
 	};
 
+	self.hide_all = function() {
+		self.toggle_nav();
+		self.hide_panels();
+	};
+
 	self.load_panel = function(url) {
 		var id = md5(url),
 			$panel = $('#admin-' + id);
@@ -395,7 +409,6 @@ function LEEFLETS() {
 	self.load_content_panel = function(fieldsets) {
 		var url = $nav.data('content-url');
 		url = url + fieldsets.replace(/\s+/, '/') + '/';
-		console.log(url);
 		self.load_panel(url);
 		if (!self.nav_visible()) {
 			self.toggle_nav();
@@ -414,8 +427,7 @@ function LEEFLETS() {
 		});
 
 		$('.home', $nav).click(function() {
-			self.toggle_nav();
-			self.hide_panels();
+			self.hide_all();
 			return false;
 		});
 
