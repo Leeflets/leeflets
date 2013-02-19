@@ -39,7 +39,9 @@
                      ?>
                  
                      <?php
+                     $i = 0;
                      foreach ( $features as $feature ) :
+                     $i++;
                          if ( !isset( $feature['text'] ) || !$feature['text'] ) return;
                          ?>
                          <div class="one-quarter">
@@ -50,7 +52,7 @@
                                  $image_url = $this->get_uploads_url( $icon_image );
                              }
                              else {
-                                 $image_url = $this->get_template_url( 'images/icon_blank@2x.png' );
+                                 $image_url = $this->get_template_url( 'images/icon_0'.$i.'@2x.png' );
                              }
                              ?>
 

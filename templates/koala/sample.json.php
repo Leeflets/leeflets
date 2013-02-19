@@ -15,22 +15,22 @@
     },
     "features":[
         {
-            "icon":"icon_01@2x.png",
+            "icon":"",
             "title":"No Database",
             "text":"Leeflets doesn't use a database which makes it quite possibly the easiest platform in the world to install and move."
         },
         {
-            "icon":"icon_02@2x.png",
+            "icon":"",
             "title":"Simple Editing",
             "text":"Adding, changing and\/or removing&nbsp;content couldn't be easier with our \"click to edit\" interface. No more confusing&nbsp;admins."
         },
         {
-            "icon":"icon_03@2x.png",
+            "icon":"",
             "title":"Simple Settings",
             "text":"You'll find all of the site setting you need within the one and only settings panel. There's no need for pages of settings."
         },
         {
-            "icon":"icon_04@2x.png",
+            "icon":"",
             "title":"Make it Yours",
             "text":"You'll find an entire library of unique&nbsp;templates within the leeflets marketplace. Simply browse, purchase and go to get started."
         }
