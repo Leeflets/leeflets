@@ -23,7 +23,7 @@
 
 <a class="show-primary-nav" href=""></a>
 
-<nav class="primary-menu">
+<nav class="primary-menu" data-content-url="<?php echo $this->router->admin_url( '/content/edit/' ) ?>">
     <?php
     $nav = $this->get_primary_nav();
     foreach ( $nav as $n ) {

@@ -393,8 +393,9 @@ function LEEFLETS() {
 	};
 
 	self.load_content_panel = function(fieldsets) {
-		var url = $('.content', $nav).attr('href');
+		var url = $nav.data('content-url');
 		url = url + fieldsets.replace(/\s+/, '/') + '/';
+		console.log(url);
 		self.load_panel(url);
 		if (!self.nav_visible()) {
 			self.toggle_nav();
