@@ -17,7 +17,7 @@ class LF_Settings extends LF_Data_File {
 		}
 
 		if ( !isset( $this->data['template']['active'] ) ) {
-			$this->data['template']['active'] = 'words';
+			$this->data['template']['active'] = 'koala';
 		}
 	}
 

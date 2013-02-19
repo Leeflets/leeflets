@@ -1,0 +1,196 @@
+
+/* Normalization
+*********************************************************************************************/
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}table{border-collapse:collapse;border-spacing:0;}
+
+/* Default Styles
+*********************************************************************************************/
+
+body {
+    background-color: #1c2322;
+    font: 14px/23px 'Varela Round', sans-serif;
+    color: #656565;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* Default Typography
+*********************************************************************************************/
+
+h1, h2, h3, h4 {
+    color: #2b2b2b;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 42px;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 16px;
+    line-height: 26px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: -1px;
+}
+
+h3 {
+    font-size: 16px;
+    line-height: 26px;
+    margin: 0;
+}
+
+p { 
+    margin: 0 0 20px; 
+}
+
+a {
+    color: #656565;
+    text-decoration: none;
+    outline: 0;
+}
+
+a:hover, 
+a:focus { 
+    color: #000000;
+}
+
+em { 
+    font-style: italic; 
+}
+
+strong { 
+    font-weight: bold;
+}
+
+.centered {
+    text-align: center;
+}
+
+/* Header
+*********************************************************************************************/
+
+#header {
+    background-color: #5ac78d;
+    color: #033333;
+}
+
+#header img {
+    width: 200px;
+}
+
+#background {
+    background: url('images/koala@2x.png') bottom right no-repeat;
+    background-size: 400px;
+    padding: 52px 0 60px;
+}
+
+#header ul a,
+#header h1 {
+    color: #ffffff;
+}
+
+#header h1 {
+    text-shadow: 2px 2px 2px rgba(47, 124, 82, 0.5);
+}
+
+#header ul {
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: -1px;
+    float: right;
+    margin: 26px 0 0 0;
+}
+
+#header li {
+    display: inline;
+    margin-left: 20px;
+}
+
+.button {
+    border-radius: 4px;
+    background-color: #2f7c52;
+    font-size: 16px;
+    color: #5ac78d;
+    font-weight: bold;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    float: left;
+    margin: 10px 0 0 0;
+    padding: 18px 22px 16px;
+}
+
+.button:hover {
+    background-color: rgba(47, 124, 82, 0.75);
+    color: #5ac78d;
+}
+
+/* Content
+*********************************************************************************************/
+
+#content {
+    background-color: #ffffff;
+    padding: 100px 0 80px;
+}
+
+#content img {
+    width: 100px;
+    margin: 0 0 20px 0;
+}
+
+/* Footer
+*********************************************************************************************/
+
+#footer {
+    padding: 40px 0;
+}
+
+#footer h3 {
+    color: #737272;
+    margin-top: 6px;
+}
+
+#footer img {
+    width: 34px;
+}
+
+#footer ul {
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: -1px;
+    float: right;
+}
+
+#footer li {
+    display: inline;
+    margin-left: 10px;
+}
+
+/* S
+*********************************************************************************************/
+
+@media (max-width: 520px) {
+    
+    /* Header
+    *****************************************************************************************/
+    
+    #header ul {
+        float: left;
+        margin: 26px 0 0 0;
+    }
+    
+    #header li {
+        margin: 0 20px 0 0;
+    }
+    
+    /* Footer
+    *****************************************************************************************/
+    
+    #footer ul {
+        display: none;
+    }
+    
+}
