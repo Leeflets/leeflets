@@ -16,8 +16,8 @@ class LF_Form_Repeatable extends LF_Form_Fieldset {
 
         $args['class'] = trim( $args['class'] . ' repeatable' );
 
-        if ( isset( $_POST[$this->id] ) ) {
-            $this->group_count = count( $_POST[$this->id] );
+        if ( isset( $_POST[$id] ) ) {
+            $this->group_count = count( $_POST[$id] );
         }
         else {
             $this->group_count = $this->empty_to_show;
