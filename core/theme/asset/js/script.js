@@ -107,14 +107,22 @@ function LEEFLETS() {
 		});
 	};
 
-	self.panel_events = function($panel) {
-		$('textarea.wysihtml5', $panel).each(function() {
+	self.field_events = function($root) {
+		$('textarea.wysihtml5', $root).each(function() {
 			$(this).wysihtml5(self.wysihtml5_options);
 		});
 		
-		$('input.datepicker', $panel).datepicker({attachTo: $panel});
+		var $panel;
+		if ($root.hasClass('panel')) {
+			$panel = $root;
+		}
+		else {
+			$panel = $root.parents('.panel');
+		}
 
-		$('div.file-upload').each(function() {
+		$('input.datepicker', $root).datepicker({attachTo: $panel});
+
+		$('div.file-upload', $root).each(function() {
 			var $div = $(this),
 				$filename = $('.filename', $div),
 				$hidden = $('.filename-hidden', $div),
@@ -181,6 +189,10 @@ function LEEFLETS() {
 				$remove = $remove.detach();
 			}
 		});
+	};
+
+	self.panel_events = function($panel) {
+		self.field_events($panel, $panel);
 			
 		self.repeatable($panel);
 
@@ -261,13 +273,20 @@ function LEEFLETS() {
 		});
 	};
 
+	self.cleanup_wysiwyg = function($root) {
+		$('input[type=hidden], .wysihtml5-toolbar, .wysihtml5-sandbox', $root).remove();
+		$('textarea', $root).show();
+	};
+
 	self.field_group_events = function( $group ) {
 
 		$('.add', $group).click(function() {
 			var $new = $group.clone();
 			$('input, textarea, select', $new).val('');
 			$group.after($new);
+			self.cleanup_wysiwyg($new);
 			self.field_group_events($new);
+			self.field_events($new);
 			self.sequence_fields($group.parents('fieldset.repeatable'));
 			return false;
 		});
