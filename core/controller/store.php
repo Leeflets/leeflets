@@ -46,7 +46,7 @@ class LF_Controller_Store extends LF_Controller {
 			unset( $values['submit'] );
 			unset( $values['submission-templates-form'] );
 
-			$values = array_merge( $this->settings->data, $values );
+			$values = array_merge( $this->settings->get_data(), $values );
 
 			if ( !$this->settings->write( $values, $this->filesystem ) ) {
 				$error = 'Error saving the settings.';
@@ -56,7 +56,7 @@ class LF_Controller_Store extends LF_Controller {
 			$error = 'Please correct the errors below.';
 		}
 		else {
-			$form->set_values( $this->settings->data );
+			$form->set_values( $this->settings->get_data() );
 		}
 
 		return compact( 'form', 'error' );

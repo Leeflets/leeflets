@@ -18,11 +18,11 @@ class LF_Addon {
 	}
 
 	function load_active() {
-		if ( !isset( $this->settings->data['active_addons'] ) ) {
+		if ( !$this->settings->get( 'active_addons' ) ) {
 			return false;
 		}
 
-		foreach ( $this->settings->data['active_addons'] as $addon ) {
+		foreach ( $this->settings->get( 'active_addons' ) as $addon ) {
 			include( $this->config->addons_path . '/' . $addon . '/' . $addon . '.php' );
 		}
 	}

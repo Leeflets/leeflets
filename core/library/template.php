@@ -16,7 +16,7 @@ class LF_Template {
 		$this->hook = $hook;
 		$this->script = $script;
 		$this->style = $style;
-		$this->active_template = $this->settings->data['template']['active'];
+		$this->active_template = $this->settings->get ( 'template', 'active' );
 
 		$this->script->base_url = $this->style->base_url = $this->get_template_url();
 
@@ -49,7 +49,7 @@ class LF_Template {
 	function render( $is_write = false ) {
 		$this->include_code_file();
 
-		if ( !$is_write && !( $this->config->debug && isset( $this->settings->data['debug']['disable-overlays'] ) ) ) {
+		if ( !$is_write && !( $this->config->debug && $this->settings->get( 'debug', 'disable-overlays' ) ) ) {
 			$url = $this->router->admin_url( '/core/theme/asset/js/frontend-edit.js' );
 			$this->enqueue_script( 'lf-frontend-edit', $url, array( 'jquery' ) );
 			$url = $this->router->admin_url( '/core/theme/asset/css/frontend-edit.css' );

@@ -62,13 +62,13 @@ class Leeflets {
 		
 		$view = new LF_View( $config, $router, $hook );
 
-		if ( isset( $settings->data['connection-type'] ) && 'direct' != $settings->data['connection-type'] ) {
-			$class_name = LF_Filesystem::get_class_name( $settings->data['connection-type'] );
+		if ( $settings->get( 'connection', 'type' ) && 'direct' != $settings->get( 'connection', 'type' ) ) {
+			$class_name = LF_Filesystem::get_class_name( $settings->get( 'connection', 'type' ) );
 			$filesystem = new $class_name( $config, array(
-					'connection_type' => $settings->data['connection-type'],
-					'hostname' => $settings->data['connection-hostname'],
-					'username' => $settings->data['connection-username'],
-					'password' => $settings->data['connection-password']
+					'connection_type' => $settings->get( 'connection', 'type' ),
+					'hostname' => $settings->get( 'connection', 'hostname' ),
+					'username' => $settings->get( 'connection', 'username' ),
+					'password' => $settings->get( 'connection', 'password' )
 				) );
 		}
 		else {

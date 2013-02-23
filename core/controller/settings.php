@@ -8,7 +8,7 @@ class LF_Controller_Settings extends LF_Controller {
 				$_POST['connection']['password'] = '';
 			}
 			elseif ( '' == $_POST['connection']['password'] ) {
-				$_POST['connection']['password'] = $this->settings->data['connection']['password'];
+				$_POST['connection']['password'] = $this->settings->get( 'connection', 'password' );
 			}
 		}
 
@@ -123,7 +123,7 @@ class LF_Controller_Settings extends LF_Controller {
 				$values['debug'] = array();
 			}
 
-			$values = array_merge( $this->settings->data, $values );
+			$values = array_merge( $this->settings->get_data(), $values );
 
 			if ( !$this->settings->write( $values, $this->filesystem ) ) {
 				$error = 'Error saving the settings.';
@@ -133,7 +133,7 @@ class LF_Controller_Settings extends LF_Controller {
 			$error = 'Please correct the errors below.';
 		}
 		else {
-			$form->set_values( $this->settings->data );
+			$form->set_values( $this->settings->get_data() );
 		}
 
 		return compact( 'form', 'error' );

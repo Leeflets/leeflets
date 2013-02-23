@@ -1,6 +1,6 @@
 <?php
 class LF_Settings extends LF_Data_File {
-	public $data;
+	private $data;
 	
 	function __construct( LF_Config $config ) {
 		$this->config = $config;
@@ -24,6 +24,10 @@ class LF_Settings extends LF_Data_File {
 		if ( !isset( $this->data['analytics']['placement'] ) ) {
 			$this->data['analytics']['placement'] = 'head';
 		}
+	}
+
+	function get_data() {
+		return $this->data;
 	}
 
 	function get() {
