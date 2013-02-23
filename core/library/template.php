@@ -203,18 +203,6 @@ class LF_Template {
 			die( "Cannot find those form fieldsets." );
 		}
 
-		$content['buttons'] = array(
-			'type' => 'fieldset',
-			'elements' => array(
-				'submit' => array(
-					'type' => 'button',
-					'class' => 'btn btn-primary',
-					'button-type' => 'submit',
-					'value' => 'Save Changes'
-				)
-			)
-		);
-
 		$url = '';
 		foreach ( $fieldset_ids as $id ) {
 			$url .= urlencode( $id ) . '/';

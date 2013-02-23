@@ -200,6 +200,10 @@ function LEEFLETS() {
 			self.toggle_panel($panel);
 		});
 
+		$('.button-bar .submit', $panel).click(function() {
+			$('form', $panel).submit();
+		});
+
 		self.connection_field_events();
 
 		$('.alert', $panel).hide().fadeIn();

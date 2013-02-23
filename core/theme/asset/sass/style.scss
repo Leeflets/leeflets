@@ -348,6 +348,23 @@ fieldset.connection {
 	}
 }
 
+.button-bar {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: #fff;
+	padding: 15px 15px;
+	-webkit-box-shadow:0 1px 5px rgba(0,0,0,0.5);
+	-moz-box-shadow:0 1px 5px rgba(0,0,0,0.5);
+	box-shadow:0 1px 5px rgba(0,0,0,0.5);
+	box-sizing: border-box;
+
+	> div {
+		float: right;
+	}
+}
+
 .help-block {
 	color:#a2a2a2;
 	font-size:12px;
@@ -508,14 +525,20 @@ fieldset.connection {
 .admin {
 	background:#ffffff;
 	width:600px;
-	max-height:100%;
-	padding:0 10px;
-	overflow-y:auto;
 	-webkit-box-shadow:0 1px 5px rgba(0,0,0,0.5);
 	-moz-box-shadow:0 1px 5px rgba(0,0,0,0.5);
 	box-shadow:0 1px 5px rgba(0,0,0,0.5);
 	z-index:1020;
 	display: none;
+
+	> .container-fluid {
+		max-height:100%;
+		overflow-y:auto;
+		padding-left: 30px;
+		padding-right: 30px;
+		padding-bottom: 60px;
+		box-sizing: border-box;
+	}
 
 	&.wide {
 		width:70%;
