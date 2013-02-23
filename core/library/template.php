@@ -19,6 +19,19 @@ class LF_Template {
 		$this->active_template = $this->settings->data['template']['active'];
 
 		$this->script->base_url = $this->style->base_url = $this->get_template_url();
+
+		$this->setup_default_hooks();
+	}
+
+	function setup_default_hooks() {
+		if ( trim( $this->settings->get( 'analytics', 'code' ) ) ) {
+			$placement = $this->settings->get( 'analytics', 'placement' );
+			$this->hook->add( $placement, array( $this, 'insert_analytics' ) );
+		}
+	}
+
+	function insert_analytics() {
+		echo $this->settings->get( 'analytics', 'code' );
 	}
 
 	function write() {
@@ -88,25 +101,11 @@ class LF_Template {
 	}
 
 	public function setting() {
-		echo $this->vget_setting( func_get_args() );
+		echo $this->settings->vget( func_get_args() );
 	}
 
 	public function get_setting() {
-		return $this->vget_setting( func_get_args() );
-	}
-
-	public function vget_setting( $keys ) {
-		$settings = $this->settings->data;
-		
-		foreach ( $keys as $key ) {
-			if ( !isset( $settings[$key] ) ) {
-				return '';
-			}
-
-			$settings = $settings[$key];
-		}
-
-		return $settings;
+		return $this->settings->vget( func_get_args() );
 	}
 
 	public function content() {

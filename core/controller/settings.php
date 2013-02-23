@@ -61,6 +61,14 @@ class LF_Controller_Settings extends LF_Controller {
 					'label' => 'Tracking Code',
 					'class' => 'input-block-level',
 					'rows' => 5
+				),
+				'placement' => array(
+					'type' => 'select',
+					'label' => 'Tracking Code Placement',
+					'options' => array(
+						'head' => 'Header',
+						'footer' => 'Footer'
+					)
 				)
 			)
 		);

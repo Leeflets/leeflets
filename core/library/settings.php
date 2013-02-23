@@ -16,9 +16,32 @@ class LF_Settings extends LF_Data_File {
 			$this->data = array();
 		}
 
+		// Defaults
 		if ( !isset( $this->data['template']['active'] ) ) {
 			$this->data['template']['active'] = 'koala';
 		}
+
+		if ( !isset( $this->data['analytics']['placement'] ) ) {
+			$this->data['analytics']['placement'] = 'head';
+		}
+	}
+
+	function get() {
+		return $this->vget( func_get_args() );
+	}
+
+	function vget( $keys ) {
+		$settings = $this->data;
+		
+		foreach ( $keys as $key ) {
+			if ( !isset( $settings[$key] ) ) {
+				return '';
+			}
+
+			$settings = $settings[$key];
+		}
+
+		return $settings;
 	}
 
 	function save_connection_info( $data, $filesystem ) {

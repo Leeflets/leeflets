@@ -91,8 +91,6 @@
             </div>
         </div>
 
-        <?php $this->setting( 'analytics', 'code' ); ?>
-
         <?php $this->hook->apply( 'footer' ); ?>
     </body>
 </html>

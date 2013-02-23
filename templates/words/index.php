@@ -23,8 +23,6 @@
 
         <?php $this->part( 'footer' ); ?>
 
-        <?php $this->setting( 'analytics', 'code' ); ?>
-
         <?php $this->hook->apply( 'footer' ); ?>
 
         <?php
