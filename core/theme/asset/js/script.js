@@ -483,13 +483,11 @@ function LEEFLETS() {
 	};
 
 	self.nav_events = function() {
-		/*
 		var $panel = $('.panel.admin');
 		if ($panel.length) {
 			self.show_nav();
 			self.show_panel($panel);
 		}
-		*/
 
 		$('.show-primary-nav').click(function(){
 			self.show_nav();
