@@ -508,11 +508,12 @@ fieldset.connection {
 	height: 100%;
 	z-index: 1;
 	border: 0;
+	float: left;
 }
 
 .primary-menu,
 .admin {
-	position:absolute;
+	position:relative;
 	height:100%;
 	z-index:1040;
 }
@@ -522,6 +523,37 @@ fieldset.connection {
  */
 @import "../css/sprites.css";
 
+.clip {
+	overflow: hidden;
+	height: 100%;
+}
+
+.contain-all {
+	overflow: hidden;
+	height: 100%;
+}
+
+.panel-container {
+	float: left;
+	width: 600px;
+	height: 100%;
+	margin-left: -600px;
+}
+
+.primary-menu {
+	background:#222526;
+	width:80px;
+	float: left;
+	margin-left: -80px;
+	-webkit-box-shadow:0 1px 5px rgba(0,0,0,0.5);
+	-moz-box-shadow:0 1px 5px rgba(0,0,0,0.5);
+	box-shadow:0 1px 5px rgba(0,0,0,0.5);
+
+	a {
+		outline: none;
+	}
+}
+
 .admin {
 	background:#ffffff;
 	width:600px;
@@ -529,7 +561,6 @@ fieldset.connection {
 	-moz-box-shadow:0 1px 5px rgba(0,0,0,0.5);
 	box-shadow:0 1px 5px rgba(0,0,0,0.5);
 	z-index:1020;
-	display: none;
 
 	> .container-fluid {
 		max-height:100%;

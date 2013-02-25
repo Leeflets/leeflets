@@ -13,7 +13,10 @@ $(document).ready(function() {
 function LEEFLETS() {
 	var self = this,
 		$nav = $('.primary-menu'),
-		$viewer = $('.viewer');
+		$viewer = $('.viewer'),
+		$clip = $('.clip'),
+		$contain_all = $('.contain-all'),
+		$panel_container = $('.panel-container');
 
 	self.assets_url = (function(url) {
 		var pos = url.lastIndexOf('/');
@@ -54,10 +57,17 @@ function LEEFLETS() {
 
 	self.init = function() {
 		self.nav_events();
-		self.panel_events($('.panel'));
+		self.panel_events($('.panel.admin'));
 		on_resize(self.set_sizes);
 		self.drag_events();
 		self.shortcut_keys();
+		self.size_containers();
+	};
+
+	self.size_containers = function() {
+		$viewer.width($('body').width());
+		var all_width = $nav.outerWidth() + $panel_container.outerWidth() + $viewer.outerWidth();
+		$contain_all.width(all_width);
 	};
 
 	self.shortcut_keys = function() {
@@ -117,7 +127,7 @@ function LEEFLETS() {
 			$panel = $root;
 		}
 		else {
-			$panel = $root.parents('.panel');
+			$panel = $root.parents('.panel.admin');
 		}
 
 		$('input.datepicker', $root).datepicker({attachTo: $panel});
@@ -354,57 +364,94 @@ function LEEFLETS() {
 		});
 	};
 
-	self.slide_visible = function($el, offset) {
-		var current = $el.css('left');
-		if (typeof current == 'undefined' || 'auto' == current) {
-			current = (-1 * ($el.outerWidth() + offset)) + 'px';
-			$el.css({left: current}).show();
-		}
-
-		return (offset == current.replace('px', ''));
-	};
-
-	self.toggle_slide = function($el, offset, duration) {
-		var left;
-
-		if (self.slide_visible($el, offset)) {
-			left = -1 * ($el.outerWidth() + offset);
-			$('.alert', $el).fadeOut();
+	self.slide_visible = function($el) {
+		var current = $el.css('margin-left');
+		if (typeof current === 'undefined') {
+			current = '0';
 		}
 		else {
-			left = offset;
+			current = current.replace('px', '');
 		}
 
-		var css = {left: left + 'px'};
+		return (current == '0');
+	};
 
-		$el.animate(css, duration);
+	self.animate_slide = function($el, margin, duration, callback) {
+		$el.animate({'margin-left': margin + 'px'}, duration, callback);
+	};
+
+	self.show_slide = function($el, duration, callback) {
+		self.animate_slide($el, 0, duration, callback);
+	};
+
+	self.hide_slide = function($el, duration, callback) {
+		var margin = -1 * $el.outerWidth();
+		self.animate_slide($el, margin, duration, callback);
+	};
+
+	self.toggle_slide = function($el, duration) {
+		if (self.slide_visible($el)) {
+			self.hide_slide($el, duration);
+		}
+		else {
+			self.show_slide($el, duration);
+		}
+	};
+
+	self.show_nav = function() {
+		self.show_slide($nav, 200);
+	};
+
+	self.hide_nav = function() {
+		self.hide_slide($nav, 200);
 	};
 
 	self.toggle_nav = function() {
-		self.toggle_slide($nav, 0, 200);
+		if (self.slide_visible($nav)) {
+			self.hide_nav();
+		}
+		else {
+			self.show_nav();
+		}
 	};
 
-	self.nav_visible = function() {
-		return self.slide_visible($nav, 0);
+	self.show_panel = function($panel, callback) {
+		$panel.show();
+		self.show_slide($panel_container, 400, callback);
 	};
 
-	self.toggle_panel = function($panel) {
-		var offset = $nav.outerWidth();
-		self.toggle_slide($panel, offset, 400);
-	};
-
-	self.hide_panels = function() {
-		var offset = $nav.outerWidth();
-		$('.panel').each(function() {
-			if (self.slide_visible($(this), offset)) {
-				self.toggle_panel($(this));
+	self.hide_panel = function($panel, callback) {
+		self.hide_slide($panel_container, 400, function() {
+			if ($panel) {
+				$panel.hide();
+			}
+			if (callback) {
+				callback();
 			}
 		});
 	};
 
+	self.toggle_panel = function($panel) {
+		var $visible = $('.panel.admin:visible');
+		console.log($visible.length);
+		if ($visible.length) {
+			if ($visible[0] === $panel[0]) {
+				self.hide_panel($panel);
+			}
+			else {
+				self.hide_panel($visible, function() {
+					self.show_panel($panel);
+				});
+			}
+		}
+		else {
+			self.show_panel($panel);
+		}
+	};
+
 	self.hide_all = function() {
 		self.toggle_nav();
-		self.hide_panels();
+		self.hide_panel();
 	};
 
 	self.load_panel = function(url) {
@@ -412,7 +459,6 @@ function LEEFLETS() {
 			$panel = $('#admin-' + id);
 
 		if ($panel.length) {
-			self.hide_panels();
 			self.toggle_panel($panel);
 			return false;
 		}
@@ -420,9 +466,9 @@ function LEEFLETS() {
 		$.get(url, {ajax:1}, function(data) {
 			var $panel = $(data);
 			$panel.attr('id', 'admin-' + id);
-			$nav.after($panel);
+			$panel_container.append($panel);
+			$panel.hide();
 			self.panel_events($panel);
-			self.hide_panels();
 			self.toggle_panel($panel);
 		});
 
@@ -433,19 +479,20 @@ function LEEFLETS() {
 		var url = $nav.data('content-url');
 		url = url + fieldsets.replace(/\s+/, '/') + '/';
 		self.load_panel(url);
-		if (!self.nav_visible()) {
-			self.toggle_nav();
-		}
+		self.show_nav();
 	};
 
 	self.nav_events = function() {
-		if ($('.panel').length) {
-			self.toggle_nav();
-			self.toggle_panel($('.panel'));
+		/*
+		var $panel = $('.panel.admin');
+		if ($panel.length) {
+			self.show_nav();
+			self.show_panel($panel);
 		}
+		*/
 
 		$('.show-primary-nav').click(function(){
-			self.toggle_nav();
+			self.show_nav();
 			return false;
 		});
 
@@ -465,8 +512,12 @@ function LEEFLETS() {
 				x = $nav.outerWidth();
 
 			$.get($(this).attr('href'), {ajax:1}, function(data) {
-				var $box = $('<div class="alert-box">Published! :)</div>');
-				$('body').append($box);
+				var $box = $('.alert-box.published');
+				if (!$box.length) {
+					$box = $('<div class="alert-box published">Published! :)</div>');
+					$('body').append($box);
+				}
+
 				$box.hide().css({
 					top: y + 'px',
 					left: x + 'px'

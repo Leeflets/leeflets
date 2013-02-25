@@ -23,23 +23,33 @@
 
 <a class="show-primary-nav" href=""></a>
 
-<nav class="primary-menu" data-content-url="<?php echo $this->router->admin_url( '/content/edit/' ) ?>">
-    <?php
-    $nav = $this->get_primary_nav();
-    foreach ( $nav as $n ) {
-        $_atts = array();
-        foreach ( $n['atts'] as $name => $value ) {
-            $_atts[] = $name . '="' . $value . '"';
+<div class="clip">
+<div class="contain-all">
+
+    <nav class="primary-menu" data-content-url="<?php echo $this->router->admin_url( '/content/edit/' ) ?>">
+        <?php
+        $nav = $this->get_primary_nav();
+        foreach ( $nav as $n ) {
+            $_atts = array();
+            foreach ( $n['atts'] as $name => $value ) {
+                $_atts[] = $name . '="' . $value . '"';
+            }
+
+            printf("<a %s>%s</a>", join( ' ', $_atts ), $n['text'] );
         }
+        ?>
+    </nav>
 
-        printf("<a %s>%s</a>", join( ' ', $_atts ), $n['text'] );
-    }
-    ?>
-</nav>
+    <div class="panel-container">
 
-<?php $this->out( 'content' ); ?>
+        <?php $this->out( 'content' ); ?>
 
-<iframe src="<?php echo $this->router->admin_url( '/content/view/' ); ?>" class="viewer" width="100%"></iframe>
+    </div>
+
+    <iframe src="<?php echo $this->router->admin_url( '/content/view/' ); ?>" class="viewer" width="100%"></iframe>
+
+</div>
+</div>
 
 <?php $this->hook->apply( 'admin_footer' ); ?>
 
