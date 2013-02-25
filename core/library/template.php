@@ -49,11 +49,16 @@ class LF_Template {
 	function render( $is_write = false ) {
 		$this->include_code_file();
 
-		if ( !$is_write && !( $this->config->debug && $this->settings->get( 'debug', 'disable-overlays' ) ) ) {
+		if ( !$is_write ) {
 			$url = $this->router->admin_url( '/core/theme/asset/js/frontend-edit.js' );
 			$this->enqueue_script( 'lf-frontend-edit', $url, array( 'jquery' ) );
-			$url = $this->router->admin_url( '/core/theme/asset/css/frontend-edit.css' );
-			$this->enqueue_style( 'lf-frontend-edit', $url );
+
+			if ( !$this->config->debug || !$this->settings->get( 'debug', 'disable-overlays' ) ) {
+				$url = $this->router->admin_url( '/core/theme/asset/js/frontend-overlay.js' );
+				$this->enqueue_script( 'lf-frontend-overlay', $url, array( 'jquery' ) );
+				$url = $this->router->admin_url( '/core/theme/asset/css/frontend-overlay.css' );
+				$this->enqueue_style( 'lf-frontend-overlay', $url );
+			}
 		}
 
 		$this->content = $this->get_content_data();

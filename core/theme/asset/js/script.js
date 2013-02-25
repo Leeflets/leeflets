@@ -437,7 +437,6 @@ function LEEFLETS() {
 
 	self.toggle_panel = function($panel) {
 		var $visible = $('.panel.admin:visible');
-		console.log($visible.length);
 		if ($visible.length) {
 			if ($visible[0] === $panel[0]) {
 				self.hide_panel($panel);
