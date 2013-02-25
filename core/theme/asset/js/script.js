@@ -425,6 +425,10 @@ function LEEFLETS() {
 			if ($panel) {
 				$panel.hide();
 			}
+			else {
+				$('.panel.admin:visible').hide();
+			}
+
 			if (callback) {
 				callback();
 			}
