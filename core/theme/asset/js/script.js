@@ -84,6 +84,7 @@ function LEEFLETS() {
 			e.preventDefault();
 		});
 
+		/*
 		$(document).bind('dragover', function (e) {
 			var $uploads = $('div.file-upload');
 
@@ -101,6 +102,7 @@ function LEEFLETS() {
 				$('.drop-pad', $uploads).hide();
 			}, 100);
 		});
+		*/
 	};
 
 	self.install_events = function() {
@@ -131,33 +133,55 @@ function LEEFLETS() {
 		}
 
 		$('input.datepicker', $root).datepicker({attachTo: $panel});
+		$('.file-preview', $panel).tooltip({
+			container: 'body'
+		});
 
 		$('div.file-upload', $root).each(function() {
 			var $div = $(this),
-				$filename = $('.filename', $div),
-				$hidden = $('.filename-hidden', $div),
-				$remove = $('.btn-remove', $div),
-				$input_append = $('.input-append', $div);
+				$pad = $('.drop-pad', $div),
+				$file_input = $('input[type=file]', $div),
+				timeout = null;
 
-			$('input', this).fileupload({
+			$file_input.fileupload({
 				url: $(this.form).data('upload-url'),
 				paramName: 'files',
 				formData: [{
 					name: 'input-name',
-					value: $('input[type=file]', $div).data('name')
+					value: $file_input.data('name')
 				}],
 				dataType: 'json',
-				dropZone: $div,
+				dropZone: $pad,
 				done: function (e, data) {
-					$('.progress', $div).hide();
+					$('.file-list', $div).remove();
+					$('.progress', $div).hide().after(data.result.list);
+					self.file_list_events($('.file-list', $div));
 
+					if (!$file_input.attr('multiple')) {
+						$pad.hide();
+					}
+
+					/*
 					$.each(data.result.files, function (index, file) {
-						$filename.text(file.name);
-						$hidden.val(file.name);
+						if (typeof file.error !== 'undefined') {
+							$('.alert-error', $div).remove();
+							var $error = $(self.get_error_html(file.error));
+							$pad.before($error);
+							$error.hide().fadeIn();
+						}
 					});
+					*/
 
-					$input_append.append($remove);
 					self.reload_viewer();
+				},
+				dragover: function(e) {
+					clearTimeout(timeout);
+
+					$pad.addClass('dragover');
+
+					timeout = setTimeout(function () {
+						$pad.removeClass('dragover');
+					}, 100);
 				},
 				progressall: function (e, data) {
 					var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -170,34 +194,35 @@ function LEEFLETS() {
 				}
 			});
 
-			$remove.click(function() {
-				if (!$filename.text()) return;
-				var url = $(this.form).data('upload-url');
-				url += '?file=' + encodeURIComponent( $filename.text() );
-				url += '&input-name=' + encodeURIComponent( $('input[type=file]', $div).data('name') );
-				$.ajax(url, {
-					type: 'DELETE',
-					dataType: 'json',
-					success: function(data, status, xhr) {
-						if (data.success) {
-							$filename.text('');
-							$hidden.val('');
-							$remove = $remove.detach();
-							self.reload_viewer();
-						}
-						else {
-							$('.alert-error', $div).remove();
-							var $error = $(self.get_error_html('Failed to remove file.'));
-							$div.append($error);
-							$error.hide().fadeIn();
-						}
-					}
-				});
-			});
+			self.file_list_events($('.file-list', $div));
+		});
+	};
 
-			if (!$filename.text()) {
-				$remove = $remove.detach();
-			}
+	self.file_list_events = function($list) {
+		$('.remove', $list).click(function() {
+			var $file_item = $(this).parents('.file-item'),
+				$hidden = $('.filename-hidden', $file_item);
+
+			var url = $file_item.parents('form').data('upload-url');
+			url += '?file=' + encodeURIComponent( $hidden.val() );
+			url += '&input-name=' + encodeURIComponent( $file_input.data('name') );
+			$.ajax(url, {
+				type: 'DELETE',
+				dataType: 'json',
+				success: function(data, status, xhr) {
+					if (data.success) {
+						$file_item.remove();
+						$pad.show();
+						self.reload_viewer();
+					}
+					else {
+						$('.alert-error', $div).remove();
+						var $error = $(self.get_error_html('Failed to remove file.'));
+						$div.append($error);
+						$error.hide().fadeIn();
+					}
+				}
+			});
 		});
 	};
 

@@ -84,7 +84,7 @@ class LF_Template {
 	}
 
 	public function get_template_url( $url = '' ) {
-		return $this->router->admin_url( 'templates/' . $this->active_template . '/' . ltrim( $url, '/' ) );
+		return $this->router->get_template_url( $this->active_template, $url );
 	}
 
 	public function uploads_url( $url = '' ) {
@@ -92,7 +92,7 @@ class LF_Template {
 	}
 
 	public function get_uploads_url( $url = '' ) {
-		return $this->router->admin_url( 'uploads/' . rawurlencode( ltrim( $url, '/' ) ) );
+		return $this->router->get_uploads_url( $url );
 	}
 
 	public function part( $file ) {
@@ -185,7 +185,7 @@ class LF_Template {
 		return $path;
 	}
 
-	function get_form( $fieldset_ids ) {
+	function get_content_fields() {
 		$content_file = $this->template_file_path( 'meta-content' );
 		if ( !$content_file ) {
 			die( "Can't load meta-content.php from active template." );
@@ -196,6 +196,45 @@ class LF_Template {
 		if ( !isset( $content ) ) {
 			die( "Can't load $content variable in the active template's meta-content.php." );
 		}
+
+		return $content;
+	}
+
+	function get_single_field_form( $field_name ) {
+		$content = $this->get_content_fields();
+
+		$keys = LF_String::parse_array_representation( $field_name );
+
+		if ( count( $keys ) != 2 ) {
+			return false;
+		}
+
+		foreach ( $content as $id => $fieldset ) {
+			if ( $id == $keys[0] ) {
+				foreach ( $fieldset['elements'] as $fid => $el ) {
+					if ( $fid == $keys[1] ) continue;
+					unset( $content[$id]['elements'][$fid] );
+				}
+			}
+			else {
+				unset( $content[$id] );
+			}
+		}
+
+		return new LF_Form( $this->config, $this->router, $this->settings, 'edit-content', array(
+			'elements' => $content
+		) );
+	}
+
+	/**
+	 * The the form fields for this template and optionally only include
+	 * certain fieldsets
+	 *
+	 * @param array $fieldset_ids Reduce the form down to only these fieldsets
+	 * @return array|bool the file contents in an array or false on failure.
+	 */
+	function get_form( $fieldset_ids = array() ) {
+		$content = $this->get_content_fields();
 
 		if ( $fieldset_ids ) {
 			foreach ( $content as $id => $fieldset ) {
@@ -213,7 +252,7 @@ class LF_Template {
 			$url .= urlencode( $id ) . '/';
 		}
 
-		return new LF_Form( 'edit-content', array(
+		return new LF_Form( $this->config, $this->router, $this->settings, 'edit-content', array(
 			'elements' => $content,
 			'action' => $this->router->admin_url( '/content/edit/' . $url ),
 			'data-upload-url' => $this->router->admin_url( '/content/upload/' )

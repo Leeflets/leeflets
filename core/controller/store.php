@@ -35,7 +35,7 @@ class LF_Controller_Store extends LF_Controller {
 			)
 		);
 
-		$form = new LF_Form( 'templates-form', array(
+		$form = new LF_Form( $this->config, $this->router, $this->settings, 'templates-form', array(
 			'action' => $this->router->admin_url( 'store/templates/' ),
 			'elements' => $elements
 		) );

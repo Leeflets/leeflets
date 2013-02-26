@@ -29,6 +29,28 @@ class LF_Form_Element_Collection extends LF_Form_Element {
 		}
 	}
 
+    function get_element() {
+        return $this->vget_element( func_get_args() );
+    }
+
+    function vget_element( $ids ) {
+        $id = array_shift( $ids );
+        
+        if ( !isset( $this->elements[$id] ) ) {
+            return false;
+        }
+
+        $el = $this->elements[$id];
+        
+        if ( empty( $ids ) ) {
+            return $el;
+        }
+
+        if ( method_exists( $el, 'vget_element' ) ) {
+            return $el->vget_element( $ids );
+        }
+    }
+
     function validate() {
     	$this->errors = array();
 

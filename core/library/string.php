@@ -17,18 +17,17 @@ class LF_String {
     }
 
     /**
-     * Converts a string representing an array to a PHP array.
-     * Typically used in form field names.
+     * Parses a string representing an array (typically used in form field names) 
+     * and returns an array containing the keys.
      *
-     * e.g. page-meta[title] becomes array( 'page-meta' => array( 'title' => '' ) ) 
+     * e.g. page-meta[site][title] becomes array( 'page-meta', 'site', 'title' )
      *
      * @since 0.1
      *
      * @param string $rep String representing an array
-     * @param string $value (optional) Value to set the array variable
-     * @return array PHP array of the string representation
+     * @return array PHP array of keys
      */
-    static function convert_representation_to_array( $rep, $value = '' ) {
+    static function parse_array_representation( $rep ) {
         // No square brackets, not an array representation
         if ( !preg_match( '@^([^\[]+)@', $rep, $matches ) ) {
             return false;
@@ -42,7 +41,23 @@ class LF_String {
             return false;
         }
 
-        $keys = array_merge( $keys, $matches[1] );
+        return array_merge( $keys, $matches[1] );
+    }
+
+    /**
+     * Converts a string representing an array (typically used in form field names)
+     * to a PHP array with the same hierchichal structure. Optionally set a value.
+     *
+     * e.g. page-meta[title] becomes array( 'page-meta' => array( 'title' => '' ) ) 
+     *
+     * @since 0.1
+     *
+     * @param string $rep String representing an array
+     * @param string $value (optional) Value to set the array variable
+     * @return array PHP array of the string representation
+     */
+    static function convert_representation_to_array( $rep, $value = '' ) {
+        $keys = self::parse_array_representation( $rep );
         $keys = array_reverse( $keys );
 
         foreach ( $keys as $key ) {

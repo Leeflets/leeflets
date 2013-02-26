@@ -4,11 +4,13 @@ class LF_Form_Control extends LF_Form_Element {
         $tip, $errors, $value, $class, $pattern, $pattern_msg, 
         $column_width;
     public $has_multiple_values = false;
+    protected $form;
     
     function __construct( $parent, $id, $args = array() ) {
         $this->id = $id;
         $this->parent = $parent;
         $this->errors = array();
+        $this->form = $this->get_form();
 
         if ( !isset( $args['class'] ) ) {
             $args['class'] = '';
@@ -72,8 +74,13 @@ class LF_Form_Control extends LF_Form_Element {
         }
     }
 
+    function pre_validate() {}
+    function post_validate() {}
+
     function validate() {
         $this->errors = array();
+
+        $this->pre_validate();
         
         if ( $this->required && $this->value == '' ) {
             if ( !is_null( $this->required_msg ) ) {
@@ -99,6 +106,8 @@ class LF_Form_Control extends LF_Form_Element {
                 $this->call_validation_func( $validation );
             }
         }
+
+        $this->post_validate();
         
         return $this->errors;
     }

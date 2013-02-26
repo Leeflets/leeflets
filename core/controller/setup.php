@@ -12,7 +12,7 @@ class LF_Controller_Setup extends LF_Controller {
 		$password_min_length = 5;
 		$password_max_length = 72;
 
-		$form = new LF_Form( 'install-form', array(
+		$form = new LF_Form( $this->config, $this->router, $this->settings, 'install-form', array(
 			'elements' => array(
 				'credentials' => array(
 					'type' => 'fieldset',

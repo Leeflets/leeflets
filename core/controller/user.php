@@ -2,7 +2,7 @@
 class LF_Controller_User extends LF_Controller {
 	function login() {
 		
-		$form = new LF_Form( 'login-form', array(
+		$form = new LF_Form( $this->config, $this->router, $this->settings, 'login-form', array(
 			'elements' => array(
 				'credentials' => array(
 					'type' => 'fieldset',

@@ -44,13 +44,20 @@ class LF_Router {
         return $this->site_url . '/' . ltrim( $path, '/' );
     }
 
+    function get_template_url( $template, $url = '' ) {
+        return $this->admin_url( 'templates/' . rawurlencode( $template ) . '/' . ltrim( $url, '/' ) );
+    }
+
+    function get_uploads_url( $url = '' ) {
+        return $this->admin_url( 'uploads/' . ltrim( $url, '/' ) );
+    }
+
     private function parse_request_url() {
         $admin_url = parse_url( $this->admin_url );
         $request_url = parse_url( $this->request_url );
 
         $path = preg_replace( '@^' . $admin_url['path'] . '@', '', $request_url['path'] );
         $path = strtolower( trim( $path, '/' ) );
-        $path = preg_replace( '@[^a-z0-9/\-_\.]@', '', $path );
         $path = str_replace( '..', '', $path );
 
         if ( !$path ) return;
@@ -58,10 +65,13 @@ class LF_Router {
         $segments = explode( '/', $path );
 
         $this->controller_name = array_shift( $segments );
+        $this->controller_name = preg_replace( '@[^a-z0-9/\-_\.]@', '', $this->controller_name );
 
         if ( !$segments ) return;
         
         $this->action = array_shift( $segments );
+        $this->action = preg_replace( '@[^a-z0-9/\-_\.]@', '', $this->action );
+        $this->action = preg_replace( '@[/\-\.]@', '_', $this->action );
 
         // if the function starts with an underscore, 
         // it can't be called as a controller action
@@ -70,6 +80,9 @@ class LF_Router {
         }
 
         $this->params = $segments;
+        foreach ( $this->params as $i => $param ) {
+            $this->params[$i] = urldecode( $param );
+        }
     }
     
     private function set_controller_class() {

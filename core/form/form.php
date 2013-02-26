@@ -1,7 +1,12 @@
 <?php
 class LF_Form extends LF_Form_Element_Collection {
+    public $config, $router, $settings;
     
-    function __construct( $id, $args = array() ) {
+    function __construct( LF_Config $config, LF_Router $router, LF_Settings $settings, $id, $args = array() ) {
+        $this->config = $config;
+        $this->router = $router;
+        $this->settings = $settings;
+
         parent::__construct( null, $id, $args );
 
         $this->atts = array_merge( array(

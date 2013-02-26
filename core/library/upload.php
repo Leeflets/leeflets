@@ -1,16 +1,10 @@
 <?php
 /*
- * jQuery File Upload Plugin PHP Class 6.1.1
+ * Modified version of the jQuery File Upload Plugin PHP Class 6.1.1
  * https://github.com/blueimp/jQuery-File-Upload
- *
- * Copyright 2010, Sebastian Tschan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
  */
 
-class UploadHandler {
+class LF_Upload {
     protected $options;
     // PHP File Upload error message codes:
     // http://php.net/manual/en/features.file-upload.errors.php
@@ -33,11 +27,17 @@ class UploadHandler {
         'min_height' => 'Image requires a minimum height'
     );
 
-    function __construct( $options = null, $initialize = true ) {
+    private $config, $router, $settings;
+
+    function __construct( LF_Config $config, LF_Router $router, LF_Settings $settings, $options = null, $initialize = false ) {
+        $this->config = $config;
+        $this->router = $router;
+        $this->settings = $settings;
+
         $this->options = array(
-            'script_url' => $this->get_full_url().'/',
-            'upload_dir' => dirname( $_SERVER['SCRIPT_FILENAME'] ).'/files/',
-            'upload_url' => $this->get_full_url().'/files/',
+            'script_url' => $this->router->admin_url( '/content/upload/' ),
+            'upload_dir' => $this->config->uploads_path . '/',
+            'upload_url' => $this->router->admin_url( '/uploads/' ),
             'user_dirs' => false,
             'mkdir_mode' => 0755,
             'param_name' => 'files',
@@ -100,8 +100,12 @@ class UploadHandler {
                 ),
                 */
                 'thumbnail' => array(
-                    'max_width' => 80,
-                    'max_height' => 80
+                    'max_width' => 150,
+                    'max_height' => 150
+                ),
+                'thumbnail@2x' => array(
+                    'max_width' => 300,
+                    'max_height' => 300
                 )
             )
         );
@@ -158,11 +162,18 @@ class UploadHandler {
         return '';
     }
 
-    protected function get_upload_path( $file_name = null, $version = null ) {
+    protected function get_file_path( $file_name = null, $version = null ) {
         $file_name = $file_name ? $file_name : '';
-        $version_path = empty( $version ) ? '' : $version.'/';
-        return $this->options['upload_dir'].$this->get_user_path()
-            .$version_path.$file_name;
+        if ( $file_name && $version ) {
+            $file_name = preg_replace( '/(\.[^.]+)$/', '-' . $version . '$1', $file_name );
+        }
+        $template = $this->settings->get( 'template', 'active' ) . '/';
+        return $template . $file_name;
+    }
+
+    protected function get_upload_path( $file_name = null, $version = null ) {
+        $file_path = $this->get_file_path( $file_name, $version );
+        return $this->options['upload_dir'] . $file_path;
     }
 
     protected function get_query_separator( $url ) {
@@ -261,14 +272,21 @@ class UploadHandler {
         return count( $this->get_file_objects( 'is_valid_file_object' ) );
     }
 
+
+    /**
+     * Create resized images
+     * 
+     * Options can be:
+     * - max_width
+     * - max_height
+     * - jpg_quality
+     * - png_quality
+     *
+     */
     protected function create_scaled_image( $file_name, $version, $options ) {
         $file_path = $this->get_upload_path( $file_name );
         if ( !empty( $version ) ) {
-            $version_dir = $this->get_upload_path( null, $version );
-            if ( !is_dir( $version_dir ) ) {
-                mkdir( $version_dir, $this->options['mkdir_mode'], true );
-            }
-            $new_file_path = $version_dir.'/'.$file_name;
+            $new_file_path = $this->get_upload_path( $file_name, $version );
         } else {
             $new_file_path = $file_path;
         }
@@ -295,7 +313,7 @@ class UploadHandler {
             $src_img = @imagecreatefromjpeg( $file_path );
             $write_image = 'imagejpeg';
             $image_quality = isset( $options['jpeg_quality'] ) ?
-                $options['jpeg_quality'] : 75;
+                $options['jpeg_quality'] : 80;
             break;
         case 'gif':
                 @imagecolortransparent( $new_img, @imagecolorallocate( $new_img, 0, 0, 0 ) );
@@ -540,13 +558,14 @@ class UploadHandler {
                 if ( $this->options['orient_image'] ) {
                     $this->orient_image( $file_path );
                 }
-                $file->url = $this->get_download_url( $file->name );
+                $file->path = $this->get_file_path( $file->name );
                 foreach ( $this->options['image_versions'] as $version => $options ) {
                     if ( $this->create_scaled_image( $file->name, $version, $options ) ) {
                         if ( !empty( $version ) ) {
-                            $file->{$version.'_url'} = $this->get_download_url(
-                                $file->name,
-                                $version
+                            $file->versions[$version] = array(
+                                'path' => $this->get_file_path( $file->name, $version ),
+                                'width' => $options['max_width'],
+                                'height' => $options['max_height']
                             );
                         } else {
                             $file_size = $this->get_file_size( $file_path, true );
@@ -558,9 +577,8 @@ class UploadHandler {
                     $file->error = 'abort';
                 }
             $file->size = $file_size;
-            $this->set_file_delete_properties( $file );
         }
-        return $file;
+        return (array)$file;
     }
 
     protected function readfile( $file_path ) {
@@ -744,10 +762,7 @@ class UploadHandler {
                 $content_range
             );
         }
-        return $this->generate_response(
-            array( $this->options['param_name'] => $files ),
-            $print_response
-        );
+        return $this->generate_response( $files, $print_response );
     }
 
     public function delete( $print_response = true ) {
