@@ -358,6 +358,7 @@ fieldset.connection {
 	-webkit-box-shadow:0 1px 5px rgba(0,0,0,0.5);
 	-moz-box-shadow:0 1px 5px rgba(0,0,0,0.5);
 	box-shadow:0 1px 5px rgba(0,0,0,0.5);
+	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 
 	> div {
@@ -568,6 +569,7 @@ fieldset.connection {
 		padding-left: 30px;
 		padding-right: 30px;
 		padding-bottom: 60px;
+		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
 
