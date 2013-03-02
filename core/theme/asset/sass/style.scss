@@ -228,11 +228,41 @@ input {
 
 .file-list {
 	overflow: hidden;
-	padding: 20px 0 0 0;
+	padding: 20px 5px 0 5px;
+	margin-left: -5px;
 }
 
 .file-preview {
+	width: 150px;
+	height: 150px;
+	box-shadow: 0 0 5px #999;
+	overflow: hidden;
 
+	&.file-type {
+		background: url(../img/filetypes/generic.png) center 30px no-repeat;
+		background-size: 80px;
+	}
+
+	$types: compressed excel generic images keynote movie music numbers pages pdf powerpoint text word;
+
+	@each $type in $types {
+		&.file-type-#{$type} {
+			background-image: url(../img/filetypes/#{$type}.png);
+		}
+	}
+
+	.filename {
+		font-size: 10px;
+		text-align: center;
+		position: absolute;
+		bottom: 15px;
+		width: 100%;
+		padding: 0 15px 0 10px;
+		white-space: nowrap;
+		overflow: hidden;
+		box-sizing: border-box;
+		text-overflow: ellipsis;
+	}
 }
 
 .progress {
@@ -253,6 +283,20 @@ input {
 	img {
 		width: 150px;
 		height: 150px;
+	}
+
+	.dpi-2x {
+		display: none;
+	}
+
+	@media (-webkit-min-device-pixel-ratio: 1.5), (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3/2), (min-device-pixel-ratio: 1.5) {
+		.dpi-standard {
+			display: none;
+		}
+
+		.dpi-2x {
+			display: block;
+		}
 	}
 }
 

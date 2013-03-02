@@ -46,7 +46,6 @@ $content = array(
     		'icon' => array(
     			'type' => 'file',
     			'label' => 'Icon',
-    			'data-url' => $this->router->admin_url( '/content/upload/' )
     		),
     		'title' => array(
     			'type' => 'text',

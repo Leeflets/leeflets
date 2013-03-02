@@ -133,9 +133,6 @@ function LEEFLETS() {
 		}
 
 		$('input.datepicker', $root).datepicker({attachTo: $panel});
-		$('.file-preview', $panel).tooltip({
-			container: 'body'
-		});
 
 		$('div.file-upload', $root).each(function() {
 			var $div = $(this),
@@ -144,7 +141,7 @@ function LEEFLETS() {
 				timeout = null;
 
 			$file_input.fileupload({
-				url: $(this.form).data('upload-url'),
+				url: $file_input.data('upload-url'),
 				paramName: 'files',
 				formData: [{
 					name: 'input-name',
@@ -155,7 +152,7 @@ function LEEFLETS() {
 				done: function (e, data) {
 					$('.file-list', $div).remove();
 					$('.progress', $div).hide().after(data.result.list);
-					self.file_list_events($('.file-list', $div));
+					self.file_list_events($div, $pad);
 
 					if (!$file_input.attr('multiple')) {
 						$pad.hide();
@@ -194,35 +191,48 @@ function LEEFLETS() {
 				}
 			});
 
-			self.file_list_events($('.file-list', $div));
+			self.file_list_events($div, $pad);
 		});
 	};
 
-	self.file_list_events = function($list) {
-		$('.remove', $list).click(function() {
-			var $file_item = $(this).parents('.file-item'),
-				$hidden = $('.filename-hidden', $file_item);
+	self.file_list_events = function($div, $pad) {
+		var $list = $('.file-list', $div);
 
-			var url = $file_item.parents('form').data('upload-url');
-			url += '?file=' + encodeURIComponent( $hidden.val() );
-			url += '&input-name=' + encodeURIComponent( $file_input.data('name') );
-			$.ajax(url, {
-				type: 'DELETE',
+		$('.file-preview', $list).tooltip({
+			container: 'body',
+			placement: 'bottom'
+		});
+
+		$('.remove', $list).click(function() {
+			var $file_item = $(this).parents('.file-item');
+
+			$.ajax($(this).attr('href'), {
+				type: 'GET',
 				dataType: 'json',
 				success: function(data, status, xhr) {
 					if (data.success) {
 						$file_item.remove();
 						$pad.show();
 						self.reload_viewer();
+						$('.alert-error', $div).remove();
 					}
 					else {
+						var msg;
+						if (typeof data.error === 'undefined') {
+							msg = 'Failed to remove file.';
+						}
+						else {
+							msg = data.error;
+						}
 						$('.alert-error', $div).remove();
-						var $error = $(self.get_error_html('Failed to remove file.'));
+						var $error = $(self.get_error_html(msg));
 						$div.append($error);
 						$error.hide().fadeIn();
 					}
 				}
 			});
+
+			return false;
 		});
 	};
 

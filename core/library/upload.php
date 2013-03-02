@@ -80,34 +80,8 @@ class LF_Upload {
             // Set the following option to false to enable resumable uploads:
             'discard_aborted_uploads' => true,
             // Set to true to rotate images based on EXIF meta data, if available:
-            'orient_image' => false,
-            'image_versions' => array(
-                // Uncomment the following version to restrict the size of
-                // uploaded images:
-                /*
-                '' => array(
-                    'max_width' => 1920,
-                    'max_height' => 1200,
-                    'jpeg_quality' => 95
-                ),
-                */
-                // Uncomment the following to create medium sized images:
-                /*
-                'medium' => array(
-                    'max_width' => 800,
-                    'max_height' => 600,
-                    'jpeg_quality' => 80
-                ),
-                */
-                'thumbnail' => array(
-                    'max_width' => 150,
-                    'max_height' => 150
-                ),
-                'thumbnail@2x' => array(
-                    'max_width' => 300,
-                    'max_height' => 300
-                )
-            )
+            'orient_image' => true,
+            'image_versions' => array()
         );
         if ( $options ) {
             $this->options = array_merge( $this->options, $options );
@@ -283,37 +257,37 @@ class LF_Upload {
      * - png_quality
      *
      */
-    protected function create_scaled_image( $file_name, $version, $options ) {
+    function create_scaled_image( $file_name, $version, $options ) {
+        $options = array_merge( array(
+            'jpeg_quality' => 80,
+            'png_quality' => 9,
+            'crop' => false
+        ), $options );
+
         $file_path = $this->get_upload_path( $file_name );
+        
         if ( !empty( $version ) ) {
             $new_file_path = $this->get_upload_path( $file_name, $version );
         } else {
             $new_file_path = $file_path;
         }
+        
         list( $img_width, $img_height ) = @getimagesize( $file_path );
         if ( !$img_width || !$img_height ) {
             return false;
         }
-        $scale = min(
-            $options['max_width'] / $img_width,
-            $options['max_height'] / $img_height
-        );
-        if ( $scale >= 1 ) {
-            if ( $file_path !== $new_file_path ) {
-                return copy( $file_path, $new_file_path );
-            }
-            return true;
-        }
-        $new_width = $img_width * $scale;
-        $new_height = $img_height * $scale;
-        $new_img = @imagecreatetruecolor( $new_width, $new_height );
+
+        
+        $sizes = $this->image_resize_dimensions( $img_width, $img_height, $options['width'], $options['height'], $options['crop'] );
+        list( $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h ) = $sizes;
+
+        $new_img = @imagecreatetruecolor( $dst_w, $dst_h );
         switch ( strtolower( substr( strrchr( $file_name, '.' ), 1 ) ) ) {
         case 'jpg':
         case 'jpeg':
             $src_img = @imagecreatefromjpeg( $file_path );
             $write_image = 'imagejpeg';
-            $image_quality = isset( $options['jpeg_quality'] ) ?
-                $options['jpeg_quality'] : 80;
+            $image_quality = $options['jpeg_quality'];
             break;
         case 'gif':
                 @imagecolortransparent( $new_img, @imagecolorallocate( $new_img, 0, 0, 0 ) );
@@ -327,25 +301,164 @@ class LF_Upload {
             @imagesavealpha( $new_img, true );
             $src_img = @imagecreatefrompng( $file_path );
             $write_image = 'imagepng';
-            $image_quality = isset( $options['png_quality'] ) ?
-                $options['png_quality'] : 9;
+            $image_quality = $options['png_quality'];
             break;
         default:
-                $src_img = null;
+            $src_img = null;
         }
-        $success = $src_img && @imagecopyresampled(
-            $new_img,
-            $src_img,
-            0, 0, 0, 0,
-            $new_width,
-            $new_height,
-            $img_width,
-            $img_height
-        ) && $write_image( $new_img, $new_file_path, $image_quality );
+        $success = $src_img
+            && @imagecopyresampled( $new_img, $src_img, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h )
+            && $write_image( $new_img, $new_file_path, $image_quality );
         // Free up memory (imagedestroy does not delete files):
         @imagedestroy( $src_img );
         @imagedestroy( $new_img );
         return $success;
+    }
+
+    /**
+     * Retrieve calculated resized dimensions for use in WP_Image_Editor.
+     * (Borrowed from WordPress)
+     *
+     * Calculate dimensions and coordinates for a resized image that fits within a
+     * specified width and height. If $crop is true, the largest matching central
+     * portion of the image will be cropped out and resized to the required size.
+     *
+     * @since 1.0
+     *
+     * @param int $orig_w Original width.
+     * @param int $orig_h Original height.
+     * @param int $dest_w New width.
+     * @param int $dest_h New height.
+     * @param bool $crop Optional, default is false. Whether to crop image or resize.
+     * @return bool|array False on failure. Returned array matches parameters for imagecopyresampled() PHP function.
+     */
+    function image_resize_dimensions($orig_w, $orig_h, $dest_w, $dest_h, $crop = false) {
+
+        if ($orig_w <= 0 || $orig_h <= 0)
+            return false;
+        // at least one of dest_w or dest_h must be specific
+        if ($dest_w <= 0 && $dest_h <= 0)
+            return false;
+
+        if ( $crop ) {
+            // crop the largest possible portion of the original image that we can size to $dest_w x $dest_h
+            $aspect_ratio = $orig_w / $orig_h;
+            $new_w = min($dest_w, $orig_w);
+            $new_h = min($dest_h, $orig_h);
+
+            if ( !$new_w ) {
+                $new_w = intval($new_h * $aspect_ratio);
+            }
+
+            if ( !$new_h ) {
+                $new_h = intval($new_w / $aspect_ratio);
+            }
+
+            $size_ratio = max($new_w / $orig_w, $new_h / $orig_h);
+
+            $crop_w = round($new_w / $size_ratio);
+            $crop_h = round($new_h / $size_ratio);
+
+            if ( !is_array( $crop ) || count( $crop ) != 2 ) {
+                $crop = array( 'center', 'center' );
+            }
+
+            $x_index = 0;
+            $y_index = 1;
+
+            if ( in_array( $crop[1], array( 'left', 'right' ) ) || in_array( $crop[0], array( 'top', 'bottom' ) ) ) {
+                $x_index = 1;
+                $y_index = 0;
+            }
+
+            switch ( $crop[$x_index] ) {
+                case 'left': $s_x = 0; break;
+                case 'right': $s_x = $orig_w - $crop_w; break;
+                default: $s_x = floor( ( $orig_w - $crop_w ) / 2 );
+            }
+
+            switch ( $crop[$y_index] ) {
+                case 'top': $s_y = 0; break;
+                case 'bottom': $s_y = $orig_h - $crop_h; break;
+                default: $s_y = floor( ( $orig_h - $crop_h ) / 2 );
+            }
+
+        } else {
+            // don't crop, just resize using $dest_w x $dest_h as a maximum bounding box
+            $crop_w = $orig_w;
+            $crop_h = $orig_h;
+
+            $s_x = 0;
+            $s_y = 0;
+
+            list( $new_w, $new_h ) = $this->constrain_dimensions( $orig_w, $orig_h, $dest_w, $dest_h );
+        }
+
+        // if the resulting image would be the same size or larger we don't want to resize it
+        if ( $new_w >= $orig_w && $new_h >= $orig_h )
+            return false;
+
+        // the return array matches the parameters to imagecopyresampled()
+        // int dst_x, int dst_y, int src_x, int src_y, int dst_w, int dst_h, int src_w, int src_h
+        return array( 0, 0, (int) $s_x, (int) $s_y, (int) $new_w, (int) $new_h, (int) $crop_w, (int) $crop_h );
+
+    }
+
+    /**
+     * Calculates the new dimensions for a downsampled image.
+     * (Borrowed from WordPress)
+     *
+     * If either width or height are empty, no constraint is applied on
+     * that dimension.
+     *
+     * @since 1.0
+     *
+     * @param int $current_width Current width of the image.
+     * @param int $current_height Current height of the image.
+     * @param int $max_width Optional. Maximum wanted width.
+     * @param int $max_height Optional. Maximum wanted height.
+     * @return array First item is the width, the second item is the height.
+     */
+    function constrain_dimensions( $current_width, $current_height, $max_width=0, $max_height=0 ) {
+        if ( !$max_width and !$max_height )
+            return array( $current_width, $current_height );
+
+        $width_ratio = $height_ratio = 1.0;
+        $did_width = $did_height = false;
+
+        if ( $max_width > 0 && $current_width > 0 && $current_width > $max_width ) {
+            $width_ratio = $max_width / $current_width;
+            $did_width = true;
+        }
+
+        if ( $max_height > 0 && $current_height > 0 && $current_height > $max_height ) {
+            $height_ratio = $max_height / $current_height;
+            $did_height = true;
+        }
+
+        // Calculate the larger/smaller ratios
+        $smaller_ratio = min( $width_ratio, $height_ratio );
+        $larger_ratio  = max( $width_ratio, $height_ratio );
+
+        if ( intval( $current_width * $larger_ratio ) > $max_width || intval( $current_height * $larger_ratio ) > $max_height )
+            // The larger ratio is too big. It would result in an overflow.
+            $ratio = $smaller_ratio;
+        else
+            // The larger ratio fits, and is likely to be a more "snug" fit.
+            $ratio = $larger_ratio;
+
+        $w = intval( $current_width  * $ratio );
+        $h = intval( $current_height * $ratio );
+
+        // Sometimes, due to rounding, we'll end up with a result like this: 465x700 in a 177x177 box is 117x176... a pixel short
+        // We also have issues with recursive calls resulting in an ever-changing result. Constraining to the result of a constraint should yield the original result.
+        // Thus we look for dimensions that are one pixel shy of the max value and bump them up
+        if ( $did_width && $w == $max_width - 1 )
+            $w = $max_width; // Round it up
+        if ( $did_height && $h == $max_height - 1 )
+            $h = $max_height; // Round it up
+
+        return array( $w, $h );
     }
 
     protected function get_error_message( $error ) {
@@ -564,8 +677,8 @@ class LF_Upload {
                         if ( !empty( $version ) ) {
                             $file->versions[$version] = array(
                                 'path' => $this->get_file_path( $file->name, $version ),
-                                'width' => $options['max_width'],
-                                'height' => $options['max_height']
+                                'width' => $options['width'],
+                                'height' => $options['height']
                             );
                         } else {
                             $file_size = $this->get_file_size( $file_path, true );

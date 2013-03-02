@@ -14,8 +14,7 @@ $content = array(
 		'elements' => array(
 			'cover-letter' => array(
 				'label' => 'Cover Letter',
-				'type' => 'file',
-				'data-url' => $this->router->admin_url( '/content/upload/' )
+				'type' => 'file'
 			),
 			'fav-color' => array(
 				'type' => 'checklist',
@@ -29,8 +28,7 @@ $content = array(
 			),
 			'background-image' => array(
 				'label' => 'Background Image',
-				'type' => 'file',
-				'data-url' => $this->router->admin_url( '/content/upload/' )
+				'type' => 'image'
 			)
 		)
 	),

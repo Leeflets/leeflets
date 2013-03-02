@@ -61,7 +61,7 @@ class LF_Template {
 			}
 		}
 
-		$this->content = $this->get_content_data();
+		$this->get_content_data();
 
 		$index_path = $this->template_file_path( 'index' );
 
@@ -122,7 +122,7 @@ class LF_Template {
 	}
 
 	public function vget_content( $keys ) {
-		$content = $this->content;
+		$content = $this->get_content_data();
 		
 		foreach ( $keys as $key ) {
 			if ( !isset( $content[$key] ) ) {
@@ -158,7 +158,11 @@ class LF_Template {
 		return true;
 	}
 
-	public function get_content_data() {
+	public function get_content_data( $force_read_file = false ) {
+		if ( $this->content && !$force_read_file ) {
+			return $this->content;
+		}
+
 		$file = $this->get_content_data_file_path();
 		if ( !file_exists( $file ) ) {
 			$file = $this->config->templates_path . '/' . $this->active_template . '/sample.json.php';
@@ -170,7 +174,9 @@ class LF_Template {
 
 		$file = new LF_Data_File( $file, $this->config );
 
-		return $file->read();
+		$this->content = $file->read();
+
+		return $this->content;
 	}
 
 	private function get_content_data_file_path() {
@@ -254,8 +260,7 @@ class LF_Template {
 
 		return new LF_Form( $this->config, $this->router, $this->settings, 'edit-content', array(
 			'elements' => $content,
-			'action' => $this->router->admin_url( '/content/edit/' . $url ),
-			'data-upload-url' => $this->router->admin_url( '/content/upload/' )
+			'action' => $this->router->admin_url( '/content/edit/' . $url )
 		) );
 	}
 }

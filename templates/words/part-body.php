@@ -5,7 +5,7 @@
         <div class="intro" data-lf-edit="page">
             <?php
             if ( $image = $this->get_content( 'test-fields', 'background-image' ) ) {
-                $image_url = $this->get_uploads_url( $image );
+                $image_url = $this->get_uploads_url( $image[0]['path'] );
             }
             else {
                 $image_url = $this->get_template_url( 'images/samueljacksonbeer-bg.jpg' );

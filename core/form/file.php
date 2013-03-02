@@ -1,6 +1,6 @@
 <?php
 class LF_Form_File extends LF_Form_Control {
-    private $drop_msg, $button_txt, $accept_types;
+    protected $drop_msg, $button_txt, $accept_types, $upload_options;
 
     function __construct( $parent, $id, $args = array() ) {
         if ( !isset( $args['class'] ) ) {
@@ -19,6 +19,19 @@ class LF_Form_File extends LF_Form_Control {
             $this->button_txt = 'Select a File';
         }
 
+        $this->upload_options['image_versions'] = array(
+            'thumbnail' => array(
+                'width' => 150,
+                'height' => 150,
+                'crop' => true
+            ),
+            'thumbnail@2x' => array(
+                'width' => 300,
+                'height' => 300,
+                'crop' => true
+            )
+        );
+
         $this->special_args( 'accept_types', $args, true );
 
         parent::__construct( $parent, $id, $args );
@@ -26,6 +39,7 @@ class LF_Form_File extends LF_Form_Control {
         // We don't want this saved on form submit
         $this->atts['data-name'] = $this->atts['name'];
         $this->atts['name'] = 'files';
+        $this->atts['data-upload-url'] = $this->form->router->admin_url( '/content/upload/' );
     }
 
     function html_middle() {
@@ -68,20 +82,84 @@ class LF_Form_File extends LF_Form_Control {
             $hidden_name .= '[]';
         }
         
-        foreach ( $this->value as $i => $val ) :
-            if ( !$val ) continue;
+        foreach ( $this->value as $i => $file ) :
+            if ( !$file || isset( $file['error'] ) ) continue;
             ?>
             <div class="file-item">
                 <a class="label label-inverse remove" href="<?php echo $this->form->router->admin_url( '/content/remove-upload/' . urlencode($this->atts['data-name']) . '/' . $i . '/' ); ?>">Remove</a>
-                <div class="file-preview" title="<?php echo $this->esc_att( $val['name'] ); ?>">
-                    <img class="img-rounded" src="<?php echo $this->esc_att( $this->form->router->get_uploads_url( $val['path'] ) ); ?>">
+                <div class="file-preview img-rounded <?php echo $this->get_file_type_class( $file['type'] ); ?>" title="<?php echo $this->esc_att( $file['name'] ); ?>">
+                    <?php if ( preg_match( '@^image@', $file['type'] ) ) : ?>
+                    <img class="dpi-standard" src="<?php echo $this->esc_att( $this->form->router->get_uploads_url( $file['versions']['thumbnail']['path'] ) ); ?>">
+                    <img class="dpi-2x" src="<?php echo $this->esc_att( $this->form->router->get_uploads_url( $file['versions']['thumbnail@2x']['path'] ) ); ?>">
+                    <?php else : ?>
+                    <div class="filename"><?php echo $this->esc_html( $file['name'] ); ?></div>
+                    <?php endif; ?>
                 </div>
             </div>        
             <?php
         endforeach;
         ?>
         </div>
-        <?php        
+        <?php
+        foreach ( $this->value as $file ) {
+            if ( !isset( $file['error'] ) ) continue;
+            $this->error_html( $file['error'] );
+        }
+    }
+
+    function get_file_type_class( $type ) {
+        $type = $this->get_file_type( $type );
+        if ( !$type ) {
+            $type = 'generic';
+        }
+
+        return 'file-type file-type-' . $type;
+    }
+
+    function get_file_type( $type ) {
+        switch ( $type ) {
+            case 'application/zip':
+            case 'application/x-gzip':
+                return 'compressed';
+            case 'application/pdf':
+                return 'pdf';
+            case 'application/msword':
+            case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                return 'word';
+            case 'application/vnd.ms-excel':
+            case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                return 'excel';
+            case 'application/vnd.ms-powerpoint':
+            case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+                return 'powerpoint';
+            case 'application/x-iwork-keynote-sffkey':
+                return 'keynote';
+            case 'application/x-iwork-pages-sffpages':
+                return 'pages';
+            case 'application/x-iwork-numbers-sffnumbers':
+                return 'numbers';
+        }
+
+        $regexs = array(
+            '^audio' => 'music',
+            '^video' => 'movie',
+            '^image' => 'image'
+        );
+
+        foreach ( $regexs as $regex => $class ) {
+            if ( preg_match( '@' . $regex . '@', $type ) ) {
+                return $class;
+            }
+        }
+
+        return false;
+    }
+
+    function set_upload_options() {
+        if ( $this->accept_types ) {
+            $types = array_map( 'preg_quote', $this->accept_types );
+            $this->upload_options['accept_file_types'] = '/\.(' . implode( '|', $types ) . ')$/i';
+        }
     }
 
     function load_post_value() {
@@ -89,14 +167,9 @@ class LF_Form_File extends LF_Form_Control {
 
         if ( !isset( $_FILES['files'] ) ) return;
 
-        $options = array();
-        
-        if ( $this->accept_types ) {
-            $types = array_map( 'preg_quote', $this->accept_types );
-            $options['accept_file_types'] = '/\.(' . implode( '|', $types ) . ')$/i';
-        }
+        $this->set_upload_options();
 
-        $upload = new LF_Upload( $this->form->config, $this->form->router, $this->form->settings, $options );
+        $upload = new LF_Upload( $this->form->config, $this->form->router, $this->form->settings, $this->upload_options );
         $this->value = $upload->post( false );
     }
 }

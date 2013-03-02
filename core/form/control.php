@@ -181,18 +181,22 @@ class LF_Form_Control extends LF_Form_Element {
         if ( !$this->tip ) return;
         echo '<p class="help-block">', $this->tip, '</p>';
     }
+
+    function error_html( $error ) {
+        ?>
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <?php echo $error; ?>
+        </div>
+        <?php
+    }
     
     function errors_html() {
         if ( empty( $this->errors ) )
             return '';
         
         foreach ( $this->errors as $error ) {
-            ?>
-            <div class="alert alert-error">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <?php echo $error; ?>
-            </div>
-            <?php
+            $this->error_html( $error );
         }
     }
 
