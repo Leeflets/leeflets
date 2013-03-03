@@ -26,10 +26,9 @@
         <?php $this->hook->apply( 'footer' ); ?>
 
         <?php
-        if ( $image = $this->get_content( 'test-fields', 'background-image' ) ) {
-            $image_url = $this->get_uploads_url( $image[0]['path'] );
-        }
-        else {
+        list( $image_url, $width, $height ) = $this->get_image_atts( 'square@2x', 'page', 'photo' );
+        
+        if ( !$image_url ) {
             $image_url = $this->get_template_url( 'images/samueljacksonbeer-bg.jpg' );
         }
         ?>

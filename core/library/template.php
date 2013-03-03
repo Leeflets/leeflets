@@ -135,6 +135,46 @@ class LF_Template {
 		return $content;
 	}
 
+	public function get_image_atts() {
+		return $this->vget_image_atts( func_get_args() );
+	}
+
+	public function vget_image_atts( $args ) {
+		$version = array_shift( $args );
+		$image = $this->vget_content( $args );
+		
+		if ( isset( $image['versions'][$version] ) ) {
+			$image = $image['versions'][$version];
+		}
+
+		if ( !isset( $image['path'] ) || !isset( $image['width'] ) || !isset( $image['height'] ) ) {
+			return false;
+		}
+
+		return array( $this->get_uploads_url( $image['path'] ), $image['width'], $image['height'] );
+	}
+
+	public function image() {
+		$tag = $this->vget_image( func_get_args() );
+		if ( $tag ) {
+			echo $tag;
+		}
+	}
+
+	public function get_image() {
+		return $this->vget_image( func_get_args() );
+	}
+
+	public function vget_image( $args ) {
+		$atts = $this->vget_image_atts( $args );
+		if ( !$atts ) {
+			return false;
+		}
+
+		list( $src, $w, $h ) = $atts;
+		return sprintf( '<img src="%s" width="%s" height="%s" />', $src, $w, $h );
+	}
+
 	public function set_content_data( $values ) {
 		$file = new LF_Data_File( $this->get_content_data_file_path(), $this->config );
 		$file->write( $values, $this->filesystem );

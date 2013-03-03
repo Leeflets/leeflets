@@ -154,7 +154,7 @@ function LEEFLETS() {
 					$('.progress', $div).hide().after(data.result.list);
 					self.file_list_events($div, $pad);
 
-					if (!$file_input.attr('multiple')) {
+					if (!$file_input.attr('multiple') && !$('.alert-error', $div)[0]) {
 						$pad.hide();
 					}
 

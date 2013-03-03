@@ -14,7 +14,9 @@ $content = array(
 		'elements' => array(
 			'cover-letter' => array(
 				'label' => 'Cover Letter',
-				'type' => 'file'
+				'tip' => 'We are only accepting PDF format.',
+				'type' => 'file',
+				'accept_types' => array( 'pdf' )
 			),
 			'fav-color' => array(
 				'type' => 'checklist',
@@ -28,7 +30,23 @@ $content = array(
 			),
 			'background-image' => array(
 				'label' => 'Background Image',
-				'type' => 'image'
+				'type' => 'image',
+				'versions' => array(
+					'medium' => array(
+						'width' => 1024,
+						'height' => 768
+					),
+					'square' => array(
+						'width' => 300,
+						'height' => 300,
+						'crop' => array( 'center', 'top' )
+					),
+					'square@2x' => array(
+						'width' => 600,
+						'height' => 600,
+						'crop' => array( 'center', 'top' )
+					)
+				)
 			)
 		)
 	),
@@ -41,6 +59,22 @@ $content = array(
 				'required' => true,
 				'autofocus' => true,
 				'tip' => 'This is the title displayed on your page.'
+			),
+			'photo' => array(
+				'label' => 'Photo',
+				'type' => 'image',
+				'versions' => array(
+					'square' => array(
+						'width' => 300,
+						'height' => 300,
+						'crop' => array( 'center', 'top' )
+					),
+					'square@2x' => array(
+						'width' => 600,
+						'height' => 600,
+						'crop' => array( 'center', 'top' )
+					)
+				)
 			),
 			'intro-paragraph' => array(
 				'type' => 'wysiwyg',

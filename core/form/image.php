@@ -1,6 +1,6 @@
 <?php
 class LF_Form_Image extends LF_Form_File {
-    private $versions;
+    protected $versions;
 
     function __construct( $parent, $id, $args = array() ) {
         if ( !isset( $args['accept_types'] ) ) {

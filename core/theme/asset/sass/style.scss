@@ -224,11 +224,16 @@ input {
 
 .control-group.file-upload {
 	position: relative;
+	margin-bottom: 20px;
+
+	.help-block {
+		margin-bottom: 5px;
+	}
 }
 
 .file-list {
 	overflow: hidden;
-	padding: 20px 5px 0 5px;
+	padding: 10px 5px 0 5px;
 	margin-left: -5px;
 }
 
@@ -645,9 +650,12 @@ fieldset.connection {
 		overflow-y:auto;
 		padding-left: 30px;
 		padding-right: 30px;
-		padding-bottom: 60px;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
+
+		> .row-fluid {
+			padding-bottom: 60px;
+		}
 	}
 
 	&.wide {

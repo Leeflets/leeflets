@@ -33,11 +33,22 @@ class LF_Controller_Content extends LF_Controller {
 
 		$ids = LF_String::parse_array_representation( $field_name );
 		$field = $form->vget_element( $ids );
-		$files = $field->value;
+
+		if ( !$field->has_multiple_values ) {
+			$files = array( $field->value );
+		}
+		else {
+			$files = $field->value;
+		}
 
 		foreach ( $files as $i => $file ) {
 			if ( !isset( $file['error'] ) ) continue;
 			unset( $files[$i] );
+		}
+
+		// If it's not a multi-file upload field, just store the single file
+		if ( !$field->has_multiple_values && isset( $files[0] ) ) {
+			$files = $files[0];
 		}
 
 		$input_array = LF_String::convert_representation_to_array( $field_name, $files );
@@ -51,56 +62,27 @@ class LF_Controller_Content extends LF_Controller {
 		echo json_encode( array( 'list' => $list ) );
 
 		exit;
-
-		// We don't want to modify the third-party UploadHandler class
-		// right now, so we use this hacky way of getting the response 
-		// out of it
-		ob_start();
-		$uh = new UploadHandler( array(
-			'script_url' => $this->router->admin_url( '/content/upload/' ),
-			'upload_url' => $this->router->admin_url( '/uploads/' ),
-			'upload_dir' => $this->config->uploads_path . '/',
-			'image_versions' => array()
-		) );
-		echo $response = ob_get_clean();
-
-		$response = json_decode( $response );
-
-		if ( 'DELETE' == $_SERVER['REQUEST_METHOD'] ) {
-			if ( !isset( $response->success ) || !$response->success ) {
-				exit;
-			}
-
-			$filename = '';
-		}
-		else {
-			if ( !isset( $response->files[0] ) || isset( $response->files[0]->error ) ) {
-				exit;
-			}
-
-			$filename = $response->files[0]->name;
-		}
-
-		$input_array = LF_String::convert_representation_to_array( $fieldname, $filename );
-
-		$data = $this->template->get_content_data();
-		$data = array_replace_recursive( $data, $input_array );
-
-		$this->template->set_content_data( $data );
-
-		exit;
 	}
 
 	function remove_upload( $field_name, $index ) {
+		$form = $this->template->get_single_field_form( $field_name );
+		if ( !$form ) exit;
+
 		$ids = LF_String::parse_array_representation( $field_name );
+		$field = $form->vget_element( $ids );
 		$files = $this->template->vget_content( $ids );
 
-		if ( !isset( $files[$index] ) ) {
-			echo json_encode( array( 'error' => 'File index not found.' ) );
-			exit;
-		}
+		if ( $field->has_multiple_values ) {
+			if ( !isset( $files[$index] ) ) {
+				echo json_encode( array( 'error' => 'File index not found.' ) );
+				exit;
+			}
 
-		$file = $files[$index];
+			$file = $files[$index];
+		}
+		else {
+			$file = $files;
+		}
 
 		// Try removing the files
 		@unlink( $this->config->uploads_path . '/' . $file['path'] );
@@ -125,7 +107,13 @@ class LF_Controller_Content extends LF_Controller {
 
 		if ( $all_removed ) {
 			// Remove file from data and save
-			unset( $files[$index] );
+			if ( $field->has_multiple_values ) {
+				unset( $files[$index] );
+			}
+			else {
+				$files = array();
+			}
+
 			$files_array = LF_String::convert_representation_to_array( $field_name, $files );
 			$data = $this->template->get_content_data();
 			$_data =& $data;

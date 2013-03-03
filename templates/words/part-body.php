@@ -4,14 +4,13 @@
         
         <div class="intro" data-lf-edit="page">
             <?php
-            if ( $image = $this->get_content( 'test-fields', 'background-image' ) ) {
-                $image_url = $this->get_uploads_url( $image[0]['path'] );
+            if ( $image = $this->get_image( 'square@2x', 'page', 'photo' ) ) {
+                echo $image;
             }
             else {
-                $image_url = $this->get_template_url( 'images/samueljacksonbeer-bg.jpg' );
+                printf( '<img src="%s" alt="" />', $this->get_template_url( 'images/samueljacksonbeer-bg.jpg' ) );
             }
             ?>
-            <img src="<?php echo $image_url; ?>" alt="" />
             
             <?php $this->content( 'page', 'intro-paragraph' ); ?>
         </div>
