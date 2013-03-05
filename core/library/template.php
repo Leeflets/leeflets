@@ -246,50 +246,24 @@ class LF_Template {
 		return $content;
 	}
 
-	function get_single_field_form( $field_name ) {
-		$content = $this->get_content_fields();
-
-		$keys = LF_String::parse_array_representation( $field_name );
-
-		if ( count( $keys ) != 2 ) {
-			return false;
-		}
-
-		foreach ( $content as $id => $fieldset ) {
-			if ( $id == $keys[0] ) {
-				foreach ( $fieldset['elements'] as $fid => $el ) {
-					if ( $fid == $keys[1] ) continue;
-					unset( $content[$id]['elements'][$fid] );
-				}
-			}
-			else {
-				unset( $content[$id] );
-			}
-		}
-
-		return new LF_Form( $this->config, $this->router, $this->settings, 'edit-content', array(
-			'elements' => $content
-		) );
-	}
-
 	/**
-	 * The the form fields for this template and optionally only include
+	 * The form fields for this template and optionally only include
 	 * certain fieldsets
 	 *
 	 * @param array $fieldset_ids Reduce the form down to only these fieldsets
 	 * @return array|bool the file contents in an array or false on failure.
 	 */
 	function get_form( $fieldset_ids = array() ) {
-		$content = $this->get_content_fields();
+		$fields = $this->get_content_fields();
 
 		if ( $fieldset_ids ) {
-			foreach ( $content as $id => $fieldset ) {
+			foreach ( $fields as $id => $fieldset ) {
 				if ( in_array( $id, $fieldset_ids ) ) continue;
-				unset( $content[$id] );
+				unset( $fields[$id] );
 			}
 		}
 
-		if ( !$content ) {
+		if ( !$fields ) {
 			die( "Cannot find those form fieldsets." );
 		}
 
@@ -299,7 +273,7 @@ class LF_Template {
 		}
 
 		return new LF_Form( $this->config, $this->router, $this->settings, 'edit-content', array(
-			'elements' => $content,
+			'elements' => $fields,
 			'action' => $this->router->admin_url( '/content/edit/' . $url )
 		) );
 	}

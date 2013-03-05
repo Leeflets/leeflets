@@ -18,11 +18,7 @@ class LF_Form_Control extends LF_Form_Element {
 
         $this->class = trim( $id . ' ' . $args['class'] );
 
-        if ( !isset( $args['name'] ) ) {
-            $args['name'] = $id;
-        }
-
-        $args['name'] = $this->parent->id . '[' . $args['name'] . ']';
+        $args['name'] = $this->get_name();
 
         if ( $this->has_multiple_values ) {
             $args['name'] .= '[]';

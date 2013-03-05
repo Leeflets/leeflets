@@ -35,7 +35,7 @@ class LF_Form_Element_Collection extends LF_Form_Element {
 
     function vget_element( $ids ) {
         $id = array_shift( $ids );
-        
+
         if ( !isset( $this->elements[$id] ) ) {
             return false;
         }

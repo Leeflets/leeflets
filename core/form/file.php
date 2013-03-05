@@ -88,7 +88,7 @@ class LF_Form_File extends LF_Form_Control {
             $files = $this->value;
         }
 
-        if ( !$this->has_multiple_values ) {
+        if ( !$this->has_multiple_values && $files ) {
             $files = array( $files );
         }
 
@@ -192,7 +192,13 @@ class LF_Form_File extends LF_Form_Control {
     function load_post_value() {
         $this->value = array();
 
-        if ( !isset( $_FILES['files'] ) ) return;
+        if ( !isset( $_FILES['files'] ) ) {
+            return;
+        }
+
+        if ( $_POST['input-name'] != $this->atts['name'] ) {
+            return;
+        }
 
         $this->set_upload_options();
 

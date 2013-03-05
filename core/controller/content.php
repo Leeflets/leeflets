@@ -26,13 +26,34 @@ class LF_Controller_Content extends LF_Controller {
 		return compact( 'form', 'head' );
 	}
 
+	function _get_single_field( $field_name ) {
+		$ids = LF_String::parse_array_representation( $field_name );
+
+		if ( !isset( $ids[0] ) ) {
+			echo json_encode( array( 'error' => 'Could not parse form field name.' ) );
+			exit;
+		}
+
+		$fieldset_id = array( $ids[0] );
+		$form = $this->template->get_form( $fieldset_id );
+		if ( !$form ) {
+			echo json_encode( array( 'error' => 'Form field not found (#1).' ) );
+			exit;
+		}
+
+		$field = $form->vget_element( $ids );
+
+		if ( !$field ) {
+			echo json_encode( array( 'error' => 'Form field not found (#2).' ) );
+			exit;
+		}
+
+		return $field;
+	}
+
 	function upload() {
 		$field_name = $_REQUEST['input-name'];
-		$form = $this->template->get_single_field_form( $field_name );
-		if ( !$form ) exit;
-
-		$ids = LF_String::parse_array_representation( $field_name );
-		$field = $form->vget_element( $ids );
+		$field = $this->_get_single_field( $field_name );
 
 		if ( !$field->has_multiple_values ) {
 			$files = array( $field->value );
@@ -65,11 +86,9 @@ class LF_Controller_Content extends LF_Controller {
 	}
 
 	function remove_upload( $field_name, $index ) {
-		$form = $this->template->get_single_field_form( $field_name );
-		if ( !$form ) exit;
+		$field = $this->_get_single_field( $field_name );
 
 		$ids = LF_String::parse_array_representation( $field_name );
-		$field = $form->vget_element( $ids );
 		$files = $this->template->vget_content( $ids );
 
 		if ( $field->has_multiple_values ) {

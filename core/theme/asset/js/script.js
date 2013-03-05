@@ -138,6 +138,7 @@ function LEEFLETS() {
 			var $div = $(this),
 				$pad = $('.drop-pad', $div),
 				$file_input = $('input[type=file]', $div),
+				$progress = $('.progress', $div),
 				timeout = null;
 
 			$file_input.fileupload({
@@ -150,24 +151,22 @@ function LEEFLETS() {
 				dataType: 'json',
 				dropZone: $pad,
 				done: function (e, data) {
+					$progress.hide();
+
+					if (typeof data.result.error !== 'undefined') {
+						var $error = $(self.get_error_html(data.result.error));
+						$div.append($error);
+						$error.hide().fadeIn();
+						return;
+					}
+
 					$('.file-list', $div).remove();
-					$('.progress', $div).hide().after(data.result.list);
+					$progress.after(data.result.list);
 					self.file_list_events($div, $pad);
 
 					if (!$file_input.attr('multiple') && !$('.alert-error', $div)[0]) {
 						$pad.hide();
 					}
-
-					/*
-					$.each(data.result.files, function (index, file) {
-						if (typeof file.error !== 'undefined') {
-							$('.alert-error', $div).remove();
-							var $error = $(self.get_error_html(file.error));
-							$pad.before($error);
-							$error.hide().fadeIn();
-						}
-					});
-					*/
 
 					self.reload_viewer();
 				},

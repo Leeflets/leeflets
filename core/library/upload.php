@@ -520,74 +520,80 @@ class LF_Upload {
         $file->name = $this->get_file_name( $name, $type, $index, $content_range );
         $file->size = $this->fix_integer_overflow( intval( $size ) );
         $file->type = $type;
+        
         list( $img_width, $img_height ) = @getimagesize( $uploaded_file );
+        
         if ( is_int( $img_width ) ) {
             $file->width = $img_width;
             $file->height = $img_height;
         }
-        if ( $this->validate( $uploaded_file, $file, $error, $index ) ) {
-            $this->handle_form_data( $file, $index );
-            $upload_dir = $this->get_upload_path();
-            if ( !is_dir( $upload_dir ) ) {
-                mkdir( $upload_dir, $this->options['mkdir_mode'], true );
-            }
-            $file_path = $this->get_upload_path( $file->name );
-            $append_file = $content_range && is_file( $file_path ) &&
-                $file->size > $this->get_file_size( $file_path );
-            if ( $uploaded_file && is_uploaded_file( $uploaded_file ) ) {
-                // multipart/formdata uploads (POST method uploads)
-                if ( $append_file ) {
-                    file_put_contents(
-                        $file_path,
-                        fopen( $uploaded_file, 'r' ),
-                        FILE_APPEND
-                    );
-                } else {
-                    move_uploaded_file( $uploaded_file, $file_path );
-                }
-            } else {
-                // Non-multipart uploads (PUT method support)
+
+        if ( !$this->validate( $uploaded_file, $file, $error, $index ) ) {
+            return (array)$file;
+        }
+
+        $this->handle_form_data( $file, $index );
+        $upload_dir = $this->get_upload_path();
+        if ( !is_dir( $upload_dir ) ) {
+            mkdir( $upload_dir, $this->options['mkdir_mode'], true );
+        }
+        $file_path = $this->get_upload_path( $file->name );
+        $append_file = $content_range && is_file( $file_path ) &&
+            $file->size > $this->get_file_size( $file_path );
+        if ( $uploaded_file && is_uploaded_file( $uploaded_file ) ) {
+            // multipart/formdata uploads (POST method uploads)
+            if ( $append_file ) {
                 file_put_contents(
                     $file_path,
-                    fopen( 'php://input', 'r' ),
-                    $append_file ? FILE_APPEND : 0
+                    fopen( $uploaded_file, 'r' ),
+                    FILE_APPEND
                 );
+            } else {
+                move_uploaded_file( $uploaded_file, $file_path );
             }
-            $file_size = $this->get_file_size( $file_path, $append_file );
-            if ( $file_size === $file->size ) {
-                if ( $this->options['orient_image'] ) {
-                    $this->orient_image( $file_path );
-                }
-                $file->path = $this->get_file_path( $file->name );
-                foreach ( $this->options['image_versions'] as $version => $options ) {
-                    // Width and height are required
-                    if ( !isset( $options['width'] ) || !isset( $options['height'] ) ) {
-                        continue;
-                    }
-
-                    $options = array_merge( array(
-                        'crop' => false,
-                        'quality' => null
-                    ), $options );
-
-                    if ( $this->create_scaled_image( $file->name, $version, $options['width'], $options['height'], $options['crop'], $options['quality'] ) ) {
-                        if ( !empty( $version ) ) {
-                            $file->versions[$version] = array(
-                                'path' => $this->get_file_path( $file->name, $version ),
-                                'width' => $options['width'],
-                                'height' => $options['height']
-                            );
-                        } else {
-                            $file_size = $this->get_file_size( $file_path, true );
-                        }
-                    }
-                }
-            } else if ( !$content_range && $this->options['discard_aborted_uploads'] ) {
-                    unlink( $file_path );
-                    $file->error = 'abort';
-                }
-            $file->size = $file_size;
+        } else {
+            // Non-multipart uploads (PUT method support)
+            file_put_contents(
+                $file_path,
+                fopen( 'php://input', 'r' ),
+                $append_file ? FILE_APPEND : 0
+            );
         }
+        $file_size = $this->get_file_size( $file_path, $append_file );
+        if ( $file_size === $file->size ) {
+            if ( $this->options['orient_image'] ) {
+                $this->orient_image( $file_path );
+            }
+            $file->path = $this->get_file_path( $file->name );
+            foreach ( $this->options['image_versions'] as $version => $options ) {
+                // Width and height are required
+                if ( !isset( $options['width'] ) || !isset( $options['height'] ) ) {
+                    continue;
+                }
+
+                $options = array_merge( array(
+                    'crop' => false,
+                    'quality' => null
+                ), $options );
+
+                if ( $this->create_scaled_image( $file->name, $version, $options['width'], $options['height'], $options['crop'], $options['quality'] ) ) {
+                    if ( !empty( $version ) ) {
+                        $file->versions[$version] = array(
+                            'path' => $this->get_file_path( $file->name, $version ),
+                            'width' => $options['width'],
+                            'height' => $options['height']
+                        );
+                    } else {
+                        $file_size = $this->get_file_size( $file_path, true );
+                    }
+                }
+            }
+        } else if ( !$content_range && $this->options['discard_aborted_uploads'] ) {
+                unlink( $file_path );
+                $file->error = 'abort';
+            }
+        $file->size = $file_size;
+
         return (array)$file;
     }
 
@@ -654,9 +660,6 @@ class LF_Upload {
     }
 
     public function post( $print_response = true ) {
-        if ( isset( $_REQUEST['_method'] ) && $_REQUEST['_method'] === 'DELETE' ) {
-            return $this->delete( $print_response );
-        }
         $upload = isset( $_FILES[$this->options['param_name']] ) ?
             $_FILES[$this->options['param_name']] : null;
         // Parse the Content-Disposition header, if available:
@@ -702,6 +705,7 @@ class LF_Upload {
                 $content_range
             );
         }
+
         return $this->generate_response( $files, $print_response );
     }
 }

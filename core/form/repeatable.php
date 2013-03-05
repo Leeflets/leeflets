@@ -34,10 +34,9 @@ class LF_Form_Repeatable extends LF_Form_Fieldset {
         $args['class'] = 'well';
 
         for ( $i = 0; $i < $this->group_count; $i++ ) {
-            $id = $this->id . '[' . $i . ']';
-            $fieldset = new LF_Form_Fieldset( $this, $id, $args );
+            $fieldset = new LF_Form_Fieldset( $this, $i, $args );
             $fieldset->add_elements( $elements );
-            $this->elements[$id] = $fieldset;
+            $this->elements[$i] = $fieldset;
         }
     }
 

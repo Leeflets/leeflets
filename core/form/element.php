@@ -19,6 +19,14 @@ class LF_Form_Element {
         $this->atts = $args;
     }
 
+    function get_name() {
+        if ( null == $this->parent->parent ) {
+            return $this->id;
+        }
+
+        return $this->parent->get_name() . '[' . $this->id . ']';
+    }
+
     function get_form() {
         if ( null == $this->parent ) {
             return $this;
