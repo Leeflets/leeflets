@@ -141,7 +141,19 @@ class LF_Template {
 
 	public function vget_image_atts( $args ) {
 		$version = array_shift( $args );
-		$image = $this->vget_content( $args );
+
+		switch ( count( $args ) ) {
+			case 0:
+				return false;
+			case 1:
+				if ( !is_array( $args[0] ) ) {
+					return false;
+				}
+				$image = $args[0];
+				break;
+			default:
+				$image = $this->vget_content( $args );
+		}
 		
 		if ( isset( $image['versions'][$version] ) ) {
 			$image = $image['versions'][$version];
@@ -172,7 +184,7 @@ class LF_Template {
 		}
 
 		list( $src, $w, $h ) = $atts;
-		return sprintf( '<img src="%s" width="%s" height="%s" />', $src, $w, $h );
+		return sprintf( '<img src="%s" width="%s" height="%s" alt="" />', $src, $w, $h );
 	}
 
 	public function set_content_data( $values ) {
