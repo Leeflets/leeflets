@@ -46,17 +46,14 @@
                          ?>
                          <div class="one-quarter">
                              <?php
-                             $icon_image = $feature['icon'];
-                             
-                             if ( $icon_image !== '' ) {
-                                 $image_url = $this->get_uploads_url( $icon_image );
+                             if ( isset( $feature['icon'] ) && $icon_image = $this->get_image( 'icon@2x', $feature['icon'] ) ) {
+                                echo $icon_image;
                              }
                              else {
-                                 $image_url = $this->get_template_url( 'images/icon_0'.$i.'@2x.png' );
+                                printf( '<img src="%s" alt="" />', $this->get_template_url( 'images/icon_0'.$i.'@2x.png' ) );
                              }
                              ?>
 
-                             <img src="<?php echo $image_url; ?>" />
                              <h2><?php echo $feature['title']; ?></h2>
                              <p><?php echo $feature['text']; ?></p>
                          </div>

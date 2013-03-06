@@ -44,8 +44,15 @@ $content = array(
     	'empty-to-show' => 4,
     	'elements' => array(
     		'icon' => array(
-    			'type' => 'file',
+    			'type' => 'image',
     			'label' => 'Icon',
+				'versions' => array(
+					'icon@2x' => array(
+						'width' => 202,
+						'height' => 220,
+						'crop' => array( 'center', 'center' )
+					)
+				)
     		),
     		'title' => array(
     			'type' => 'text',
