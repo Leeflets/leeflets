@@ -35,6 +35,10 @@ class LF_Form_Element {
         return $this->parent->get_form();
     }
 
+    function get_value() {
+        return null;
+    }
+
     // Sets class variables in $list and unsets them from the $args array
     function special_args( $list, &$args, $unset = true ) {
         $vars = explode( ',', $list );

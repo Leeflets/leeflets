@@ -67,10 +67,32 @@ class LF_Form_Element_Collection extends LF_Form_Element {
         foreach ( $this->elements as $el ) {
             if ( method_exists( $el, 'set_value_from_array' ) ) {
                 $el->set_value_from_array( $values );
-            } 
+            }
             elseif ( method_exists( $el, 'set_values' ) ) {
                 $el->set_values( $values );
             }
         }
+    }
+
+    function get_value() {
+        return $this->get_values();
+    }
+
+    function get_values() {
+        $values = array();
+
+        foreach ( $this->elements as $id => $el ) {
+            $value = null;
+            
+            if ( method_exists( $el, 'get_value' ) ) {
+                $value = $el->get_value();
+            }
+
+            if ( !is_null( $value ) ) {
+                $values[$id] = $value;
+            }
+        }
+
+        return $values;
     }
 }

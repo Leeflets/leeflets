@@ -70,6 +70,10 @@ class LF_Form_Control extends LF_Form_Element {
         }
     }
 
+    function get_value() {
+        return $this->value;
+    }
+
     function pre_validate() {}
     function post_validate() {}
 

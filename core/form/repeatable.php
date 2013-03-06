@@ -39,13 +39,4 @@ class LF_Form_Repeatable extends LF_Form_Fieldset {
             $this->elements[$i] = $fieldset;
         }
     }
-
-    function set_values( $values ) {
-        if ( isset( $values[$this->id] ) ) {
-            $this->group_count = count( $values[$this->id] );
-            $this->elements = array();
-            $this->add_elements( $this->orig_elements );
-        }
-        parent::set_values( $values );
-    }
 }
