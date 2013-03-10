@@ -354,21 +354,23 @@ function LEEFLETS() {
 		});
 
 		$('.down', $group).click(function() {
-			self.swap($group.next(), $group);
-			var $repeatable = $group.parents('fieldset.repeatable');
-			self.sequence_fields($repeatable);
+			self.swap($group.next(), $group, function() {
+				var $repeatable = $group.parents('fieldset.repeatable');
+				self.sequence_fields($repeatable);
+			});
 			return false;
 		});
 
 		$('.up', $group).click(function() {
-			self.swap($group, $group.prev());
-			var $repeatable = $group.parents('fieldset.repeatable');
-			self.sequence_fields($repeatable);
+			self.swap($group, $group.prev(), function() {
+				var $repeatable = $group.parents('fieldset.repeatable');
+				self.sequence_fields($repeatable);
+			});
 			return false;
 		});
 	};
 
-	self.swap = function($el1, $el2) {
+	self.swap = function($el1, $el2, callback) {
 		var height = $el1.outerHeight() + $el2.outerHeight();
 		var $placeholder = $('<div />');
 		$placeholder.css({
@@ -384,6 +386,10 @@ function LEEFLETS() {
 			$el2.before($el1);
 			$el1.css({'top': 'auto'});
 			$el2.css({'top': 'auto'});
+			
+			if (callback) {
+				callback();
+			}
 		});
 	};
 
