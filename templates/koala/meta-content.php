@@ -17,23 +17,23 @@ $content = array(
 				'required' => true,
 				'tip' => 'This is the text displayed on your page.'
 			),
-			'button' => array(
-				'type' => 'fieldset',
-				'elements' => array(
-					'text' => array(
-						'type' => 'text',
-						'label' => 'Button Text',
-						'required' => true,
-						'tip' => 'The text for the intro button.'
-					),
-					'url' => array(
-						'type' => 'url',
-						'label' => 'Button Link',
-						'required' => true,
-						'tip' => 'The link for the intro button.',
-						'class' => 'input-block-level'
-					)
-				)
+		)
+	),
+	'button' => array(
+		'type' => 'fieldset',
+		'elements' => array(
+			'text' => array(
+				'type' => 'text',
+				'label' => 'Button Text',
+				'required' => true,
+				'tip' => 'The text for the intro button.'
+			),
+			'url' => array(
+				'type' => 'url',
+				'label' => 'Button Link',
+				'required' => true,
+				'tip' => 'The link for the intro button.',
+				'class' => 'input-block-level'
 			)
 		)
 	),

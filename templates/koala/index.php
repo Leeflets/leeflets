@@ -19,7 +19,7 @@
     </head>
 
     <body>
-        <div data-lf-edit="intro" id="header">
+        <div data-lf-edit="intro button" id="header">
             <div id="background" class="row">
                 <div id="intro" class="row">
                     <div class="two-thirds">
