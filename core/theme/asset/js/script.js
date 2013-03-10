@@ -58,6 +58,7 @@ function LEEFLETS() {
 	self.init = function() {
 		self.nav_events();
 		self.panel_events($('.panel.admin'));
+		self.panel_events_once($('.panel.admin'));
 		on_resize(self.set_sizes);
 		self.drag_events();
 		self.shortcut_keys();
@@ -235,17 +236,21 @@ function LEEFLETS() {
 		});
 	};
 
+	self.panel_events_once = function($panel) {
+		$('.button-bar .submit', $panel).click(function() {
+			$('.alert', $panel).hide();
+			$('.container-fluid', $panel).scrollTop(0);
+			$('form', $panel).submit();
+		});
+	};
+
 	self.panel_events = function($panel) {
-		self.field_events($panel, $panel);
+		self.field_events($panel);
 			
 		self.repeatable($panel);
-
+		
 		$('.close.panel', $panel).click(function() {
 			self.toggle_panel($panel);
-		});
-
-		$('.button-bar .submit', $panel).click(function() {
-			$('form', $panel).submit();
 		});
 
 		self.connection_field_events();
@@ -512,6 +517,7 @@ function LEEFLETS() {
 			$panel_container.append($panel);
 			$panel.hide();
 			self.panel_events($panel);
+			self.panel_events_once($panel);
 			self.toggle_panel($panel);
 		});
 
