@@ -16,13 +16,6 @@ class LF_Form_Repeatable extends LF_Form_Fieldset {
 
         $args['class'] = trim( $args['class'] . ' repeatable' );
 
-        if ( isset( $_POST[$id] ) ) {
-            $this->group_count = count( $_POST[$id] );
-        }
-        else {
-            $this->group_count = $this->empty_to_show;
-        }
-
         if ( isset( $args['elements'] ) ) {
             $this->orig_elements = $args['elements'];
         }
@@ -38,5 +31,24 @@ class LF_Form_Repeatable extends LF_Form_Fieldset {
             $fieldset->add_elements( $elements );
             $this->elements[$i] = $fieldset;
         }
+    }
+
+    function set_value_from_array( $array ) {
+        $value = $this->get_value_from_array( $this->id, $array );
+
+        // Recreate the field groups based on the new values
+        $this->elements = array();
+
+        if ( $value && is_array( $value ) ) {
+            $this->group_count = count( $value );
+        }
+        else {
+            $this->group_count = $this->empty_to_show;
+        }
+
+        $this->add_elements( $this->orig_elements );
+
+        // Set values for each of the fields in the field groups
+        $this->set_values( $array );
     }
 }
