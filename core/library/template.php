@@ -188,6 +188,10 @@ class LF_Template {
 	}
 
 	public function set_content_data( $values ) {
+		if ( !$values ) {
+			return false;
+		}
+
 		$file = new LF_Data_File( $this->get_content_data_file_path(), $this->config );
 		$file->write( $values, $this->filesystem );
 	}
