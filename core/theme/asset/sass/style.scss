@@ -20,8 +20,16 @@ a {
 
 }
 
+h3 {
+	font-weight:300;
+	font-size:2.4em;
+	line-height:1;
+}
+	
 small {
+	display:block;
 	color:#999999;
+	margin-top:8px;
 }
 
 @media (max-width:980px) {
@@ -33,11 +41,11 @@ small {
 
 .section-header {
 	margin:20px 0 20px;
-	border-bottom:1px solid #eeeeee;
+	border-bottom:1px solid #e5e5e5;
 }
 
 .underline {
-	border-bottom:1px solid #eeeeee;
+	border-bottom:1px solid #e5e5e5;
 	padding-bottom: 5px;
 }
 
@@ -68,10 +76,10 @@ small {
 }
 
 ul.details li {
-	border-top:1px solid #eeeeee;
+	border-top:1px solid #e5e5e5;
 	padding:8px 0;
 	&:last-child {
-		border-bottom:1px solid #eeeeee;
+		border-bottom:1px solid #e5e5e5;
 	}
 
 }
@@ -200,9 +208,22 @@ ul.details li {
 
 }
 
+button.close {
+	background:#e5e5e5;
+	color:#666666;
+	width:36px;
+	height:36px;
+	font-weight:300;
+	padding-bottom:4px;
+	opacity:1;
+	border-radius:50%;
+	-moz-border-radius:50%;
+	-webkit-border-radius:50%;
+}
+
 /* Forms*********************************************************************************************/
 textarea {
-	background-color:#f9f9f9;
+	background-color:#ffffff;
 	border:1px solid #dddddd;
 	-webkit-appearance:none;
 	-webkit-box-shadow:inset 0 1px 3px rgba(0,0,0,0.055);
@@ -212,7 +233,7 @@ textarea {
 
 input {
 	&[type="text"],&[type="password"],&[type="datetime"],&[type="datetime-local"],&[type="date"],&[type="month"],&[type="time"],&[type="week"],&[type="number"],&[type="email"],&[type="url"],&[type="search"],&[type="tel"],&[type="color"] {
-		background-color:#f9f9f9;
+		background-color:#ffffff;
 		border:1px solid #dddddd;
 		-webkit-appearance:none;
 		-webkit-box-shadow:inset 0 1px 3px rgba(0,0,0,0.055);
@@ -437,9 +458,7 @@ fieldset.connection {
 	width: 100%;
 	background-color: #fff;
 	padding: 15px 15px;
-	-webkit-box-shadow:0 1px 5px rgba(0,0,0,0.5);
-	-moz-box-shadow:0 1px 5px rgba(0,0,0,0.5);
-	box-shadow:0 1px 5px rgba(0,0,0,0.5);
+	border-top: 1px solid #e5e5e5;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 
@@ -477,6 +496,11 @@ fieldset.connection {
 
 	}
 
+}
+
+.modal-header h3 {
+	font-size:24.5px;
+	font-weight:bold;
 }
 
 .modal-backdrop {
@@ -624,13 +648,13 @@ fieldset.connection {
 }
 
 .primary-menu {
-	background:#222526;
+	background: #222526 url(../img/nav_bg.jpg) repeat;
 	width:80px;
 	float: left;
 	margin-left: -80px;
-	-webkit-box-shadow:0 1px 5px rgba(0,0,0,0.5);
-	-moz-box-shadow:0 1px 5px rgba(0,0,0,0.5);
-	box-shadow:0 1px 5px rgba(0,0,0,0.5);
+	-webkit-box-shadow:inset -1px -1px 1px rgba(0,0,0,1);
+	-moz-box-shadow:inset -1px -1px 1px rgba(0,0,0,1);
+	box-shadow:inset -1px -1px 1px rgba(0,0,0,1);
 
 	a {
 		outline: none;
@@ -638,11 +662,11 @@ fieldset.connection {
 }
 
 .admin {
-	background:#ffffff;
+	background:#f9f9f9;
 	width:600px;
-	-webkit-box-shadow:0 1px 5px rgba(0,0,0,0.5);
-	-moz-box-shadow:0 1px 5px rgba(0,0,0,0.5);
-	box-shadow:0 1px 5px rgba(0,0,0,0.5);
+	-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.5);
+	-moz-box-shadow:0 1px 3px rgba(0,0,0,0.5);
+	box-shadow:0 1px 3px rgba(0,0,0,0.5);
 	z-index:1020;
 
 	> .container-fluid {
