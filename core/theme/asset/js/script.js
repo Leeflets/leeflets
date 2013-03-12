@@ -336,11 +336,16 @@ function LEEFLETS() {
 		$('textarea', $root).show();
 	};
 
+	self.clear_field_values = function( $root ) {
+		$('input, textarea, select', $root).val('');
+		$('textarea.wysihtml5', $root).data('wysihtml5').editor.clear();
+	};
+
 	self.field_group_events = function( $group ) {
 
 		$('.add', $group).click(function() {
 			var $new = $group.clone();
-			$('input, textarea, select', $new).val('');
+			self.clear_field_values( $new );
 			$group.after($new);
 			self.cleanup_wysiwyg($new);
 			self.field_group_events($new);
@@ -352,7 +357,7 @@ function LEEFLETS() {
 		$('.remove', $group).click(function() {
 			var $repeatable = $group.parents('fieldset.repeatable');
 			if ( $('fieldset', $repeatable).length == 1 ) {
-				$('input, textarea, select', $group).val('');
+				self.clear_field_values( $group );
 				$group.hide();
 				$('.add-first', $repeatable).show();
 			}
