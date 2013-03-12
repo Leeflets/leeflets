@@ -258,6 +258,11 @@ function LEEFLETS() {
 		$('.alert', $panel).hide().fadeIn();
 
 		$('form', $panel).submit(function() {
+			// Remove any hidden field groups
+			$('fieldset.repeatable', this).each(function() {
+				$('fieldset:hidden', this).remove();
+			});
+
 			var request_data = $(this).serialize();
 			request_data += '&ajax=1';
 			$.post($(this).attr('action'), request_data, function(data) {
