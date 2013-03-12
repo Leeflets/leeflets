@@ -54,9 +54,12 @@ class LF_Controller_User extends LF_Controller {
 			exit;
 		}
 
-		$layout = 'logged-out';
+		$args = compact( 'form' );
 
-		return compact( 'form', 'layout' );
+		$args['page-title'] = 'Login';
+		$args['layout'] = 'logged-out';
+
+		return $args;
 	}
 
 	function logout() {

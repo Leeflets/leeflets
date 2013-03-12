@@ -46,6 +46,13 @@ class LF_View {
             $vars['content'] .= $content;
         }
 
+        if ( !isset( $vars['page-title'] ) || !$vars['page-title'] ) {
+            $vars['page-title'] = 'Leefets';
+        }
+        else {
+            $vars['page-title'] = $vars['page-title'] . ' &laquo; Leefets';
+        }
+
         echo $this->get_content( $this->config->theme_path . '/' . $layout . '.php', $vars );
     }
 

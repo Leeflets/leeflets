@@ -105,9 +105,12 @@ class LF_Controller_Setup extends LF_Controller {
 			exit;
 		}
 
-		$layout = 'logged-out';
+		$args = compact( 'form' );
 
-		return compact( 'form', 'layout' );
+		$args['page-title'] = 'Install';
+		$args['layout'] = 'logged-out';
+
+		return $args;
 	}
 
 	function _ftp_warning_html() {

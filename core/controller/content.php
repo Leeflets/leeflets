@@ -23,7 +23,10 @@ class LF_Controller_Content extends LF_Controller {
 			$this->template->set_content_data( $data );
 		}
 
-		return compact( 'form', 'head' );
+		$args = compact( 'form', 'head' );
+		$args['page-title'] = 'Edit Content';
+
+		return $args;
 	}
 
 	function _get_single_field( $field_name ) {
