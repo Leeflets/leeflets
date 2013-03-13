@@ -53,17 +53,13 @@ $nav2x: sprite-map("nav2x/*.png");
 		}
 
 		&.publish {
-			@include nav-sprite(publish, false, false);
-			opacity:1;
+			@include nav-sprite(publish);
 			position:absolute;
 			bottom:16px;
 			left:0;
 			right: 0;
 			margin: 0 auto;
-			
-			&:hover {
-				opacity:0.8;
-			}
+
 		}
 	}
 }

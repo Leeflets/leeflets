@@ -22,7 +22,7 @@ a {
 
 h3 {
 	font-weight:300;
-	font-size:2.4em;
+	font-size:32px;
 	line-height:1;
 }
 	
@@ -219,6 +219,8 @@ ul.details li {
 	border-radius:50%;
 	-moz-border-radius:50%;
 	-webkit-border-radius:50%;
+	-ms-border-radius:50%;
+	-o-border-radius:50%;
 }
 
 /* Forms*********************************************************************************************/
@@ -582,6 +584,25 @@ fieldset.connection {
 	padding: 1em 1.5em;
 	font-weight: bold;
 	z-index: 2000;
+}
+
+.alert-box.published {
+	left:50% !important;
+	top:50% !important;
+	font-size:36px;
+	color: #468847;
+	background-color:#dff0d8;
+	margin-top: -45px;
+	margin-left: -112px;
+	border-color:#d6e9c6;
+	border-radius:4px;
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	-ms-border-radius:4px;
+	-o-border-radius:4px;
+	-webkit-box-shadow:0px 0px 8px rgba(0,0,0,0.1);
+	-moz-box-shadow:0px 0px 8px rgba(0,0,0,0.1);
+	box-shadow:0px 0px 8px rgba(0,0,0,0.1);
 }
 
 .login-form, .install-form {
