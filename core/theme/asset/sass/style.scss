@@ -215,12 +215,16 @@ ul.details li {
 	height:36px;
 	font-weight:300;
 	padding-bottom:4px;
-	opacity:1;
+	opacity:0.6;
 	border-radius:50%;
 	-moz-border-radius:50%;
 	-webkit-border-radius:50%;
 	-ms-border-radius:50%;
 	-o-border-radius:50%;
+}
+
+.section-header button.close:hover {
+	opacity:1;
 }
 
 /* Forms*********************************************************************************************/
