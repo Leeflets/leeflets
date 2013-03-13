@@ -1,0 +1,8 @@
+.DS_Store
+.htaccess
+/config.php
+/data/
+/uploads/
+/core/theme/asset/.sass-cache/
+*.espressostorage
+/templates/applicant/
