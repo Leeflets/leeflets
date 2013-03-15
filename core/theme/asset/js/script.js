@@ -59,10 +59,10 @@ function LEEFLETS() {
 		self.nav_events();
 		self.panel_events($('.panel.admin'));
 		self.panel_events_once($('.panel.admin'));
-		on_resize(self.set_sizes);
 		self.drag_events();
 		self.shortcut_keys();
 		self.size_containers();
+		on_resize(self.size_containers);
 	};
 
 	self.size_containers = function() {
