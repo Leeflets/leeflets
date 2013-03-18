@@ -5,7 +5,7 @@ namespace Leeflets;
  * These static functions are used to capture content, classes, and variables
  * from included files while restricting their impact on the rest of the app.
  */
-class Include {
+class Inc {
 	// Include a file and keep it's scope contained
 	static function content( $path, $vars = array() ) {
 		extract( $vars );
