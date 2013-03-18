@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library\Template;
 
-class LF_Template_Upload {
+class Upload {
 	private $router;
 
 	function __construct( LF_Router $router ) {

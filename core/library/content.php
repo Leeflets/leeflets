@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library;
 
-class LF_Content {
+class Content {
 	private $config, $filesystem, $router,
 		$content, $settings, $hook;
 

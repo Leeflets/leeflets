@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library\Template;
 
-class LF_Template_Content {
+class Content {
 	private $data;
 
 	function __construct( $data ) {

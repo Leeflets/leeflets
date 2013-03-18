@@ -16,7 +16,7 @@ namespace Leeflets\Library\Filesystem;
  * @subpackage Filesystem
  * @uses LF_Filesystem_Base Extends class
  */
-class LF_Filesystem_Direct extends LF_Filesystem {
+class Direct extends LF_Filesystem {
 	var $errors = null;
 	/**
 	 * constructor

@@ -6,7 +6,7 @@ namespace Leeflets\Library;
  *
  */
 
-class LF_Assets {
+class Assets {
     var $registered = array();
     var $queue = array();
     var $to_do = array();

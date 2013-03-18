@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library\Form;
 
-class LF_Form_Image extends LF_Form_File {
+class Image extends LF_Form_File {
     protected $versions;
 
     function __construct( $parent, $id, $args = array() ) {

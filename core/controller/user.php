@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Controller;
 
-class LF_Controller_User extends LF_Controller {
+class User extends LF_Controller {
 	function login() {
 		
 		$form = new LF_Form( $this->config, $this->router, $this->settings, 'login-form', array(

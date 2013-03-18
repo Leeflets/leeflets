@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library;
 
-class LF_Htaccess {
+class Htaccess {
 	private $filesystem, $router, $config;
 
 	function __construct( $filesystem, LF_Router $router, LF_Config $config ) {

@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library\Form;
 
-class LF_Form_Checkbox extends LF_Form_Control {
+class Checkbox extends LF_Form_Control {
 
     function html() {
     	?>

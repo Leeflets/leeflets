@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library;
 
-class LF_View {
+class View {
 
     public $router, $config, $hook;
     public $enqueued_scripts, $enqueued_stylesheets;

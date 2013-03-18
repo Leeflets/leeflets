@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library\Form;
 
-class LF_Form_Select extends LF_Form_Control {
+class Select extends LF_Form_Control {
     public $options;
     
     function __construct( $parent, $id, $args = array() ) {

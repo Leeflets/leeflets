@@ -6,7 +6,7 @@ namespace Leeflets\Library;
  *
  */
 
-class LF_Styles extends LF_Assets {
+class Styles extends LF_Assets {
 	var $base_url;
 	var $content_url;
 	var $default_version;

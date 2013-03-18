@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library;
 
-class LF_Addon {
+class Addon {
 	private $config, $settings, $hook, $admin_script, $admin_style,
 		$template_script, $template_style;
 

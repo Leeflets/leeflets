@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library\Form;
 
-class LF_Form_File extends LF_Form_Control {
+class File extends LF_Form_Control {
     protected $drop_msg, $button_txt, $accept_types, $upload_options;
 
     function __construct( $parent, $id, $args = array() ) {

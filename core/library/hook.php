@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library;
 
-class LF_Hook {
+class Hook {
 
     private $hooks = array();
 

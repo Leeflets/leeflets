@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Controller;
 
-class LF_Controller_Store extends LF_Controller {
+class Store extends LF_Controller {
 	function templates() {
 		$templates = array();
 		$folders = glob( $this->config->templates_path . '/*' );

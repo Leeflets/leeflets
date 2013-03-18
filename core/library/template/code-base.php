@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library\Template;
 
-class LF_Template_Code_Base {
+class Code_Base {
 	protected $is_publish, $config, $filesystem, $router,
 		$content, $settings, $hook, $script, $style, $active_template;
 

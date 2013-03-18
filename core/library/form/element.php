@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library\Form;
 
-class LF_Form_Element {
+class Element {
 	public $parent, $id, $atts;
 
     function __construct( $parent, $id, $args = array() ) {

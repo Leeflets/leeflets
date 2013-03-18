@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library\Form;
 
-class LF_Form_Textarea extends LF_Form_Control {
+class Textarea extends LF_Form_Control {
     function __construct( $parent, $id, $args = array() ) {
         if ( !isset( $args['class'] ) ) {
             $args['class'] = 'input-block-level';

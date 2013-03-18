@@ -13,7 +13,7 @@ namespace Leeflets\Library\Filesystem;
  *
  * @since 0.1
  */
-class LF_Filesystem {
+class Filesystem {
 	/**
 	 * Whether to display debug data for the connection.
 	 *

@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library;
 
-class LF_Config {
+class Config {
 	public $path, $username, $password;
 	public $debug, $debug_display, $debug_log;
 	public $tmp_path, $fs_chmod_dir, $fs_chmod_file;

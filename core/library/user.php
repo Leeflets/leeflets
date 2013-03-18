@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library;
 
-class LF_User {
+class User {
 	public $config, $router;
 
 	function __construct( LF_Config $config, LF_Router $router ) {

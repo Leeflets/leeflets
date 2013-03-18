@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library\Admin;
 
-class LF_Admin_Styles extends LF_Styles {
+class Styles extends LF_Styles {
 	function __construct( $base_url, LF_Router $router ) {
 		parent::__construct( $base_url, $router );
 

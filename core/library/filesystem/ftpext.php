@@ -16,7 +16,7 @@ namespace Leeflets\Library\Filesystem;
  * @subpackage Filesystem
  * @uses WP_Filesystem_Base Extends class
  */
-class LF_Filesystem_Ftpext extends LF_Filesystem {
+class Ftpext extends LF_Filesystem {
 	public $link;
 	public $errors = null;
 	public $options = array();

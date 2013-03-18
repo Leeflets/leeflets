@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library;
 
-class LF_File {
+class File {
 	static function get_class_file_path( $config, $class ) {
 		if ( preg_match( '/^LF_Form(.*)/', $class, $matches ) ) {
 			$path = $config->form_path;

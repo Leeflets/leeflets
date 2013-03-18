@@ -6,7 +6,7 @@ namespace Leeflets\Library;
  * https://github.com/blueimp/jQuery-File-Upload
  */
 
-class LF_Upload {
+class Upload {
     protected $options;
     // PHP File Upload error message codes:
     // http://php.net/manual/en/features.file-upload.errors.php

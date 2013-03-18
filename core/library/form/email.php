@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Library\Form;
 
-class LF_Form_Email extends LF_Form_Control {
+class Email extends LF_Form_Control {
     function __construct( $parent, $id, $args = array() ) {
     	if ( !isset( $args['validation'] ) ) {
 			$args['validation'] = array();

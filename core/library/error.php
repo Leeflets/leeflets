@@ -19,7 +19,7 @@ namespace Leeflets\Library;
  *
  * @package Leeflets
  */
-class LF_Error {
+class Error {
 	/**
 	 * Stores the list of errors.
 	 *
