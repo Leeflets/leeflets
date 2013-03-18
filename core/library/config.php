@@ -34,11 +34,20 @@ class LF_Config {
 
 	function load() {
 		if ( !file_exists( $this->path ) ) return false;
-		require $this->path;
 
 		$required = array( 'username', 'password' );
+		$optional = array( 'debug', 'debug_display', 'debug_log', 'fs_chmod_dir', 'fs_chmod_file' );
+		$both = array_merge( $required, $optional );
+		
+		$vars = LF_Include::variables( $this->path, $both );
+
 		foreach ( $required as $var ) {
-			if ( is_null( $this->$var ) ) die( 'Missing ' . $var . ' from config.php.' );
+			if ( !isset( $vars[$var] ) ) die( 'Missing ' . $var . ' from config.php.' );
+		}
+
+		foreach ( $both as $var ) {
+			if ( !isset( $vars[$var] ) ) continue;
+			$this->$var = $vars[$var];
 		}
 
 		$this->is_loaded = true;
@@ -55,7 +64,7 @@ class LF_Config {
 		$out = "<?php\n";
 
 		foreach ( $data as $key => $value ) {
-			$out .= "\$this->" . $key . " = '" . addslashes( $value ) . "';\n";
+			$out .= "\$" . $key . " = '" . addslashes( $value ) . "';\n";
 		}
 
 		return $filesystem->put_contents( $path, $out );

@@ -75,10 +75,11 @@ class Leeflets {
 			$filesystem = new LF_Filesystem_Direct( $config );
 		}
 
-		$template = new LF_Template( $config, $filesystem, $router, $settings, $hook, $template_script, $template_style );
+		$content = new LF_Content( $config, $filesystem, $router, $settings, $hook );
+		$template = new LF_Template( $config, $filesystem, $router, $settings, $hook, $template_script, $template_style, $content );
 
 		$controller_class = $router->controller_class;
-		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template, $settings, $hook );
+		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template, $settings, $hook, $content );
 
 		//$view->controller = $controller;
 

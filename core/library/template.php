@@ -7,7 +7,7 @@ class LF_Template {
 	function __construct(
 		LF_Config $config, LF_Filesystem $filesystem, LF_Router $router, 
 		LF_Settings $settings, LF_Hook $hook, LF_Template_Scripts $script, 
-		LF_Template_Styles $style
+		LF_Template_Styles $style, LF_Content $content
 	) {
 		$this->config = $config;
 		$this->filesystem = $filesystem;
@@ -16,22 +16,8 @@ class LF_Template {
 		$this->hook = $hook;
 		$this->script = $script;
 		$this->style = $style;
-		$this->active_template = $this->settings->get ( 'template', 'active' );
-
-		$this->script->base_url = $this->style->base_url = $this->get_template_url();
-
-		$this->setup_default_hooks();
-	}
-
-	function setup_default_hooks() {
-		if ( trim( $this->settings->get( 'analytics', 'code' ) ) ) {
-			$placement = $this->settings->get( 'analytics', 'placement' );
-			$this->hook->add( $placement, array( $this, 'insert_analytics' ) );
-		}
-	}
-
-	function insert_analytics() {
-		echo $this->settings->get( 'analytics', 'code' );
+		$this->content = $content;
+		$this->active_template = $this->settings->get( 'template', 'active' );
 	}
 
 	function write() {
@@ -46,23 +32,7 @@ class LF_Template {
 		return $this->filesystem->put_contents( $file, $output );
 	}
 
-	function render( $is_write = false ) {
-		$this->include_code_file();
-
-		if ( !$is_write ) {
-			$url = $this->router->admin_url( '/core/theme/asset/js/frontend-edit.js' );
-			$this->enqueue_script( 'lf-frontend-edit', $url, array( 'jquery' ) );
-
-			if ( !$this->config->debug || !$this->settings->get( 'debug', 'disable-overlays' ) ) {
-				$url = $this->router->admin_url( '/core/theme/asset/js/frontend-overlay.js' );
-				$this->enqueue_script( 'lf-frontend-overlay', $url, array( 'jquery' ) );
-				$url = $this->router->admin_url( '/core/theme/asset/css/frontend-overlay.css' );
-				$this->enqueue_style( 'lf-frontend-overlay', $url );
-			}
-		}
-
-		$this->get_content_data();
-
+	function render( $is_publish = false ) {
 		$index_path = $this->template_file_path( 'index' );
 
 		if ( !file_exists( $index_path ) ) {
@@ -70,174 +40,72 @@ class LF_Template {
 			exit;
 		}
 
-		return $this->include_index();
+		// Temporary notification of API change
+		// We'll remove this before beta launch
+		if ( $files = $this->old_api_detected() ) {
+			die( '<div style="margin: 50px 100px; font-family: sans-serif; line-height: 1.4em;">
+				Ooops, looks like you haven\'t converted your template to our new API.<br />
+				We\'ve detected the following files making use of <code>$this-></code> which is now deprecated:<br /><ul>' . $files . '</ul>
+				For details on this, please see <a href="">the post on our Google+ Community</a>.</div>
+				' );
+		}
+
+		$code_path = $this->config->templates_path . '/' . $this->active_template . '/code.php';
+		LF_Include::class_file( $code_path );
+
+		$path = $this->config->templates_path . '/' . $this->active_template;
+		if ( class_exists( 'LF_Template_Code', false ) ) {
+			$template_class = 'LF_Template_Code';
+		}
+		else {
+			$template_class = 'LF_Template_Base';
+		}
+
+		$template = new $template_class( $is_publish, $this->config, $this->filesystem, $this->router, $this->settings, $this->hook, $this->script, $this->style, $this->content );
+
+		return LF_Include::content( $index_path, array(
+			'template' => $template,
+			'content' => new LF_Template_Content( $this->content->get_data() ),
+			'upload' => new LF_Template_Upload( $this->router ),
+			'image' => new LF_Template_Image( $this->router ),
+			'router' => $this->router,
+			'config' => $this->config,
+			'settings' => $this->settings,
+			'hook' => $this->hook
+		) );
 	}
 
-	private function include_index() {
-		ob_start();
-		include $this->template_file_path( 'index' );
-		return ob_get_clean();
-	}
-
-	public function template_url( $url = '' ) {
-		echo $this->get_template_url( $url );
-	}
-
-	public function get_template_url( $url = '' ) {
-		return $this->router->get_template_url( $this->active_template, $url );
-	}
-
-	public function uploads_url( $url = '' ) {
-		echo $this->get_uploads_url( $url );
-	}
-
-	public function get_uploads_url( $url = '' ) {
-		return $this->router->get_uploads_url( $url );
-	}
-
-	public function part( $file ) {
-		echo $this->get_part( $file );
-	}
-
-	public function get_part( $file ) {
-		ob_start();
-		include $this->template_file_path( 'part-' . $file );
-		return ob_get_clean();
-	}
-
-	public function setting() {
-		echo $this->settings->vget( func_get_args() );
-	}
-
-	public function get_setting() {
-		return $this->settings->vget( func_get_args() );
-	}
-
-	public function content() {
-		echo $this->vget_content( func_get_args() );
-	}
-
-	public function get_content() {
-		return $this->vget_content( func_get_args() );
-	}
-
-	public function vget_content( $keys ) {
-		$content = $this->get_content_data();
+	private function old_api_detected() {
+		$php_files = $this->glob_recursive( $this->config->templates_path . '/' . $this->active_template . '/*.php' );
+		$files = '';
 		
-		foreach ( $keys as $key ) {
-			if ( !isset( $content[$key] ) ) {
-				return '';
+		foreach ( $php_files as $file_path ) {
+			if ( 'code.php' == basename( $file_path ) ) {
+				continue;
 			}
 
-			$content = $content[$key];
+			$content = file_get_contents( $file_path );
+			if ( preg_match( '@' . preg_quote( '$this->' ) . '@', $content ) ) {
+				$files .= '<li>' . str_replace( $this->config->templates_path . '/', '', $file_path ) . '</li>';
+			}
 		}
 
-		return $content;
-	}
-
-	public function get_image_atts() {
-		return $this->vget_image_atts( func_get_args() );
-	}
-
-	public function vget_image_atts( $args ) {
-		$version = array_shift( $args );
-
-		switch ( count( $args ) ) {
-			case 0:
-				return false;
-			case 1:
-				if ( !is_array( $args[0] ) ) {
-					return false;
-				}
-				$image = $args[0];
-				break;
-			default:
-				$image = $this->vget_content( $args );
-		}
-		
-		if ( isset( $image['versions'][$version] ) ) {
-			$image = $image['versions'][$version];
-		}
-
-		if ( !isset( $image['path'] ) || !isset( $image['width'] ) || !isset( $image['height'] ) ) {
+		if ( empty( $files ) ) {
 			return false;
 		}
 
-		return array( $this->get_uploads_url( $image['path'] ), $image['width'], $image['height'] );
+		return $files;
 	}
 
-	public function image() {
-		$tag = $this->vget_image( func_get_args() );
-		if ( $tag ) {
-			echo $tag;
-		}
-	}
-
-	public function get_image() {
-		return $this->vget_image( func_get_args() );
-	}
-
-	public function vget_image( $args ) {
-		$atts = $this->vget_image_atts( $args );
-		if ( !$atts ) {
-			return false;
-		}
-
-		list( $src, $w, $h ) = $atts;
-		return sprintf( '<img src="%s" width="%s" height="%s" alt="" />', $src, $w, $h );
-	}
-
-	public function set_content_data( $values ) {
-		if ( !$values ) {
-			return false;
-		}
-
-		$file = new LF_Data_File( $this->get_content_data_file_path(), $this->config );
-		$file->write( $values, $this->filesystem );
-	}
-
-    function enqueue_script( $handle, $src, $deps = array(), $ver = false, $args = null ) {
-        $this->script->add_enqueue( $handle, $src, $deps, $ver, $args );
+	private function glob_recursive( $pattern, $flags = 0 ) {
+        $files = glob( $pattern, $flags );
+        
+        foreach ( glob( dirname( $pattern ) . '/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir ) {
+            $files = array_merge( $files, $this->glob_recursive( $dir . '/' . basename( $pattern ), $flags ) );
+        }
+        
+        return $files;
     }
-
-    function enqueue_style( $handle, $src, $deps = array(), $ver = false, $args = null ) {
-        $this->style->add_enqueue( $handle, $src, $deps, $ver, $args );
-    }
-
-	public function include_code_file() {
-		$file = $this->config->templates_path . '/' . $this->active_template . '/code.php';
-		if ( !file_exists( $file ) ) {
-			return false;
-		}
-
-		include $file;
-		return true;
-	}
-
-	public function get_content_data( $force_read_file = false ) {
-		if ( $this->content && !$force_read_file ) {
-			return $this->content;
-		}
-
-		$file = $this->get_content_data_file_path();
-		if ( !file_exists( $file ) ) {
-			$file = $this->config->templates_path . '/' . $this->active_template . '/sample.json.php';
-		}
-
-		if ( !file_exists( $file ) ) {
-			return array();
-		}
-
-		$file = new LF_Data_File( $file, $this->config );
-
-		$this->content = $file->read();
-
-		return $this->content;
-	}
-
-	private function get_content_data_file_path() {
-		return $this->config->data_path . '/content-' . $this->active_template . '.json.php';
-	}
 
 	private function template_file_path( $file ) {
 		$path = $this->config->templates_path . '/' . $this->active_template . '/' . $file . '.php';
@@ -250,16 +118,16 @@ class LF_Template {
 	function get_content_fields() {
 		$content_file = $this->template_file_path( 'meta-content' );
 		if ( !$content_file ) {
-			die( "Can't load meta-content.php from active template." );
+			die( "Active template's meta-content.php not found." );
 		}
 
-		include $content_file;
+		$vars = LF_Include::variables( $content_file, array( 'content' ) );
 
-		if ( !isset( $content ) ) {
+		if ( !isset( $vars['content'] ) ) {
 			die( "Can't load $content variable in the active template's meta-content.php." );
 		}
 
-		return $content;
+		return $vars['content'];
 	}
 
 	/**

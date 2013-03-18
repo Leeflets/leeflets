@@ -30,6 +30,10 @@ class LF_Settings extends LF_Data_File {
 		return $this->data;
 	}
 
+	function out() {
+		echo $this->vget( func_get_args() );
+	}
+
 	function get() {
 		return $this->vget( func_get_args() );
 	}

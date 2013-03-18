@@ -1,7 +1,7 @@
 <?php
 class LF_Controller_Content extends LF_Controller {
 	function edit() {
-		$data = $this->template->get_content_data();
+		$data = $this->content->get_data();
 
 		$fieldset_ids = func_get_args();
 
@@ -20,7 +20,7 @@ class LF_Controller_Content extends LF_Controller {
 			$values = $form->get_values();
 			$data = array_merge( $data, $values );
 
-			$this->template->set_content_data( $data );
+			$this->content->set_data( $data );
 		}
 
 		$args = compact( 'form', 'head' );
@@ -77,10 +77,10 @@ class LF_Controller_Content extends LF_Controller {
 
 		$input_array = LF_String::convert_representation_to_array( $field_name, $files );
 
-		$data = $this->template->get_content_data();
+		$data = $this->content->get_data();
 		$data = array_replace_recursive( $data, $input_array );
 
-		$this->template->set_content_data( $data );
+		$this->content->set_data( $data );
 
 		$list = $field->get_file_list_html();
 		echo json_encode( array( 'list' => $list ) );
@@ -137,13 +137,13 @@ class LF_Controller_Content extends LF_Controller {
 			}
 
 			$files_array = LF_String::convert_representation_to_array( $field_name, $files );
-			$data = $this->template->get_content_data();
+			$data = $this->content->get_data();
 			$_data =& $data;
 			foreach ( $ids as $id ) {
 				$data =& $data[$id];
 			}
 			$data = $files;
-			$this->template->set_content_data( $_data );
+			$this->content->set_data( $_data );
 
 			echo json_encode( array( 'success' => true ) );
 		}
