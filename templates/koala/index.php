@@ -5,17 +5,17 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
         <!-- Site Meta -->
-        <title><?php $this->setting( 'site-meta', 'title' ); ?></title>
-        <meta name="description" content="<?php $this->setting( 'site-meta', 'description' ); ?>">
-        <meta name="author" content="<?php $this->setting( 'site-meta', 'author' ); ?>">
+        <title><?php $settings->out( 'site-meta', 'title' ); ?></title>
+        <meta name="description" content="<?php $settings->out( 'site-meta', 'description' ); ?>">
+        <meta name="author" content="<?php $settings->out( 'site-meta', 'author' ); ?>">
 
         <!-- For Mobile Browsers -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Current Template Icons -->
-        <link rel="shortcut icon" href="<?php $this->template_url( 'images/favicon.png' ); ?>">
+        <link rel="shortcut icon" href="<?php $template->url( 'images/favicon.png' ); ?>">
 
-        <?php $this->hook->apply( 'head' ); ?>
+        <?php $hook->apply( 'head' ); ?>
     </head>
 
     <body>
@@ -23,9 +23,9 @@
             <div id="background" class="row">
                 <div id="intro" class="row">
                     <div class="two-thirds">
-                        <h1><?php $this->content( 'intro', 'title' ); ?></h1>
-                        <p><?php $this->content( 'intro', 'paragraph' ); ?></p>
-                        <a class="button" href="<?php $this->content( 'button', 'url' ); ?>"><?php $this->content( 'button', 'text' ); ?></a>
+                        <h1><?php $content->out( 'intro', 'title' ); ?></h1>
+                        <p><?php $content->out( 'intro', 'paragraph' ); ?></p>
+                        <a class="button" href="<?php $content->out( 'button', 'url' ); ?>"><?php $content->out( 'button', 'text' ); ?></a>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
         <div data-lf-edit="features" id="content">
             <div class="row centered">
                  <?php
-                 $features = $this->get_content( 'features' );
+                 $features = $content->get( 'features' );
                  if ( $features ) :
                      ?>
                  
@@ -46,11 +46,11 @@
                          ?>
                          <div class="one-quarter">
                              <?php
-                             if ( isset( $feature['icon'] ) && $icon_image = $this->get_image( 'icon@2x', $feature['icon'] ) ) {
+                             if ( isset( $feature['icon'] ) && $icon_image = $image->get( 'icon@2x', $feature['icon'] ) ) {
                                 echo $icon_image;
                              }
                              else {
-                                printf( '<img src="%s" alt="" />', $this->get_template_url( 'images/icon_0'.$i.'@2x.png' ) );
+                                printf( '<img src="%s" alt="" />', $template->get_url( 'images/icon_0'.$i.'@2x.png' ) );
                              }
                              ?>
 
@@ -70,24 +70,24 @@
         <div data-lf-edit="footer" id="footer">
             <div class="row">
                 <div class="one-half">
-                    <h3><?php $this->content( 'footer', 'copyright' ); ?></h3>
+                    <h3><?php $content->out( 'footer', 'copyright' ); ?></h3>
                 </div>
                 <div class="one-half">
                     <ul>
-                        <?php $footer = $this->get_content( 'footer' ); ?>
+                        <?php $footer = $content->get( 'footer' ); ?>
                         
                         <?php if ( $footer['twitter'] !== '' ) { ?>
-                        <li><a href="<?php $this->content( 'footer', 'twitter' ); ?>"><img src="<?php $this->template_url( 'images/twitter_btn@2x.png' ); ?>" /></a></li>
+                        <li><a href="<?php $content->out( 'footer', 'twitter' ); ?>"><img src="<?php $template->url( 'images/twitter_btn@2x.png' ); ?>" /></a></li>
                         <?php } ?>
                         
                         <?php if ( $footer['facebook'] !== '' ) { ?>
-                        <li><a href="<?php $this->content( 'footer', 'facebook' ); ?>"><img src="<?php $this->template_url( 'images/facebook_btn@2x.png' ); ?>" /></a></li>
+                        <li><a href="<?php $content->out( 'footer', 'facebook' ); ?>"><img src="<?php $template->url( 'images/facebook_btn@2x.png' ); ?>" /></a></li>
                         <?php } ?>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <?php $this->hook->apply( 'footer' ); ?>
+        <?php $hook->apply( 'footer' ); ?>
     </body>
 </html>
