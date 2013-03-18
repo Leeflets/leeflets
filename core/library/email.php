@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library;
+
 class LF_Email_Template {
     private $to;
     private $subject;

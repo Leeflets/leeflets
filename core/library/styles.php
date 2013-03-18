@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library;
+
 /**
  * Enqueuing styles (pulled in from WordPress)
  *

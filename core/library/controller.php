@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library;
+
 class LF_Controller {
 
     public $router, $view, $filesystem, $config, $user, 

@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library\Filesystem;
+
 /**
  * Base Leeflets Filesystem (borrowed from WordPress)
  *

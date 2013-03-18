@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library;
+
 /**
  * These static functions are used to capture content, classes, and variables
  * from included files while restricting their impact on the rest of the app.

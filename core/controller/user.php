@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Controller;
+
 class LF_Controller_User extends LF_Controller {
 	function login() {
 		

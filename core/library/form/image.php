@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library\Form;
+
 class LF_Form_Image extends LF_Form_File {
     protected $versions;
 

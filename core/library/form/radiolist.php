@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library\Form;
+
 class LF_Form_Radiolist extends LF_Form_Select {
     public $label_class = '';
 

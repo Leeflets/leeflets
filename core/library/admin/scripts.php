@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library\Admin;
+
 class LF_Admin_Scripts extends LF_Scripts {
 	function __construct( $base_url, LF_Router $router ) {
 		parent::__construct( $base_url, $router );

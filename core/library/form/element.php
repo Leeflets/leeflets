@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library\Form;
+
 class LF_Form_Element {
 	public $parent, $id, $atts;
 

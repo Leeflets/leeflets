@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library\Filesystem;
+
 /**
  * WordPress SSH2 Filesystem. (borrowed from WordPress)
  *

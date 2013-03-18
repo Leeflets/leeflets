@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library;
+
 class LF_Data_File {
 
 	public $filepath, $config;

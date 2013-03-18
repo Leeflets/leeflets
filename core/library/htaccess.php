@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library;
+
 class LF_Htaccess {
 	private $filesystem, $router, $config;
 

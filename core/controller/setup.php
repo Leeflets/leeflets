@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Controller;
+
 class LF_Controller_Setup extends LF_Controller {
 	function matching_passwords( $password2, $password1 ) {
 		return ( $_POST['password1'] == $_POST['password2'] );

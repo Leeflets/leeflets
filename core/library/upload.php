@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library;
+
 /*
  * Modified version of the jQuery File Upload Plugin PHP Class 6.1.1
  * https://github.com/blueimp/jQuery-File-Upload

@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library;
+
 class LF_Router {
 
     public $request_url, $base_request_url, $request_path, $is_ajax;

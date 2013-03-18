@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library\Form;
+
 class LF_Form_Repeatable extends LF_Form_Fieldset {
     public $empty_to_show, $orig_elements, $group_count;
     

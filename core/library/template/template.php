@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library\Template;
+
 class LF_Template {
 	private $config, $filesystem, $router,
 		$active_template, $content, $settings,

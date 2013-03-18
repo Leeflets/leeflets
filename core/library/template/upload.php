@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library\Template;
+
 class LF_Template_Upload {
 	private $router;
 

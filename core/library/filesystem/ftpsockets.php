@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library\Filesystem;
+
 /**
  * WordPress FTP Sockets Filesystem. (borrowed from WordPress)
  *

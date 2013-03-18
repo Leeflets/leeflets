@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library\Form;
+
 class LF_Form_Text extends LF_Form_Control {
 	function html_middle() {
 		?>

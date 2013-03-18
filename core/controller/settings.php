@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Controller;
+
 class LF_Controller_Settings extends LF_Controller {
 	function edit() {
 		if ( isset( $_POST['connection']['type'] ) ) {

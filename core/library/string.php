@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library;
+
 class LF_String {
     static function valid_email( $string ) {
         return false !== strpos( $string, '@' );

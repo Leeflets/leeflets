@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library;
+
 class Leeflets {
 
 	const PHP_VERSION_REQUIRED = '5.3';

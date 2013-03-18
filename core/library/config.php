@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\Library;
+
 class LF_Config {
 	public $path, $username, $password;
 	public $debug, $debug_display, $debug_log;
