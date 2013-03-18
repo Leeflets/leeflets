@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Admin;
+namespace Leeflets\Admin;
 
 class Scripts extends LF_Scripts {
 	function __construct( $base_url, LF_Router $router ) {

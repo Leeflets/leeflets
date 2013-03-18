@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library;
+namespace Leeflets;
 
 class Addon {
 	private $config, $settings, $hook, $admin_script, $admin_style,

@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Form;
+namespace Leeflets\Form;
 
 class Select extends LF_Form_Control {
     public $options;

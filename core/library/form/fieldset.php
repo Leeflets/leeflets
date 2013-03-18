@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Form;
+namespace Leeflets\Form;
 
 class Fieldset extends LF_Form_Element_Collection {
     public $title, $description;

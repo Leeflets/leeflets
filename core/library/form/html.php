@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Form;
+namespace Leeflets\Form;
 
 class Html extends LF_Form_Element {
 	function html() {

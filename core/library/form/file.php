@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Form;
+namespace Leeflets\Form;
 
 class File extends LF_Form_Control {
     protected $drop_msg, $button_txt, $accept_types, $upload_options;

@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library;
+namespace Leeflets;
 
 class File {
 	static function get_class_file_path( $config, $class ) {

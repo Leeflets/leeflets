@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Form;
+namespace Leeflets\Form;
 
 class Element {
 	public $parent, $id, $atts;

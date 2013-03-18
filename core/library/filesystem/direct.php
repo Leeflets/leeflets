@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Filesystem;
+namespace Leeflets\Filesystem;
 
 /**
  * WordPress Direct Filesystem. (borrowed from WordPress)

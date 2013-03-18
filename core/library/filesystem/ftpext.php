@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Filesystem;
+namespace Leeflets\Filesystem;
 
 /**
  * Leeflets FTP Filesystem. (borrowed from WordPress)

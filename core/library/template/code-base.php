@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Template;
+namespace Leeflets\Template;
 
 class Code_Base {
 	protected $is_publish, $config, $filesystem, $router,

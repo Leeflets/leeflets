@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library;
+namespace Leeflets;
 
 /**
  * Enqueuing assets (pulled in from WordPress)

@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Form;
+namespace Leeflets\Form;
 
 class Checklist extends LF_Form_Select {
     public $label_class = '';

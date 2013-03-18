@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Form;
+namespace Leeflets\Form;
 
 class Button extends LF_Form_Element {
     function __construct( $parent, $id, $args = array() ) {

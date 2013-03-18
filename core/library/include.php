@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library;
+namespace Leeflets;
 
 /**
  * These static functions are used to capture content, classes, and variables

@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library;
+namespace Leeflets;
 
 class Controller {
 

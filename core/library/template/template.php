@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Template;
+namespace Leeflets\Template;
 
 class Template {
 	private $config, $filesystem, $router,

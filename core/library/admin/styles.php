@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Admin;
+namespace Leeflets\Admin;
 
 class Styles extends LF_Styles {
 	function __construct( $base_url, LF_Router $router ) {

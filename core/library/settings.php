@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library;
+namespace Leeflets;
 
 class Settings extends LF_Data_File {
 	private $data;

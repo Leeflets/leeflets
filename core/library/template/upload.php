@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Template;
+namespace Leeflets\Template;
 
 class Upload {
 	private $router;

@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library;
+namespace Leeflets;
 
 /*
  * Modified version of the jQuery File Upload Plugin PHP Class 6.1.1

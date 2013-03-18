@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library;
+namespace Leeflets;
 
 /**
  * Enqueuing scripts (pulled in from WordPress)

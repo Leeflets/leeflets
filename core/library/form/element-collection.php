@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Form;
+namespace Leeflets\Form;
 
 class Element_Collection extends LF_Form_Element {
     public $elements, $errors;

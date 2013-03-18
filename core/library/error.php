@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library;
+namespace Leeflets;
 
 /**
  * Leeflets Error API. (inspired by WordPress)

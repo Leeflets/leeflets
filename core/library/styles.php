@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library;
+namespace Leeflets;
 
 /**
  * Enqueuing styles (pulled in from WordPress)

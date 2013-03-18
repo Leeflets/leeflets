@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Form;
+namespace Leeflets\Form;
 
 class Date extends LF_Form_Control {
     public $date_format = 'mm/dd/yyyy';

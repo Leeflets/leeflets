@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Library\Form;
+namespace Leeflets\Form;
 
 class Control extends LF_Form_Element {
     public $required, $required_msg, $validation, $name, $label,
