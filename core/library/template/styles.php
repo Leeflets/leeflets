@@ -1,5 +1,5 @@
 <?php
 namespace Leeflets\Template;
 
-class Styles extends LF_Styles {
+class Styles extends Leeflets\Styles {
 }

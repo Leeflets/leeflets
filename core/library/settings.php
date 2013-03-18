@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets;
 
-class Settings extends LF_Data_File {
+class Settings extends Data_File {
 	private $data;
 	
 	function __construct( LF_Config $config ) {

@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Form;
 
-class Checklist extends LF_Form_Select {
+class Checklist extends Select {
     public $label_class = '';
 
     function __construct( $parent, $id, $args = array() ) {

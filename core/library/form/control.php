@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Form;
 
-class Control extends LF_Form_Element {
+class Control extends Element {
     public $required, $required_msg, $validation, $name, $label,
         $tip, $errors, $value, $class, $pattern, $pattern_msg, 
         $column_width;

@@ -6,7 +6,7 @@ namespace Leeflets;
  *
  */
 
-class Scripts extends LF_Assets {
+class Scripts extends Assets {
 	var $base_url; // Full URL with trailing slash
 	var $content_url;
 	var $default_version;

@@ -1,5 +1,5 @@
 <?php
 namespace Leeflets\Template;
 
-class Scripts extends LF_Scripts {
+class Scripts extends Leeflets\Scripts {
 }

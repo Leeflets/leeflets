@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Controller;
 
-class Home extends LF_Controller {
+class Home extends Leeflets\Controller {
 	function index() {
 	}
 }

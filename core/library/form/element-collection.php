@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Form;
 
-class Element_Collection extends LF_Form_Element {
+class Element_Collection extends Element {
     public $elements, $errors;
 
     function __construct( $parent, $id, $args = array() ) {

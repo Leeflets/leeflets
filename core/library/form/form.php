@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Form;
 
-class Form extends LF_Form_Element_Collection {
+class Form extends Element_Collection {
     public $config, $router, $settings;
     
     function __construct( LF_Config $config, LF_Router $router, LF_Settings $settings, $id, $args = array() ) {

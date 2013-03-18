@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Form;
 
-class Html extends LF_Form_Element {
+class Html extends Element {
 	function html() {
 		echo $this->value;
 	}

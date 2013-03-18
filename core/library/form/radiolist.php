@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Form;
 
-class Radiolist extends LF_Form_Select {
+class Radiolist extends Select {
     public $label_class = '';
 
     function __construct( $parent, $id, $args = array() ) {

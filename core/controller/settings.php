@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Controller;
 
-class Settings extends LF_Controller {
+class Settings extends Leeflets\Controller {
 	function edit() {
 		if ( isset( $_POST['connection']['type'] ) ) {
 			if ( 'direct' == $_POST['connection']['type'] ) {

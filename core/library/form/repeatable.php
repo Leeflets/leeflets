@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Form;
 
-class Repeatable extends LF_Form_Fieldset {
+class Repeatable extends Fieldset {
     public $empty_to_show, $orig_elements, $group_count;
     
     function __construct( $parent, $id, $args = array() ) {

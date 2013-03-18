@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Form;
 
-class Button extends LF_Form_Element {
+class Button extends Element {
     function __construct( $parent, $id, $args = array() ) {
     	$this->special_args( 'button-type', $args );
 

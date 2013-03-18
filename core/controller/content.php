@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Controller;
 
-class Content extends LF_Controller {
+class Content extends Leeflets\Controller {
 	function edit() {
 		$data = $this->content->get_data();
 

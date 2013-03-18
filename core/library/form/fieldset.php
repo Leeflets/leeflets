@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Form;
 
-class Fieldset extends LF_Form_Element_Collection {
+class Fieldset extends Element_Collection {
     public $title, $description;
     
     function __construct( $parent, $id, $args = array() ) {

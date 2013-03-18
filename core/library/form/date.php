@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Form;
 
-class Date extends LF_Form_Control {
+class Date extends Control {
     public $date_format = 'mm/dd/yyyy';
 
     function __construct( $parent, $id, $args = array() ) {
