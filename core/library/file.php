@@ -7,13 +7,6 @@ class File {
 			$path = $config->controller_path;
 			$file = $matches[1];
 		}
-		elseif ( 
-			preg_match( '/^Leeflets\\\External\\\(.*)/', $class, $matches )
-			&& $_file = self::third_party_file( $matches[1] )
-		) {
-			$path = $config->third_party_path;
-			$file = $_file;
-		}
 		elseif ( preg_match( '/^Leeflets\\\(.*)/', $class, $matches ) ) {
 			$path = $config->library_path;
 			$file = $matches[1];
@@ -24,6 +17,10 @@ class File {
 				$path = $path . '/' . String::decamelize( $namespace );
 				$file = substr( $matches[1], $pos + 1 );
 			}
+		}
+		elseif ( $_file = self::third_party_file( $class ) ) {
+			$path = $config->third_party_path;
+			$file = $_file;
 		}
 
 		if ( !isset( $path ) ) return false;

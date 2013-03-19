@@ -15,7 +15,7 @@ class User {
 
 	function get_cookie_value( $expiration ) {
 		$pass_frag = substr( $this->config->password, 8, 4 );
-		$hasher = new \Leeflets\External\PasswordHash( 8, false );
+		$hasher = new \PasswordHash( 8, false );
 		$hash = $hasher->HashPassword( $this->config->username . '|' . $expiration . '|' . $pass_frag );
 		return $this->config->username . '|' . $expiration . '|' . $hash;
 	}
@@ -69,7 +69,7 @@ class User {
 		$pass_frag = substr( $this->config->password, 8, 4 );
 		$value = $username . '|' . $expiration . '|' . $pass_frag;
 
-		$hasher = new \Leeflets\External\PasswordHash( 8, false );
+		$hasher = new \PasswordHash( 8, false );
 		return $hasher->CheckPassword( $value, $hash );
 	}
 

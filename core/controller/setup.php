@@ -87,7 +87,7 @@ class Setup extends \Leeflets\Controller {
 		$form->add_elements( $elements );
 
 		if ( $form->validate() ) {
-			$hasher = new \Leeflets\External\PasswordHash( 8, false );
+			$hasher = new \PasswordHash( 8, false );
 
 			$data = array(
 				'username' => $_POST['credentials']['username'],

@@ -83,7 +83,7 @@ class User extends \Leeflets\Controller {
 	}
 
 	function _check_password( $value ) {
-		$hasher = new \Leeflets\External\PasswordHash( 8, false );
+		$hasher = new \PasswordHash( 8, false );
 		return $hasher->CheckPassword( $value, $this->config->password );
 	}
 }
