@@ -52,7 +52,7 @@ class User extends \Leeflets\Controller {
 
 		if ( $form->validate() ) {
 			$this->user->set_cookie();
-			Router::redirect( $this->router->admin_url() );
+			\Leeflets\Router::redirect( $this->router->admin_url() );
 			exit;
 		}
 

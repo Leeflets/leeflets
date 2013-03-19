@@ -103,7 +103,7 @@ class Setup extends \Leeflets\Controller {
 				$this->settings->save_connection_info( $_POST, $this->filesystem );
 			}
 
-			Router::redirect( $this->router->admin_url( '/user/login/' ) );
+			\Leeflets\Router::redirect( $this->router->admin_url( '/user/login/' ) );
 			exit;
 		}
 
