@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Controller;
 
-class Setup extends Leeflets\Controller {
+class Setup extends \Leeflets\Controller {
 	function matching_passwords( $password2, $password1 ) {
 		return ( $_POST['password1'] == $_POST['password2'] );
 	}
@@ -14,7 +14,7 @@ class Setup extends Leeflets\Controller {
 		$password_min_length = 5;
 		$password_max_length = 72;
 
-		$form = new LF_Form( $this->config, $this->router, $this->settings, 'install-form', array(
+		$form = new \Leeflets\Form( $this->config, $this->router, $this->settings, 'install-form', array(
 			'elements' => array(
 				'credentials' => array(
 					'type' => 'fieldset',
@@ -87,7 +87,7 @@ class Setup extends Leeflets\Controller {
 		$form->add_elements( $elements );
 
 		if ( $form->validate() ) {
-			$hasher = new PasswordHash( 8, false );
+			$hasher = new \Leeflets\External\PasswordHash( 8, false );
 
 			$data = array(
 				'username' => $_POST['credentials']['username'],
@@ -96,14 +96,14 @@ class Setup extends Leeflets\Controller {
 			
 			$this->config->write( $this->filesystem, $data );
 
-			$htaccess = new LF_Htaccess( $this->filesystem, $this->router, $this->config );
+			$htaccess = new \Leeflets\Htaccess( $this->filesystem, $this->router, $this->config );
 			$htaccess->write();
 
 			if ( isset( $_POST['connection']['type'] ) ) {
 				$this->settings->save_connection_info( $_POST, $this->filesystem );
 			}
 
-			LF_Router::redirect( $this->router->admin_url( '/user/login/' ) );
+			Router::redirect( $this->router->admin_url( '/user/login/' ) );
 			exit;
 		}
 

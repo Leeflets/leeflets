@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Filesystem;
+namespace Leeflets;
 
 /**
  * Base Leeflets Filesystem (borrowed from WordPress)
@@ -115,7 +115,7 @@ class Filesystem {
 		}
 
 		if ( $name ) {
-			return 'LF_Filesystem_' . ucfirst( $name );
+			return '\\Leeflets\\Filesystem\\' . ucfirst( $name );
 		}
 
 		return false;
@@ -257,7 +257,7 @@ class Filesystem {
 	 */
 	function unique_filename( $dir, $filename ) {
 		// sanitize the file name before we begin processing
-		$filename = LF_File::sanitize_file_name( $filename );
+		$filename = File::sanitize_file_name( $filename );
 
 		// separate the filename into a name and extension
 		$info = pathinfo( $filename );
@@ -333,7 +333,7 @@ class Filesystem {
 	function find_folder( $folder ) {
 		if ( 'direct' == $this->method ) {
 			$folder = str_replace( '\\', '/', $folder ); //Windows path sanitisation
-			return LF_File::trailingslashit( $folder );
+			return File::trailingslashit( $folder );
 		}
 
 		$folder = preg_replace( '|^([a-z]{1}):|i', '', $folder ); //Strip out windows drive letter if it's there.
@@ -343,7 +343,7 @@ class Filesystem {
 			return $this->cache[ $folder ];
 
 		if ( $this->exists( $folder ) ) { //Folder exists at that absolute path.
-			$folder = LF_File::trailingslashit( $folder );
+			$folder = File::trailingslashit( $folder );
 			$this->cache[ $folder ] = $folder;
 			return $folder;
 		}
@@ -367,9 +367,9 @@ class Filesystem {
 	 */
 	function search_for_folder( $folder, $base = '.', $loop = false ) {
 		if ( empty( $base ) || '.' == $base )
-			$base = LF_File::trailingslashit( $this->cwd() );
+			$base = File::trailingslashit( $this->cwd() );
 
-		$folder = LF_File::untrailingslashit( $folder );
+		$folder = File::untrailingslashit( $folder );
 
 		$folder_parts = explode( '/', $folder );
 		$last_path = $folder_parts[ count( $folder_parts ) - 1 ];
@@ -386,7 +386,7 @@ class Filesystem {
 			// If it reaches the end, and still cant find it, it'll return false for the entire function.
 			if ( isset( $files[ $key ] ) ) {
 				//Lets try that folder:
-				$newdir = LF_File::trailingslashit( LF_File::path_join( $base, $key ) );
+				$newdir = File::trailingslashit( File::path_join( $base, $key ) );
 				if ( $this->verbose )
 					printf( __( 'Changing to %s' ) . '<br/>', $newdir );
 				if ( $ret = $this->search_for_folder( $folder, $newdir, $loop ) )
@@ -398,7 +398,7 @@ class Filesystem {
 		if ( isset( $files[ $last_path ] ) ) {
 			if ( $this->verbose )
 				printf( __( 'Found %s' ) . '<br/>',  $base . $last_path );
-			return LF_File::trailingslashit( $base . $last_path );
+			return File::trailingslashit( $base . $last_path );
 		}
 		if ( $loop )
 			return false; //Prevent this function from looping again.

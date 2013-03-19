@@ -12,7 +12,7 @@ class Leeflets {
 
 		require $admin_path . '/core/library/config.php';
 
-		$config = $this->config = new LF_Config( $admin_path );
+		$config = $this->config = new Config( $admin_path );
 
 		require $config->library_path . '/string.php';
 		require $config->library_path . '/file.php';
@@ -26,46 +26,46 @@ class Leeflets {
 		$is_login = preg_match( '@user/login/@', $_SERVER['REQUEST_URI'] );
 
 		if ( !$is_config_loaded ) {
-			$router = new LF_Router( $config, null, '/setup/install/' );
+			$router = new Router( $config, null, '/setup/install/' );
 			$is_install = true;
 		}
 		else {
-			$router = new LF_Router( $config );
+			$router = new Router( $config );
 			$is_install = false;
 		}
 
-		$hook = new LF_Hook();
+		$hook = new Hook();
 
-		$admin_script = new LF_Admin_Scripts( $router->admin_url, $router );
-		$admin_style = new LF_Admin_Styles( $router->admin_url, $router );
+		$admin_script = new Admin\Scripts( $router->admin_url, $router );
+		$admin_style = new Admin\Styles( $router->admin_url, $router );
 
         $hook->add( 'admin_head', array( $admin_style, 'do_items' ), 0, 10 );
         $hook->add( 'admin_head', array( $admin_script, 'do_head_items' ), 0, 10 );
         $hook->add( 'admin_footer', array( $admin_script, 'do_footer_items' ), 0, 10 );
 
-		$template_script = new LF_Template_Scripts( '', $router );
-		$template_style = new LF_Template_Styles( '', $router );
+		$template_script = new Template\Scripts( '', $router );
+		$template_style = new Template\Styles( '', $router );
 
         $hook->add( 'head', array( $template_style, 'do_items' ), 0, 10 );
         $hook->add( 'head', array( $template_script, 'do_head_items' ), 0, 10 );
         $hook->add( 'footer', array( $template_script, 'do_footer_items' ), 0, 10 );
 
-		$user = new LF_User( $config, $router );
+		$user = new User( $config, $router );
 
 		if ( !$user->is_logged_in() && !( $is_install || $is_login ) ) {
-			LF_Router::redirect( $router->admin_url( '/user/login/' ) );
+			Router::redirect( $router->admin_url( '/user/login/' ) );
 			exit;
 		}
 
-		$settings = new LF_Settings( $config );
+		$settings = new Settings( $config );
 		
-		$addon = new LF_Addon( $config, $settings, $hook, $admin_script, $admin_style, $template_script, $template_style );
+		$addon = new Addon( $config, $settings, $hook, $admin_script, $admin_style, $template_script, $template_style );
 		$addon->load_active();
 		
-		$view = new LF_View( $config, $router, $hook );
+		$view = new View( $config, $router, $hook );
 
 		if ( $settings->get( 'connection', 'type' ) && 'direct' != $settings->get( 'connection', 'type' ) ) {
-			$class_name = LF_Filesystem::get_class_name( $settings->get( 'connection', 'type' ) );
+			$class_name = Filesystem::get_class_name( $settings->get( 'connection', 'type' ) );
 			$filesystem = new $class_name( $config, array(
 					'connection_type' => $settings->get( 'connection', 'type' ),
 					'hostname' => $settings->get( 'connection', 'hostname' ),
@@ -74,22 +74,20 @@ class Leeflets {
 				) );
 		}
 		else {
-			$filesystem = new LF_Filesystem_Direct( $config );
+			$filesystem = new Filesystem\Direct( $config );
 		}
 
-		$content = new LF_Content( $config, $filesystem, $router, $settings, $hook );
-		$template = new LF_Template( $config, $filesystem, $router, $settings, $hook, $template_script, $template_style, $content );
+		$content = new Content( $config, $filesystem, $router, $settings, $hook );
+		$template = new Template( $config, $filesystem, $router, $settings, $hook, $template_script, $template_style, $content );
 
 		$controller_class = $router->controller_class;
 		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template, $settings, $hook, $content );
-
-		//$view->controller = $controller;
 
 		$controller->call_action();
 	}
 
 	function autoload( $class ) {
-		$path = LF_File::get_class_file_path( $this->config, $class );
+		$path = File::get_class_file_path( $this->config, $class );
 		if ( !$path ) return;
 		require $path;
 	}

@@ -8,7 +8,7 @@ class View {
 
     private $vars;
 
-    function __construct( LF_Config $config, LF_Router $router, LF_Hook $hook ) {
+    function __construct( Config $config, Router $router, Hook $hook ) {
         $this->config = $config;
         $this->router = $router;
         $this->hook = $hook;

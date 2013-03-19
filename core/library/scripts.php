@@ -22,7 +22,7 @@ class Scripts extends Assets {
 
 	private $router;
 
-	function __construct( $base_url, LF_Router $router ) {
+	function __construct( $base_url, Router $router ) {
 		$this->router = $router;
 		parent::__construct( $base_url );
 		
@@ -114,7 +114,7 @@ class Scripts extends Assets {
 		}
 
 		if ( !empty( $ver ) )
-			$src = LF_String::add_query_arg( 'ver', $ver, $src );
+			$src = String::add_query_arg( 'ver', $ver, $src );
 
 		//$src = esc_url( apply_filters( 'script_loader_src', $src, $handle ) );
 		$src = filter_var( $src, FILTER_SANITIZE_URL );

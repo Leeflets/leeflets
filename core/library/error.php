@@ -4,7 +4,7 @@ namespace Leeflets;
 /**
  * Leeflets Error API. (inspired by WordPress)
  *
- * Contains the LF_Error class
+ * Contains the Error class
  *
  * @package Leeflets
  */
@@ -13,7 +13,7 @@ namespace Leeflets;
  * Leeflets Error class.
  *
  * Container for checking for Leeflets errors and error messages. Return
- * LF_Error and use {@link is_wp_error()} to check if this class is returned.
+ * Error and use {@link is_wp_error()} to check if this class is returned.
  * Many core WordPress functions pass this class in the event of an error and
  * if not handled properly will result in code errors.
  *
@@ -52,7 +52,7 @@ class Error {
 	 * @param string|int $code    Error code
 	 * @param string  $message Error message
 	 * @param mixed   $data    Optional. Error data.
-	 * @return LF_Error
+	 * @return Error
 	 */
 	function __construct( $code = '', $message = '', $data = '' ) {
 		if ( empty( $code ) )
@@ -193,12 +193,12 @@ class Error {
 	/**
 	 * Check whether variable is a Leeflets Error.
 	 *
-	 * Looks at the object and if a LF_Error class. Does not check to see if the
-	 * parent is also LF_Error, so can't inherit LF_Error and still use this
+	 * Looks at the object and if a Error class. Does not check to see if the
+	 * parent is also Error, so can't inherit Error and still use this
 	 * function.
 	 *
 	 * @param mixed   $thing Check if unknown variable is Leeflets Error object.
-	 * @return bool True, if LF_Error. False, if not LF_Error.
+	 * @return bool True, if Error. False, if not Error.
 	 */
 	function is_a( $thing ) {
 		if ( is_object( $thing ) && is_a( $thing, 'LP_Error' ) )

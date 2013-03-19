@@ -139,7 +139,7 @@ class Styles extends Assets {
 		}
 
 		if ( !empty( $ver ) )
-			$src = LF_String::add_query_arg( 'ver', $ver, $src );
+			$src = String::add_query_arg( 'ver', $ver, $src );
 		//$src = apply_filters( 'style_loader_src', $src, $handle );
 		return filter_var( $src, FILTER_SANITIZE_URL );
 	}

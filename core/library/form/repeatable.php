@@ -29,7 +29,7 @@ class Repeatable extends Fieldset {
         $args['class'] = 'well';
 
         for ( $i = 0; $i < $this->group_count; $i++ ) {
-            $fieldset = new LF_Form_Fieldset( $this, $i, $args );
+            $fieldset = new Fieldset( $this, $i, $args );
             $fieldset->add_elements( $elements );
             $this->elements[$i] = $fieldset;
         }

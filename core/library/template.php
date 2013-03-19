@@ -1,5 +1,5 @@
 <?php
-namespace Leeflets\Template;
+namespace Leeflets;
 
 class Template {
 	private $config, $filesystem, $router,
@@ -7,9 +7,9 @@ class Template {
 		$hook, $script, $style;
 
 	function __construct(
-		LF_Config $config, LF_Filesystem $filesystem, LF_Router $router, 
-		LF_Settings $settings, LF_Hook $hook, LF_Template_Scripts $script, 
-		LF_Template_Styles $style, LF_Content $content
+		Config $config, Filesystem $filesystem, Router $router, 
+		Settings $settings, Hook $hook, Template\Scripts $script, 
+		Template\Styles $style, Content $content
 	) {
 		$this->config = $config;
 		$this->filesystem = $filesystem;
@@ -53,23 +53,23 @@ class Template {
 		}
 
 		$code_path = $this->config->templates_path . '/' . $this->active_template . '/code.php';
-		LF_Include::class_file( $code_path );
+		Inc::class_file( $code_path );
 
 		$path = $this->config->templates_path . '/' . $this->active_template;
-		if ( class_exists( 'LF_Template_Code', false ) ) {
-			$template_class = 'LF_Template_Code';
+		if ( class_exists( '\User\Template\Code', false ) ) {
+			$template_class = '\User\Template\Code';
 		}
 		else {
-			$template_class = 'LF_Template_Base';
+			$template_class = '\Leeflets\Template\Code';
 		}
 
 		$template = new $template_class( $is_publish, $this->config, $this->filesystem, $this->router, $this->settings, $this->hook, $this->script, $this->style, $this->content );
 
-		return LF_Include::content( $index_path, array(
+		return Inc::content( $index_path, array(
 			'template' => $template,
-			'content' => new LF_Template_Content( $this->content->get_data() ),
-			'upload' => new LF_Template_Upload( $this->router ),
-			'image' => new LF_Template_Image( $this->router ),
+			'content' => new Template\Content( $this->content->get_data() ),
+			'upload' => new Template\Upload( $this->router ),
+			'image' => new Template\Image( $this->router ),
 			'router' => $this->router,
 			'config' => $this->config,
 			'settings' => $this->settings,
@@ -123,7 +123,7 @@ class Template {
 			die( "Active template's meta-content.php not found." );
 		}
 
-		$vars = LF_Include::variables( $content_file, array( 'content' ) );
+		$vars = Inc::variables( $content_file, array( 'content' ) );
 
 		if ( !isset( $vars['content'] ) ) {
 			die( "Can't load $content variable in the active template's meta-content.php." );
@@ -158,7 +158,7 @@ class Template {
 			$url .= urlencode( $id ) . '/';
 		}
 
-		return new LF_Form( $this->config, $this->router, $this->settings, 'edit-content', array(
+		return new Form( $this->config, $this->router, $this->settings, 'edit-content', array(
 			'elements' => $fields,
 			'action' => $this->router->admin_url( '/content/edit/' . $url )
 		) );

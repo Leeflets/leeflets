@@ -4,7 +4,7 @@ namespace Leeflets;
 class Htaccess {
 	private $filesystem, $router, $config;
 
-	function __construct( $filesystem, LF_Router $router, LF_Config $config ) {
+	function __construct( $filesystem, Router $router, Config $config ) {
 		$this->filesystem = $filesystem;
 		$this->router = $router;
 		$this->config = $config;

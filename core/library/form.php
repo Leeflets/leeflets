@@ -1,10 +1,10 @@
 <?php
-namespace Leeflets\Form;
+namespace Leeflets;
 
-class Form extends Element_Collection {
+class Form extends Form\Element_Collection {
     public $config, $router, $settings;
     
-    function __construct( LF_Config $config, LF_Router $router, LF_Settings $settings, $id, $args = array() ) {
+    function __construct( Config $config, Router $router, Settings $settings, $id, $args = array() ) {
         $this->config = $config;
         $this->router = $router;
         $this->settings = $settings;

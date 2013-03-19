@@ -3,26 +3,32 @@ namespace Leeflets;
 
 class File {
 	static function get_class_file_path( $config, $class ) {
-		if ( preg_match( '/^LF_Form(.*)/', $class, $matches ) ) {
-			$path = $config->form_path;
-			$file = ( isset( $matches[1] ) && $matches[1] ) ? trim( $matches[1], '_' ) : 'form';
-		}
-		elseif ( preg_match( '/^LF_Controller_(.*)/', $class, $matches ) ) {
+		if ( preg_match( '/^Leeflets\\\Controller\\\(.*)/', $class, $matches ) ) {
 			$path = $config->controller_path;
 			$file = $matches[1];
 		}
-		elseif ( preg_match( '/^LF_(.*)/', $class, $matches ) ) {
-			$path = $config->library_path;
-			$file = $matches[1];
-		}
-		elseif ( $_file = self::third_party_file( $class ) ) {
+		elseif ( 
+			preg_match( '/^Leeflets\\\External\\\(.*)/', $class, $matches )
+			&& $_file = self::third_party_file( $matches[1] )
+		) {
 			$path = $config->third_party_path;
 			$file = $_file;
+		}
+		elseif ( preg_match( '/^Leeflets\\\(.*)/', $class, $matches ) ) {
+			$path = $config->library_path;
+			$file = $matches[1];
+
+			$pos = strrpos( $matches[1],  '\\' );
+			if ( false !== $pos ) {
+				$namespace = substr( $matches[1], 0, $pos );
+				$path = $path . '/' . String::decamelize( $namespace );
+				$file = substr( $matches[1], $pos + 1 );
+			}
 		}
 
 		if ( !isset( $path ) ) return false;
 
-		return $path . '/' . LF_String::decamelize( $file ) . '.php';
+		return $path . '/' . String::decamelize( $file ) . '.php';
 	}
 
 	static function third_party_file( $class ) {

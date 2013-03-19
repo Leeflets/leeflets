@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Controller;
 
-class Store extends Leeflets\Controller {
+class Store extends \Leeflets\Controller {
 	function templates() {
 		$templates = array();
 		$folders = glob( $this->config->templates_path . '/*' );
@@ -37,7 +37,7 @@ class Store extends Leeflets\Controller {
 			)
 		);
 
-		$form = new LF_Form( $this->config, $this->router, $this->settings, 'templates-form', array(
+		$form = new \Leeflets\Form( $this->config, $this->router, $this->settings, 'templates-form', array(
 			'action' => $this->router->admin_url( 'store/templates/' ),
 			'elements' => $elements
 		) );

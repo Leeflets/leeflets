@@ -22,7 +22,7 @@ class Element_Collection extends Element {
 
 	function add_elements( $elements ) {
 		foreach ( $elements as $id => $el ) {
-			$class = 'LF_Form_' . LF_String::camelize( $el['type'] );
+			$class = '\\Leeflets\\Form\\' . \Leeflets\String::camelize( $el['type'] );
 
 			unset( $el['type'] );
 

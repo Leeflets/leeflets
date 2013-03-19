@@ -52,7 +52,7 @@ class WP_Filesystem_SSH2 extends WP_Filesystem {
 
 	function __construct($opt='') {
 		$this->method = 'ssh2';
-		$this->errors = new LF_Error();
+		$this->errors = new \Leeflets\Error();
 
 		//Check if possible to use ssh2 functions.
 		if ( ! extension_loaded('ssh2') ) {

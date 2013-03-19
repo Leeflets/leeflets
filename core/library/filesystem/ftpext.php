@@ -16,15 +16,15 @@ namespace Leeflets\Filesystem;
  * @subpackage Filesystem
  * @uses WP_Filesystem_Base Extends class
  */
-class Ftpext extends Leeflets\Filesystem {
+class Ftpext extends \Leeflets\Filesystem {
 	public $link;
 	public $errors = null;
 	public $options = array();
 
-	function __construct( LF_Config $config, $opt ) {
+	function __construct( \Leeflets\Config $config, $opt ) {
 		$this->config = $config;
 		$this->method = 'ftpext';
-		$this->errors = new LF_Error();
+		$this->errors = new \Leeflets\Error();
 
 		// Check if possible to use ftp functions.
 		if ( ! extension_loaded( 'ftp' ) ) {
@@ -206,10 +206,10 @@ class Ftpext extends Leeflets\Filesystem {
 		if ( !$recursive )
 			return @ftp_rmdir( $this->link, $file );
 
-		$filelist = $this->dirlist( LF_File::trailingslashit( $file ) );
+		$filelist = $this->dirlist( \Leeflets\File::trailingslashit( $file ) );
 		if ( !empty( $filelist ) )
 			foreach ( $filelist as $delete_file )
-				$this->delete( LF_File::trailingslashit( $file ) . $delete_file['name'], $recursive, $delete_file['type'] );
+				$this->delete( \Leeflets\File::trailingslashit( $file ) . $delete_file['name'], $recursive, $delete_file['type'] );
 			return @ftp_rmdir( $this->link, $file );
 	}
 
@@ -224,7 +224,7 @@ class Ftpext extends Leeflets\Filesystem {
 
 	function is_dir( $path ) {
 		$cwd = $this->cwd();
-		$result = @ftp_chdir( $this->link, LF_File::trailingslashit( $path ) );
+		$result = @ftp_chdir( $this->link, \Leeflets\File::trailingslashit( $path ) );
 		if ( $result && $path == $this->cwd() || $this->cwd() != $cwd ) {
 			@ftp_chdir( $this->link, $cwd );
 			return true;
@@ -259,7 +259,7 @@ class Ftpext extends Leeflets\Filesystem {
 	}
 
 	function mkdir( $path, $chmod = false, $chown = false, $chgrp = false ) {
-		$path = LF_File::untrailingslashit( $path );
+		$path = \Leeflets\File::untrailingslashit( $path );
 		if ( empty( $path ) )
 			return false;
 

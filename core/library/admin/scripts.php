@@ -1,8 +1,8 @@
 <?php
 namespace Leeflets\Admin;
 
-class Scripts extends Leeflets\Scripts {
-	function __construct( $base_url, LF_Router $router ) {
+class Scripts extends \Leeflets\Scripts {
+	function __construct( $base_url, \Leeflets\Router $router ) {
 		parent::__construct( $base_url, $router );
 
 		$this->enqueue( 'wysihtml5' );

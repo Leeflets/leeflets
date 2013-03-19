@@ -1,14 +1,14 @@
 <?php
 namespace Leeflets\Template;
 
-class Code_Base {
+class Code {
 	protected $is_publish, $config, $filesystem, $router,
 		$content, $settings, $hook, $script, $style, $active_template;
 
 	function __construct(
-		$is_publish, LF_Config $config, LF_Filesystem $filesystem, LF_Router $router, 
-		LF_Settings $settings, LF_Hook $hook, LF_Template_Scripts $script, 
-		LF_Template_Styles $style, LF_Content $content
+		$is_publish, \Leeflets\Config $config, \Leeflets\Filesystem $filesystem, \Leeflets\Router $router, 
+		\Leeflets\Settings $settings, \Leeflets\Hook $hook, Scripts $script, 
+		Styles $style, \Leeflets\Content $content
 	) {
 		$this->is_publish = $is_publish;
 		$this->config = $config;
@@ -25,16 +25,11 @@ class Code_Base {
 		$this->script->base_url = $this->style->base_url = $this->get_url();
 
 		$this->setup_default_hooks();
-
-		if ( method_exists( $this, 'setup_hooks' ) ) {
-			$this->setup_hooks();
-		}
+		$this->setup_hooks();
 	}
 
-	// To be overriden by the template's LF_Template_Code
-	function setup_hooks() {
-
-	}
+	// To be overriden by the template's class
+	function setup_hooks() {}
 
 	function setup_default_hooks() {
 		if ( !$this->is_publish ) {

@@ -22,6 +22,6 @@ class Email extends Control {
     }
 
     function valid_email( $value ) {
-    	return LF_String::valid_email( $value );
+    	return \Leeflets\String::valid_email( $value );
     }
 }

@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\External;
+
 /**
  * PemFTP - A Ftp implementation in pure PHP
  *

@@ -1,10 +1,10 @@
 <?php
 namespace Leeflets\Controller;
 
-class User extends Leeflets\Controller {
+class User extends \Leeflets\Controller {
 	function login() {
 		
-		$form = new LF_Form( $this->config, $this->router, $this->settings, 'login-form', array(
+		$form = new \Leeflets\Form( $this->config, $this->router, $this->settings, 'login-form', array(
 			'elements' => array(
 				'credentials' => array(
 					'type' => 'fieldset',
@@ -52,7 +52,7 @@ class User extends Leeflets\Controller {
 
 		if ( $form->validate() ) {
 			$this->user->set_cookie();
-			LF_Router::redirect( $this->router->admin_url() );
+			Router::redirect( $this->router->admin_url() );
 			exit;
 		}
 
@@ -83,7 +83,7 @@ class User extends Leeflets\Controller {
 	}
 
 	function _check_password( $value ) {
-		$hasher = new PasswordHash( 8, false );
+		$hasher = new \Leeflets\External\PasswordHash( 8, false );
 		return $hasher->CheckPassword( $value, $this->config->password );
 	}
 }

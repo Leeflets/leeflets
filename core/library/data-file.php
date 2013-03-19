@@ -5,7 +5,7 @@ class Data_File {
 
 	public $filepath, $config;
 
-	function __construct( $filepath, LF_Config $config ) {
+	function __construct( $filepath, Config $config ) {
 		$this->config = $config;
 
 		$this->filepath = $filepath;
@@ -15,7 +15,7 @@ class Data_File {
 		$filesystem->connect();
 		$path = $filesystem->translate_path( $this->filepath );
 		$out = "<?php exit; // No public access. ?>\n";
-		$out .= LF_String::json_prettify( json_encode( $data ) );
+		$out .= String::json_prettify( json_encode( $data ) );
 		return $filesystem->put_contents( $path, $out );
 	}
 

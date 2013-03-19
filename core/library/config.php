@@ -41,7 +41,7 @@ class Config {
 		$optional = array( 'debug', 'debug_display', 'debug_log', 'fs_chmod_dir', 'fs_chmod_file' );
 		$both = array_merge( $required, $optional );
 		
-		$vars = LF_Include::variables( $this->path, $both );
+		$vars = Inc::variables( $this->path, $both );
 
 		foreach ( $required as $var ) {
 			if ( !isset( $vars[$var] ) ) die( 'Missing ' . $var . ' from config.php.' );

@@ -1,8 +1,8 @@
 <?php
 namespace Leeflets\Admin;
 
-class Styles extends Leeflets\Styles {
-	function __construct( $base_url, LF_Router $router ) {
+class Styles extends \Leeflets\Styles {
+	function __construct( $base_url, \Leeflets\Router $router ) {
 		parent::__construct( $base_url, $router );
 
         $this->enqueue( 'bootstrap' );

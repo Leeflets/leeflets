@@ -7,9 +7,9 @@ class Controller {
         $template, $settings, $hook, $content;
 
     function __construct( 
-        LF_Router $router, LF_View $view, LF_Filesystem $filesystem,
-        LF_Config $config, LF_User $user, LF_Template $template, 
-        LF_Settings $settings, LF_Hook $hook, LF_Content $content
+        Router $router, View $view, Filesystem $filesystem,
+        Config $config, User $user, Template $template, 
+        Settings $settings, Hook $hook, Content $content
     ) {
         $this->router = $router;
         $this->view = $view;

@@ -89,21 +89,22 @@ class Router {
     
     private function set_controller_class() {
         $name = $this->controller_name;
+        $namespace = '\\Leeflets\\Controller\\';
 
         if ( !$name && !$this->action ) {
             $this->controller_name = 'home';
-            $this->controller_class = 'LF_Controller_Home';
+            $this->controller_class = $namespace . 'Home';
             $this->action = 'index';
             return;
         }
 
         $name = preg_replace( '@[/\-\.]@', '_', $name );
-        $class = 'LF_Controller_' . LF_String::camelize( $name );
+        $class = $namespace . String::camelize( $name );
 
-        $path = LF_File::get_class_file_path( $this->config, $class );
+        $path = File::get_class_file_path( $this->config, ltrim( $class, '\\' ) );
         if ( !file_exists( $path ) || !method_exists( $class, $this->action ) ) {
             $this->controller_name = 'error';
-            $this->controller_class = 'LF_Controller_Error';
+            $this->controller_class = $namespace . 'Error';
             $this->action = 'e404';
         }
         else {

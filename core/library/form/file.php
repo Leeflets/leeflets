@@ -204,7 +204,7 @@ class File extends Control {
 
         $this->set_upload_options();
 
-        $upload = new LF_Upload( $this->form->config, $this->form->router, $this->form->settings, $this->upload_options );
+        $upload = new \Leeflets\Upload( $this->form->config, $this->form->router, $this->form->settings, $this->upload_options );
         $this->value = $upload->post( false );
 
         if ( !$this->has_multiple_values && is_array( $this->value ) ) {

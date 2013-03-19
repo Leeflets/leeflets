@@ -186,7 +186,7 @@ class String {
         }
 
         parse_str( $query, $qs );
-        $qs = LF_String::urlencode_deep( $qs ); // this re-URL-encodes things that were already in the query string
+        $qs = self::urlencode_deep( $qs ); // this re-URL-encodes things that were already in the query string
         if ( is_array( $args[0] ) ) {
             $kayvees = $args[0];
             $qs = array_merge( $qs, $kayvees );
@@ -235,7 +235,7 @@ class String {
      * @return array|string $value The encoded array (or string from the callback).
      */
     function urlencode_deep( $value ) {
-        $value = is_array( $value ) ? array_map( 'LF_String::urlencode_deep', $value ) : urlencode( $value );
+        $value = is_array( $value ) ? array_map( '\Leeflets\String::urlencode_deep', $value ) : urlencode( $value );
         return $value;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Controller;
 
-class Content extends Leeflets\Controller {
+class Content extends \Leeflets\Controller {
 	function edit() {
 		$data = $this->content->get_data();
 
@@ -32,7 +32,7 @@ class Content extends Leeflets\Controller {
 	}
 
 	function _get_single_field( $field_name ) {
-		$ids = LF_String::parse_array_representation( $field_name );
+		$ids = \Leeflets\String::parse_array_representation( $field_name );
 
 		if ( !isset( $ids[0] ) ) {
 			echo json_encode( array( 'error' => 'Could not parse form field name.' ) );
@@ -77,7 +77,7 @@ class Content extends Leeflets\Controller {
 			$files = $files[0];
 		}
 
-		$input_array = LF_String::convert_representation_to_array( $field_name, $files );
+		$input_array = \Leeflets\String::convert_representation_to_array( $field_name, $files );
 
 		$data = $this->content->get_data();
 		$data = array_replace_recursive( $data, $input_array );
@@ -93,7 +93,7 @@ class Content extends Leeflets\Controller {
 	function remove_upload( $field_name, $index ) {
 		$field = $this->_get_single_field( $field_name );
 
-		$ids = LF_String::parse_array_representation( $field_name );
+		$ids = \Leeflets\String::parse_array_representation( $field_name );
 		$files = $this->template->vget_content( $ids );
 
 		if ( $field->has_multiple_values ) {
@@ -138,7 +138,7 @@ class Content extends Leeflets\Controller {
 				$files = array();
 			}
 
-			$files_array = LF_String::convert_representation_to_array( $field_name, $files );
+			$files_array = \Leeflets\String::convert_representation_to_array( $field_name, $files );
 			$data = $this->content->get_data();
 			$_data =& $data;
 			foreach ( $ids as $id ) {
@@ -155,19 +155,6 @@ class Content extends Leeflets\Controller {
 
 		exit;
 	}
-
-	/*
-	function test_resize() {
-		$upload = new LF_Upload( $this->config, $this->router, $this->settings );
-		
-		$options = array( 'max_width' => 100, 'max_height' => 200, 'crop' => false );
-		$upload->create_scaled_image( '17532_444925165251_3082814_n.jpg', 'thumbnail', $options );
-
-		$options = array( 'max_width' => 300, 'max_height' => 100, 'crop' => false );
-		$upload->create_scaled_image( '2674929469_e06797b5b6_b.jpg', 'button', $options );
-		exit;
-	}
-	*/
 
 	function view() {
 		echo $this->template->render();

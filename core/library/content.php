@@ -6,8 +6,8 @@ class Content {
 		$content, $settings, $hook;
 
 	function __construct(
-		LF_Config $config, LF_Filesystem $filesystem, LF_Router $router, 
-		LF_Settings $settings, LF_Hook $hook
+		Config $config, Filesystem $filesystem, Router $router, 
+		Settings $settings, Hook $hook
 	) {
 		$this->config = $config;
 		$this->filesystem = $filesystem;
@@ -21,7 +21,7 @@ class Content {
 			return false;
 		}
 
-		$file = new LF_Data_File( $this->get_data_file_path(), $this->config );
+		$file = new Data_File( $this->get_data_file_path(), $this->config );
 		$file->write( $values, $this->filesystem );
 	}
 
@@ -39,7 +39,7 @@ class Content {
 			return array();
 		}
 
-		$file = new LF_Data_File( $file, $this->config );
+		$file = new Data_File( $file, $this->config );
 
 		$this->content = $file->read();
 

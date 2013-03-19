@@ -14,9 +14,9 @@ namespace Leeflets\Filesystem;
  * @since 2.5
  * @package WordPress
  * @subpackage Filesystem
- * @uses LF_Filesystem_Base Extends class
+ * @uses Filesystem_Base Extends class
  */
-class Direct extends Leeflets\Filesystem {
+class Direct extends \Leeflets\Filesystem {
 	var $errors = null;
 	/**
 	 * constructor
@@ -31,7 +31,7 @@ class Direct extends Leeflets\Filesystem {
 	/**
 	 * connect filesystem.
 	 *
-	 * @return bool Returns true on success or false on failure (always true for LF_Filesystem_Direct).
+	 * @return bool Returns true on success or false on failure (always true for Filesystem_Direct).
 	 */
 	function connect() {
 		return true;

@@ -1,4 +1,6 @@
 <?php
+namespace Leeflets\External;
+
 /**
  * Portable PHP password hashing framework.
  * @package phpass

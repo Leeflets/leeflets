@@ -122,7 +122,7 @@ class Assets {
     function add( $handle, $src, $deps = array(), $ver = false, $args = null ) {
         if ( isset( $this->registered[$handle] ) )
             return false;
-        $this->registered[$handle] = new LF_Asset( $handle, $src, $deps, $ver, $args );
+        $this->registered[$handle] = new Asset( $handle, $src, $deps, $ver, $args );
         return true;
     }
 
@@ -237,7 +237,7 @@ class Assets {
 
 }
 
-class LF_Asset {
+class Asset {
     var $handle;
     var $src;
     var $deps = array();

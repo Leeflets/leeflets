@@ -31,7 +31,7 @@ class Upload {
 
     private $config, $router, $settings;
 
-    function __construct( LF_Config $config, LF_Router $router, LF_Settings $settings, $options = null ) {
+    function __construct( Config $config, Router $router, Settings $settings, $options = null ) {
         $this->config = $config;
         $this->router = $router;
         $this->settings = $settings;

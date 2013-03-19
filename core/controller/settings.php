@@ -1,7 +1,7 @@
 <?php
 namespace Leeflets\Controller;
 
-class Settings extends Leeflets\Controller {
+class Settings extends \Leeflets\Controller {
 	function edit() {
 		if ( isset( $_POST['connection']['type'] ) ) {
 			if ( 'direct' == $_POST['connection']['type'] ) {
@@ -98,7 +98,7 @@ class Settings extends Leeflets\Controller {
 			);
 		}
 
-		$form = new LF_Form( $this->config, $this->router, $this->settings, 'settings-form', array(
+		$form = new \Leeflets\Form( $this->config, $this->router, $this->settings, 'settings-form', array(
 			'action' => $this->router->admin_url( 'settings/edit/' ),
 			'elements' => $elements
 		) );

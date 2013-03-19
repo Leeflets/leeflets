@@ -4,7 +4,7 @@ namespace Leeflets\Template;
 class Upload {
 	private $router;
 
-	function __construct( LF_Router $router ) {
+	function __construct( \Leeflets\Router $router ) {
 		$this->router = $router;
 	}
 

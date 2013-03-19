@@ -4,7 +4,7 @@ namespace Leeflets;
 class User {
 	public $config, $router;
 
-	function __construct( LF_Config $config, LF_Router $router ) {
+	function __construct( Config $config, Router $router ) {
 		$this->config = $config;
 		$this->router = $router;
 	}
@@ -15,7 +15,7 @@ class User {
 
 	function get_cookie_value( $expiration ) {
 		$pass_frag = substr( $this->config->password, 8, 4 );
-		$hasher = new PasswordHash( 8, false );
+		$hasher = new \Leeflets\External\PasswordHash( 8, false );
 		$hash = $hasher->HashPassword( $this->config->username . '|' . $expiration . '|' . $pass_frag );
 		return $this->config->username . '|' . $expiration . '|' . $hash;
 	}
@@ -69,7 +69,7 @@ class User {
 		$pass_frag = substr( $this->config->password, 8, 4 );
 		$value = $username . '|' . $expiration . '|' . $pass_frag;
 
-		$hasher = new PasswordHash( 8, false );
+		$hasher = new \Leeflets\External\PasswordHash( 8, false );
 		return $hasher->CheckPassword( $value, $hash );
 	}
 

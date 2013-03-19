@@ -4,7 +4,7 @@ namespace Leeflets;
 class Settings extends Data_File {
 	private $data;
 	
-	function __construct( LF_Config $config ) {
+	function __construct( Config $config ) {
 		$this->config = $config;
 
 		$this->filepath = $this->config->data_path . '/settings.json.php';
