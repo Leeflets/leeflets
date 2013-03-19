@@ -1,5 +1,7 @@
 <?php
-class LF_Template_Code extends LF_Template_Code_Base {
+namespace User\Template;
+
+class Code extends \Leeflets\Template\Code {
 	function setup_hooks() {
 		$this->enqueue_style( 'koala-style', 'style.css' );
 		$this->enqueue_style( 'koala-grid', 'subdiv.css' );
