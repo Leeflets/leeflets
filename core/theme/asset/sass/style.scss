@@ -714,62 +714,11 @@ fieldset.connection {
 
 }
 
-@media (max-width:768px) {
-	.open-admin {
-		background-size:36px;
-		width:36px;
-		height:38.5px;
-		top:10px;
-		left:10px;
+@media (max-width:767px) {
+	body {
+		padding-right: 0;
+		padding-left: 0;
 	}
-
-	.primary-menu {
-		width:60px;
-		a {
-			background-size:60px;
-			&:nth-child(1) {
-				height:38px;
-				margin:10px 0 20px;
-			}
-
-			&:nth-child(2),&:nth-child(3),&:nth-child(4) {
-				height:18px;
-				margin-bottom:10px;
-			}
-
-			&:nth-child(2) {
-				background-position:0 -46px;
-			}
-
-			&:nth-child(3) {
-				background-position:0 -71.5px;
-			}
-
-			&:nth-child(4) {
-				background-position:0 -97px;
-			}
-
-			&:nth-child(5) {
-				background-position:0 -122.5px;
-				height:38px;
-				bottom:10px;
-			}
-
-		}
-
-	}
-
-	.admin {
-		left:60px;
-	}
-
-}
-
-@media (max-width:320px) {
-	.admin {
-		width: 220px;
-	}
-
 }
 
 /* Toggle Buttons*********************************************************************************************/
