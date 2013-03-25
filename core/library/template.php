@@ -48,7 +48,7 @@ class Template {
 			die( '<div style="margin: 50px 100px; font-family: sans-serif; line-height: 1.4em;">
 				Ooops, looks like you haven\'t converted your template to our new API.<br />
 				We\'ve detected the following files making use of <code>$this-></code> which is now deprecated:<br /><ul>' . $files . '</ul>
-				For details on this, please see <a href="">the post on our Google+ Community</a>.</div>
+				For details on this, please see <a href="https://plus.google.com/u/0/103798016457548612622/posts/BoMn41W1q6L" target="_blank">the post on our Google+ Community</a>.</div>
 				' );
 		}
 
