@@ -34,10 +34,6 @@
             </div>
         </div>
     </div>
-    <div class="button-bar">
-        <div>
-            <button class="submit btn btn-primary">Save Changes</button>
-        </div>
-    </div>
+    <?php $this->partial( 'button-bar' ); ?>
 </section>
 <?php endif; ?>
