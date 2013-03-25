@@ -158,6 +158,21 @@ class Template {
 			$url .= urlencode( $id ) . '/';
 		}
 
+		// Need this button hidden with CSS so that 
+		// pressing 'Enter' in a textbox submits the form
+		// Could use JS to detect the 'Enter' key, but apparently there's issues 
+		// with autocomplete and form fillers
+		$fields['leeflets-hidden-submit-button'] = array(
+			'type' => 'fieldset',
+			'elements' => array(
+				'submit' => array(
+					'type' => 'button',
+					'button-type' => 'submit',
+					'value' => 'Save Changes'
+				)
+			)
+		);
+
 		return new Form( $this->config, $this->router, $this->settings, 'edit-content', array(
 			'elements' => $fields,
 			'action' => $this->router->admin_url( '/content/edit/' . $url )

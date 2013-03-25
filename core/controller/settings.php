@@ -98,6 +98,21 @@ class Settings extends \Leeflets\Controller {
 			);
 		}
 
+		// Need this button hidden with CSS so that 
+		// pressing 'Enter' in a textbox submits the form
+		// Could use JS to detect the 'Enter' key, but apparently there's issues 
+		// with autocomplete and form fillers
+		$elements['leeflets-hidden-submit-button'] = array(
+			'type' => 'fieldset',
+			'elements' => array(
+				'submit' => array(
+					'type' => 'button',
+					'button-type' => 'submit',
+					'value' => 'Save Changes'
+				)
+			)
+		);
+
 		$form = new \Leeflets\Form( $this->config, $this->router, $this->settings, 'settings-form', array(
 			'action' => $this->router->admin_url( 'settings/edit/' ),
 			'elements' => $elements
