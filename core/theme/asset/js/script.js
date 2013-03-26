@@ -238,8 +238,6 @@ function LEEFLETS() {
 
 	self.panel_events_once = function($panel) {
 		$('.button-bar .submit', $panel).click(function() {
-			$('.alert', $panel).hide();
-			$('.container-fluid', $panel).scrollTop(0);
 			$('form', $panel).submit();
 		});
 	};
@@ -255,13 +253,13 @@ function LEEFLETS() {
 
 		self.connection_field_events();
 
-		$('.alert', $panel).hide().fadeIn();
-
 		$('form', $panel).submit(function() {
 			// Remove any hidden field groups
 			$('fieldset.repeatable', this).each(function() {
 				$('fieldset:hidden', this).remove();
 			});
+
+			$('.button-bar .alert', $panel).hide();
 
 			var request_data = $(this).serialize();
 			request_data += '&ajax=1';
@@ -269,6 +267,23 @@ function LEEFLETS() {
 				$('.span12', $panel).html(data);
 				self.reload_viewer();
 				self.panel_events($panel);
+
+				if ($('.error:visible', $panel)[0]) {
+					var $error = $('.button-bar .alert-error', $panel);
+					$error.fadeIn(function() {
+						window.setTimeout(function() {
+							$error.fadeOut();
+						}, 5000);
+					});
+				}
+				else {
+					var $success = $('.button-bar .alert-success', $panel);
+					$success.fadeIn(function() {
+						window.setTimeout(function() {
+							$success.fadeOut();
+						}, 5000);
+					});
+				}
 			});
 			return false;
 		});

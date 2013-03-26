@@ -463,10 +463,19 @@ fieldset.connection {
 	left: 0;
 	width: 100%;
 	background-color: #fff;
-	padding: 15px 15px;
+	padding: 11px;
 	border-top: 1px solid #e5e5e5;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+
+	.alert {
+		margin-bottom: 0;
+		max-width: 300px;
+	}
+
+	.save-button {
+		padding: 4px 0 4px 20px;
+	}
 
 	> div {
 		float: right;
