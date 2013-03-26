@@ -353,7 +353,10 @@ function LEEFLETS() {
 
 	self.clear_field_values = function( $root ) {
 		$('input, textarea, select', $root).val('');
-		$('textarea.wysihtml5', $root).data('wysihtml5').editor.clear();
+		var wysihtml5 = $('textarea.wysihtml5', $root).data('wysihtml5');
+		if (typeof wysihtml5 !== 'undefined') {
+			wysihtml5.editor.clear();
+		}
 	};
 
 	self.field_group_events = function( $group ) {
