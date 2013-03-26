@@ -419,6 +419,13 @@ function LEEFLETS() {
 			$el2.before($el1);
 			$el1.css({'top': 'auto'});
 			$el2.css({'top': 'auto'});
+
+			// Workaround bug in WYSIHTML5 where it stops
+			// working when the iframe is moved
+			self.cleanup_wysiwyg($el1);
+			$('.control-group.wysihtml5', $el1).each(function() {
+				$(this).wysihtml5(self.wysihtml5_options);
+			});
 			
 			if (callback) {
 				callback();
