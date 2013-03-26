@@ -3,11 +3,9 @@ namespace Leeflets;
 
 class Leeflets {
 
-	const PHP_VERSION_REQUIRED = '5.3';
 	public $config;
 
 	function __construct( $admin_path ) {
-		$this->check_php_version();
 		$this->check_magic_quotes();
 
 		require $admin_path . '/core/library/config.php';
@@ -90,11 +88,6 @@ class Leeflets {
 		$path = File::get_class_file_path( $this->config, $class );
 		if ( !$path ) return;
 		require $path;
-	}
-
-	function check_php_version() {
-		if ( version_compare( PHP_VERSION, self::PHP_VERSION_REQUIRED, '>=' ) ) return;
-		die( 'Leeflets requires that you run PHP version ' . self::PHP_VERSION_REQUIRED . ' or greater. You are currently running PHP ' . PHP_VERSION . '.' );
 	}
 
 	function check_magic_quotes() {
