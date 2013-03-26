@@ -130,3 +130,5 @@ class Leeflets {
 
 	}
 }
+
+new Leeflets( $admin_path );

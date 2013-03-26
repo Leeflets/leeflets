@@ -6,4 +6,3 @@ if ( version_compare( PHP_VERSION, LEEFLETS_PHP_VERSION_REQUIRED, '<' ) ) {
 
 $admin_path = dirname( __FILE__ );
 require $admin_path . '/core/library/leeflets.php';
-new Leeflets\Leeflets( $admin_path );
