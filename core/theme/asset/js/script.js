@@ -65,10 +65,14 @@ function LEEFLETS() {
 		on_resize(self.size_containers);
 	};
 
-	self.size_containers = function() {
-		$viewer.width($('body').width());
+	self.size_contain_all = function() {
 		var all_width = $nav.outerWidth() + $panel_container.outerWidth() + $viewer.outerWidth();
 		$contain_all.width(all_width);
+	};
+
+	self.size_containers = function() {
+		$viewer.width($('body').width());
+		self.size_contain_all();
 	};
 
 	self.shortcut_keys = function() {
@@ -500,6 +504,7 @@ function LEEFLETS() {
 		var w = $panel.width();
 		$panel_container.width(w);
 		$panel_container.css('margin-left', (-1 * w) + 'px');
+		self.size_contain_all();
 		self.show_slide($panel_container, 400, callback);
 	};
 
