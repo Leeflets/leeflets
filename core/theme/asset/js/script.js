@@ -497,6 +497,9 @@ function LEEFLETS() {
 
 	self.show_panel = function($panel, callback) {
 		$panel.show();
+		var w = $panel.width();
+		$panel_container.width(w);
+		$panel_container.css('margin-left', (-1 * w) + 'px');
 		self.show_slide($panel_container, 400, callback);
 	};
 
