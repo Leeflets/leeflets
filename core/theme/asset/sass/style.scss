@@ -112,16 +112,15 @@ ul.details li {
 		width:100%;
 	}
 
-	a {
-		text-decoration:underline;
-	}
-
 	ul {
 		margin:15px 0 0 10px;
 		li {
 			display:inline;
 		}
 
+		a {
+			text-decoration:underline;
+		}
 	}
 
 }
@@ -151,7 +150,7 @@ ul.details li {
 	padding:0;
 }
 
-.thumbnail button {
+.thumbnail .btn {
 	position:absolute;
 	bottom:10px;
 	right:10px;
@@ -493,6 +492,10 @@ fieldset.connection {
 	color: #999999;
 }
 
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
+	background-color: #f9f9f9;
+}
+
 /* Modals*********************************************************************************************/
 .modal {
 	border-color:#e5e5e5;
@@ -717,8 +720,7 @@ fieldset.connection {
 	}
 
 	&.wide {
-		width:70%;
-		max-width:840px;
+		width:840px;
 	}
 
 }

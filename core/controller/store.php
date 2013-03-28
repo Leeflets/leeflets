@@ -3,64 +3,71 @@ namespace Leeflets\Controller;
 
 class Store extends \Leeflets\Controller {
 	function templates() {
+		$active_template_folder = $this->settings->get( 'template', 'active' );
+		$active_template = array();
+
 		$templates = array();
-		$folders = glob( $this->config->templates_path . '/*' );
+		$folders = glob( $this->config->templates_path . '/*', GLOB_ONLYDIR );
 		foreach ( $folders as $folder ) {
 			if ( !file_exists( $folder . '/meta-about.php' ) ) continue;
-			include $folder . '/meta-about.php';
+			
+			$variables = \Leeflets\Inc::variables( $folder . '/meta-about.php', array( 'about' ) );
+			if ( is_array( $variables ) ) {
+				extract( $variables );
+			}
+			
 			if ( !isset( $about['name'] ) || !isset( $about['version'] ) ) continue;
+
+			// Add default array keys to avoid having to check if
+			// indexes exist and array index errors
+			$about = array_merge( array(
+				'name' => '',
+				'version' => '',
+				'description' => '',
+				'screenshot' => 'http://placehold.it/360x270',
+				'author' => array(
+					'name' => '',
+					'url' => ''
+				),
+				'changelog' => array()
+			), $about );
+			
 			$folder = basename( $folder );
-			$templates[$folder] = $about['name'] . ' ' . $about['version'];
+			$about['slug'] = $folder;
+
+			// Get screenshot URL
+			$screenshots = glob( $this->config->templates_path . '/' . $folder . '/screenshot.{jpeg,jpg,gif,png}', GLOB_BRACE );
+			if ( isset( $screenshots[0] ) ) {
+				$about['screenshot'] = $this->router->get_template_url( $folder, basename( $screenshots[0] ) );
+			}
+			
+			if ( $folder == $active_template_folder ) {
+				$active_template = $about;
+			}
+			else {
+				$templates[$folder] = $about;
+			}
+
 			unset( $about );
 		}
 
-		$elements['template'] = array(
-			'title' => 'Active Template',
-			'type' => 'fieldset',
-			'elements' => array(
-				'active' => array(
-					'type' => 'radiolist',
-					'options' => $templates
-				)
-			)
-		);
+		return compact( 'active_template', 'templates' );
+	}
 
-		$elements['buttons'] = array(
-			'type' => 'fieldset',
-			'elements' => array(
-				'submit' => array(
-					'type' => 'button',
-					'button-type' => 'submit',
-					'class' => 'btn btn-primary',
-					'value' => 'Save Changes'
-				)
-			)
-		);
-
-		$form = new \Leeflets\Form( $this->config, $this->router, $this->settings, 'templates-form', array(
-			'action' => $this->router->admin_url( 'store/templates/' ),
-			'elements' => $elements
-		) );
-
-		$error = '';
-		if ( $form->validate() ) {
-			$values = $_POST;
-			unset( $values['submit'] );
-			unset( $values['submission-templates-form'] );
-
-			$values = array_merge( $this->settings->get_data(), $values );
-
-			if ( !$this->settings->write( $values, $this->filesystem ) ) {
-				$error = 'Error saving the settings.';
-			}
-		}
-		elseif ( $form->is_submitted() ) {
-			$error = 'Please correct the errors below.';
-		}
-		else {
-			$form->set_values( $this->settings->get_data() );
+	function activate_template( $slug ) {
+		$template_path = $this->config->templates_path . '/' . $slug;
+		if ( !is_dir( $template_path ) ) {
+			exit;
 		}
 
-		return compact( 'form', 'error' );
+		$settings = $this->settings->get_data();
+		$settings['template']['active'] = $slug;
+		
+		if ( !$this->settings->write( $settings, $this->filesystem ) ) {
+			exit;
+		}
+
+		$this->router->redirect( $this->router->admin_url( '/store/templates/' ) );
+		exit;
 	}
 }
