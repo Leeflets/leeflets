@@ -5,6 +5,8 @@ Leeflets
 
 In a flooded marketplace of overly complex website templates, content management systems and frameworks, Leeflets has been created and is devoted to delivering a much needed alternative.
 
+[Learn how to install Leeflets](https://github.com/Leeflets/leeflets/wiki/Installing-Leeflets)
+
 [Visit leeflets.com &raquo;](http://leeflets.com)
 
 License
