@@ -1,7 +1,9 @@
-<section id="admin-design" class="panel admin wide">
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span12">
+<?php if ( !isset( $_GET['slim'] ) ) : ?>
+<section id="admin-design" class="panel admin wide store">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+<?php endif; ?>
 
 				<div class="section-header">
 					<button type="button" class="close panel">&times;</button>
@@ -9,8 +11,8 @@
 				</div> 
 									
 				<ul class="nav nav-tabs" id="templates-addons">
-					<li class="active"><a href="#templates">Templates</a></li>
-					<li class=""><a href="#addons">Addons</a></li>
+					<li class="active templates"><a href="#templates">Templates</a></li>
+					<li class="addons"><a href="#addons">Addons</a></li>
 				</ul>
 				
 				<div class="tab-content">
@@ -105,7 +107,7 @@
 											</ul>
 											*/ ?>
 											
-											<a href="<?php echo $this->router->admin_url( '/store/activate-template/' . rawurlencode( $template['slug'] ) . '/' ); ?>" class="btn btn-primary">Activate</a>
+											<a href="<?php echo $this->router->admin_url( '/store/activate-template/' . rawurlencode( $template['slug'] ) . '/' ); ?>" class="btn btn-primary activate-template">Activate</a>
 										</div>
 									</li>
 
@@ -463,7 +465,9 @@
 					
 				</div>
 
-			</div>
-		</div>
-	</div>
+<?php if ( !isset( $_GET['slim'] ) ) : ?>
+            </div>
+        </div>
+    </div>
 </section>
+<?php endif; ?>

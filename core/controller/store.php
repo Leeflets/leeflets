@@ -67,7 +67,16 @@ class Store extends \Leeflets\Controller {
 			exit;
 		}
 
-		$this->router->redirect( $this->router->admin_url( '/store/templates/' ) );
+		$url = $this->router->admin_url( '/store/templates/' );
+		if ( $this->router->is_ajax ) {
+			$url .= '?ajax=1';
+
+			if ( isset( $_GET['slim'] ) ) {
+				$url .= '&slim=1';
+			}
+		}
+
+		$this->router->redirect( $url );
 		exit;
 	}
 }
