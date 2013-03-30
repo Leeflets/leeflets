@@ -98,10 +98,12 @@
 										<div class="thumbnail">
 											<img src="<?php echo $template['screenshot']; ?>" alt="" title="<?php echo htmlspecialchars( $template['name'], null, 'utf-8' ); ?>">
 											
+											<?php /*
 											<ul class="unstyled">
 												<li><a href="#">Preview</a></li>
 												<li><a class="toggle-modal" href="#template-01-details" data-toggle="modal">Details</a></li>
 											</ul>
+											*/ ?>
 											
 											<a href="<?php echo $this->router->admin_url( '/store/activate-template/' . rawurlencode( $template['slug'] ) . '/' ); ?>" class="btn btn-primary">Activate</a>
 										</div>
