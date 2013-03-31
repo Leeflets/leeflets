@@ -25,7 +25,7 @@ class Image {
 				$image = $args[0];
 				break;
 			default:
-				$image = $this->vget_content( $args );
+				$image = $this->vget( $args );
 		}
 		
 		if ( isset( $image['versions'][$version] ) ) {
@@ -36,7 +36,7 @@ class Image {
 			return false;
 		}
 
-		return array( $this->get_uploads_url( $image['path'] ), $image['width'], $image['height'] );
+		return array( $this->router->get_uploads_url( $image['path'] ), $image['width'], $image['height'] );
 	}
 
 	public function out() {

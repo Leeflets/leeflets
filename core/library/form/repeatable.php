@@ -23,6 +23,9 @@ class Repeatable extends Fieldset {
         }
 
         parent::__construct( $parent, $id, $args );
+
+        $this->group_count = $this->empty_to_show;
+        $this->add_elements( $args['elements'] );
     }
 
     function add_elements( $elements ) {

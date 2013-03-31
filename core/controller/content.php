@@ -39,8 +39,7 @@ class Content extends \Leeflets\Controller {
 			exit;
 		}
 
-		$fieldset_id = array( $ids[0] );
-		$form = $this->template->get_form( $fieldset_id );
+		$form = $this->template->get_form();
 		if ( !$form ) {
 			echo json_encode( array( 'error' => 'Form field not found (#1).' ) );
 			exit;
@@ -94,7 +93,9 @@ class Content extends \Leeflets\Controller {
 		$field = $this->_get_single_field( $field_name );
 
 		$ids = \Leeflets\String::parse_array_representation( $field_name );
-		$files = $this->template->vget_content( $ids );
+		$data = $this->content->get_data();
+		$template_content = new \Leeflets\Template\Content( $data );
+		$files = $template_content->vget( $ids );
 
 		if ( $field->has_multiple_values ) {
 			if ( !isset( $files[$index] ) ) {
