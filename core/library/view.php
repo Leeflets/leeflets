@@ -66,6 +66,12 @@ class View {
         return ob_get_clean();
     }
 
+    function get_partial( $name, $vars = array() ) {
+        ob_start();
+        $this->partial( $name, $vars );
+        return ob_get_clean();
+    }
+
     function partial( $name, $vars = array() ) {
         extract( $vars );
         include $this->config->view_path . '/partials/' . $name . '.php';

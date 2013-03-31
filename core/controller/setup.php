@@ -61,10 +61,10 @@ class Setup extends \Leeflets\Controller {
 			)
 		) );
 
-		if ( !$this->filesystem->have_direct_access() ) {
+		if ( !$this->filesystem->have_direct_access() || true ) {
 			$elements['warning'] = array(
 				'type' => 'html',
-				'value' => $this->_ftp_warning_html()
+				'value' => $this->view->get_partial( 'ftp-warning' )
 			);
 
 			$elements['connection'] = $this->filesystem->get_connection_fields(
@@ -113,15 +113,5 @@ class Setup extends \Leeflets\Controller {
 		$args['layout'] = 'logged-out';
 
 		return $args;
-	}
-
-	function _ftp_warning_html() {
-		ob_start();
-		?>
-        <div class="alert alert-warning">
-            Leeflets has detected that it does not have access to save files to the server. Please enter your FTP details below to continue.
-        </div>
-		<?php
-		return ob_get_clean();
 	}
 }
