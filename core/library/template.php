@@ -101,10 +101,15 @@ class Template {
 
 	private function glob_recursive( $pattern, $flags = 0 ) {
         $files = glob( $pattern, $flags );
-        
-        foreach ( glob( dirname( $pattern ) . '/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir ) {
-            $files = array_merge( $files, $this->glob_recursive( $dir . '/' . basename( $pattern ), $flags ) );
-        }
+
+        // Need to be careful with the return value of glob()
+        // There's a bug that returns false instead of empty array: https://bugs.php.net/bug.php?id=53460
+        $dirs = glob( dirname( $pattern ) . '/*', GLOB_ONLYDIR|GLOB_NOSORT);
+        if ( is_array( $dirs ) ) {
+	        foreach ( $dirs as $dir ) {
+	            $files = array_merge( $files, $this->glob_recursive( $dir . '/' . basename( $pattern ), $flags ) );
+	        }
+	    }
         
         return $files;
     }
