@@ -35,6 +35,10 @@ class Router {
         $this->admin_url = $this->base_request_url . $admin_path;
         $this->site_url = $this->base_request_url . $root_path;
 
+        if ( $this->admin_url == $this->site_url ) {
+            die( 'Leeflets must be installed in a subfolder.' );
+        }
+
         $this->admin_dir_name = substr( $admin_path, strrpos( $admin_path, '/' )+1 );
     }
 
