@@ -607,13 +607,19 @@ fieldset.connection {
 }
 
 .alert-box.published {
-	left:50% !important;
-	top:50% !important;
+	position: absolute;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	display: inline-block;
+	width: 500px;
+	top:50%;
+	margin-top: -2.5em;
+	line-height: 1.2em;
+	text-align: center;
 	font-size:36px;
 	color: #468847;
 	background-color:#dff0d8;
-	margin-top: -45px;
-	margin-left: -112px;
 	border-color:#d6e9c6;
 	border-radius:4px;
 	-webkit-border-radius:4px;

@@ -163,8 +163,13 @@ class Content extends \Leeflets\Controller {
 	}
 
 	function publish() {
-		$this->template->write();
-		$this->router->redirect( $this->router->admin_url( '?published=1' ) );
+		$result = $this->template->write();
+		if ( $this->router->is_ajax ) {
+			echo $result;
+		}
+		else {
+			$this->router->redirect( $this->router->admin_url( '?published=1' ) );
+		}
 		exit;
 	}
 }

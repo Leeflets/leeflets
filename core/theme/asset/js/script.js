@@ -622,21 +622,21 @@ function LEEFLETS() {
 		});
 
 		$('.publish', $nav).click(function() {
-			var pos = $(this).offset(),
-				y = pos.top,
-				x = $nav.outerWidth();
-
 			$.get($(this).attr('href'), {ajax:1}, function(data) {
 				var $box = $('.alert-box.published');
 				if (!$box.length) {
-					$box = $('<div class="alert-box published">Published! :)</div>');
+					$box = $('<div class="alert-box published"></div>');
 					$('body').append($box);
 				}
 
-				$box.hide().css({
-					top: y + 'px',
-					left: x + 'px'
-				}).fadeIn(function() {
+				if ( data ) {
+					$box.html( 'Published! :)' );
+				}
+				else {
+					$box.html( 'Sorry, could not write to index.html :(' );
+				}
+
+				$box.hide().fadeIn(function() {
 					window.setTimeout(function() {
 						$box.fadeOut();
 					}, 1000);
