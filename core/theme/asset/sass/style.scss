@@ -439,17 +439,11 @@ fieldset {
 fieldset.connection {
 	.port {
 		width: 120px;
-		float: left;
-		clear: right;
 
 		label {
 			float: left;
 			line-height: 2em;
 			margin-right: 5px;
-		}
-
-		input {
-			float: left;
 		}
 	}
 
