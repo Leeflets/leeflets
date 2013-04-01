@@ -61,7 +61,7 @@ class Setup extends \Leeflets\Controller {
 			)
 		) );
 
-		if ( !$this->filesystem->have_direct_access() || true ) {
+		if ( !$this->filesystem->have_direct_access() ) {
 			$elements['warning'] = array(
 				'type' => 'html',
 				'value' => $this->view->get_partial( 'ftp-warning' )
