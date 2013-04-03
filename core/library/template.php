@@ -173,7 +173,8 @@ class Template {
 				'submit' => array(
 					'type' => 'button',
 					'button-type' => 'submit',
-					'value' => 'Save Changes'
+					'value' => 'Save Changes',
+					'tabindex' => '-1'
 				)
 			)
 		);
