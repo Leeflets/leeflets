@@ -67,11 +67,11 @@ class Element {
 	}
 
 	function esc_att( $value ) {
-		return htmlspecialchars( $value, null, $this->get_encoding() );
+		return htmlspecialchars( $value, ENT_COMPAT, $this->get_encoding() );
 	}
 
     function esc_html( $value ) {
-        return htmlentities( $value, null, $this->get_encoding() );
+        return htmlentities( $value, ENT_COMPAT, $this->get_encoding() );
     }
 
     function get_html() {

@@ -926,11 +926,11 @@ fieldset.connection {
 
 	.well:first-of-type {
 		.btn-group {
-			.up {
+			.up-group {
 				display: none;
 			}
 			
-			 .down {
+			 .down-group {
 			    -webkit-border-radius: 0px;
 			    -webkit-border-top-right-radius: 4px;
 			    -moz-border-radius: 0px;
@@ -942,7 +942,7 @@ fieldset.connection {
 	}
 
 	.well:last-of-type {
-		.btn-group .down {
+		.btn-group .down-group {
 			display: none;
 		}
 	}
