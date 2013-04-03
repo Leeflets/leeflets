@@ -39,10 +39,9 @@
                      ?>
                  
                      <?php
-                     $i = 0;
+                     $i = 1;
                      foreach ( $features as $feature ) :
-                     $i++;
-                         if ( !isset( $feature['text'] ) || !$feature['text'] ) return;
+                         if ( !isset( $feature['text'] ) || !$feature['text'] ) continue;
                          ?>
                          <div class="one-quarter">
                              <?php
@@ -58,6 +57,7 @@
                              <p><?php echo $feature['text']; ?></p>
                          </div>
                          <?php 
+                         $i++;
                      endforeach;
                      ?>
                  
