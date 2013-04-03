@@ -364,10 +364,10 @@ function LEEFLETS() {
 			$(this).prepend('\
 				<div class="btn-toolbar">\
 					<div class="btn-group">\
-						<a class="btn remove" href="#"><i class="icon-minus"></i></a>\
-						<a class="btn add" href="#"><i class="icon-plus"></i></a>\
-						<a class="btn down" href="#"><i class="icon-arrow-down"></i></a>\
-						<a class="btn up" href="#"><i class="icon-arrow-up"></i></a>\
+						<a class="btn remove-group" href="#"><i class="icon-minus"></i></a>\
+						<a class="btn add-group" href="#"><i class="icon-plus"></i></a>\
+						<a class="btn down-group" href="#"><i class="icon-arrow-down"></i></a>\
+						<a class="btn up-group" href="#"><i class="icon-arrow-up"></i></a>\
 					</div>\
 				</div>\
 			');
@@ -390,7 +390,7 @@ function LEEFLETS() {
 
 	self.field_group_events = function( $group ) {
 
-		$('.add', $group).click(function() {
+		$('.add-group', $group).click(function() {
 			var $new = $group.clone();
 			self.clear_field_values( $new );
 			$group.after($new);
@@ -401,7 +401,7 @@ function LEEFLETS() {
 			return false;
 		});
 
-		$('.remove', $group).click(function() {
+		$('.remove-group', $group).click(function() {
 			var $repeatable = $group.parents('fieldset.repeatable');
 			if ( $('fieldset', $repeatable).length == 1 ) {
 				self.clear_field_values( $group );
@@ -415,7 +415,7 @@ function LEEFLETS() {
 			return false;
 		});
 
-		$('.down', $group).click(function() {
+		$('.down-group', $group).click(function() {
 			self.swap($group.next(), $group, function() {
 				var $repeatable = $group.parents('fieldset.repeatable');
 				self.sequence_fields($repeatable);
@@ -423,7 +423,7 @@ function LEEFLETS() {
 			return false;
 		});
 
-		$('.up', $group).click(function() {
+		$('.up-group', $group).click(function() {
 			self.swap($group, $group.prev(), function() {
 				var $repeatable = $group.parents('fieldset.repeatable');
 				self.sequence_fields($repeatable);
