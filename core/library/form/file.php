@@ -121,6 +121,7 @@ class File extends Control {
                     <div class="filename"><?php echo $this->esc_html( $file['name'] ); ?></div>
                     <?php endif; ?>
                 </div>
+                <input type="hidden" name="<?php echo $this->esc_att( $this->atts['data-name'] ); ?>" value="<?php echo $this->esc_att( json_encode( $file ) ); ?>" />
             </div>        
 
             <?php
@@ -192,7 +193,11 @@ class File extends Control {
     }
 
     function load_post_value() {
-        $this->value = array();
+        $this->value = $this->get_value_from_array( $_POST );
+
+        if ( is_null( $this->value ) ) {
+            $this->value = array();
+        }
 
         if ( !isset( $_FILES['files'] ) ) {
             return;
@@ -210,5 +215,26 @@ class File extends Control {
         if ( !$this->has_multiple_values && is_array( $this->value ) ) {
             $this->value = $this->value[0];
         }
+    }
+
+    // We override the function in the Control class because
+    // we don't want to set the value if it's not in the array
+    function set_value_from_array( $array ) {
+        $value = $this->get_value_from_array( $array );
+        //echo $this->name, ' - ', var_dump( $value ), "\n";
+        //print_r($this->value);
+
+        if ( is_null( $value ) ) {
+            return false;
+        }
+
+        if ( !is_array( $value ) ) {
+            if ( !( $value = json_decode( $value, true ) ) ) {
+                return false;
+            }
+        }
+
+        $this->value = $value;
+        return true;
     }
 }

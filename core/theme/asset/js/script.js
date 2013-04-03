@@ -168,6 +168,7 @@ function LEEFLETS() {
 					$('.file-list', $div).remove();
 					$progress.after(data.result.list);
 					self.file_list_events($div, $pad);
+					self.sequence_fields($div.parents('fieldset.repeatable'));
 
 					if (!$file_input.attr('multiple') && !$('.alert-error', $div)[0]) {
 						$pad.hide();
@@ -376,8 +377,10 @@ function LEEFLETS() {
 	};
 
 	self.cleanup_wysiwyg = function($root) {
-		$('input[type=hidden], .wysihtml5-toolbar, .wysihtml5-sandbox', $root).remove();
-		$('textarea', $root).show();
+		$('div.textarea.wysihtml5', $root).each(function() {
+			$('input[type=hidden], .wysihtml5-toolbar, .wysihtml5-sandbox', this).remove();
+			$('textarea', this).show();
+		});
 	};
 
 	self.clear_field_values = function( $root ) {
@@ -386,6 +389,9 @@ function LEEFLETS() {
 		if (typeof wysihtml5 !== 'undefined') {
 			wysihtml5.editor.clear();
 		}
+
+		$('.file-list', $root).remove();
+		$('.drop-pad', $root).show();
 	};
 
 	self.field_group_events = function( $group ) {
@@ -465,10 +471,16 @@ function LEEFLETS() {
 	self.sequence_fields = function( $repeatable ) {
 		$('fieldset', $repeatable).each(function(i) {
 			var $fieldset = $(this);
-			$('input, textarea, select', $fieldset).each(function() {
+			$('input, textarea, select', $fieldset).not('input[type=file]').each(function() {
 				if (!$(this).attr('name')) return;
 				var new_name = $(this).attr('name').replace(/\[[0-9]+\]/, '[' + i + ']');
 				$(this).attr('name', new_name);
+			});
+
+			$('input[type=file]', $fieldset).each(function() {
+				if (!$(this).data('name')) return;
+				var new_name = $(this).data('name').replace(/\[[0-9]+\]/, '[' + i + ']');
+				$(this).data('name', new_name);
 			});
 		});
 	};

@@ -9,12 +9,11 @@ class Content extends \Leeflets\Controller {
 
 		$form = $this->template->get_form( $fieldset_ids );
 		
-		// Set saved values, then overwite with post values
-		// We do it this way to ensure that saved files meta data 
-		// that is not submitted is saved forward
-		$form->set_values( $data );
 		if ( $form->is_submitted() ) {
 			$form->set_values( $_POST );
+		}
+		else {
+			$form->set_values( $data );
 		}
 
 		$success = false;
