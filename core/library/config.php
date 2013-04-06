@@ -9,29 +9,29 @@ class Config {
 	public $is_loaded = false;
 
 	function __construct( $admin_path ) {
-		$this->admin_path = $admin_path;
-		$this->root_path = realpath( $this->admin_path . '/../' );
-		$this->core_path = $this->admin_path . '/core';
-		$this->controller_path = $this->core_path . '/controller';
-		$this->library_path = $this->core_path . '/library';
-		$this->view_path = $this->core_path . '/view';
-		$this->theme_path = $this->core_path . '/theme';
-		$this->form_path = $this->core_path . '/form';
+		$this->admin_path       = $admin_path;
+		$this->root_path        = realpath( $this->admin_path . '/../' );
+		$this->core_path        = $this->admin_path . '/core';
+		$this->controller_path  = $this->core_path . '/controller';
+		$this->library_path     = $this->core_path . '/library';
+		$this->view_path        = $this->core_path . '/view';
+		$this->theme_path       = $this->core_path . '/theme';
+		$this->form_path        = $this->core_path . '/form';
 		$this->third_party_path = $this->core_path . '/third-party';
-		$this->include_path = $this->core_path . '/include';
+		$this->include_path     = $this->core_path . '/include';
 
-		$this->templates_path = $this->admin_path . '/templates';
-		$this->addons_path = $this->admin_path . '/addons';
-		$this->data_path = $this->admin_path . '/data';
-		$this->uploads_path = $this->admin_path . '/uploads';
+		$this->templates_path   = $this->admin_path . '/templates';
+		$this->addons_path      = $this->admin_path . '/addons';
+		$this->data_path        = $this->admin_path . '/data';
+		$this->uploads_path     = $this->admin_path . '/uploads';
 
-		$this->path = $this->admin_path . '/config.php';
+		$this->path             = $this->admin_path . '/config.php';
 
-		$this->debug = false;
-		$this->debug_display = false;
-		$this->debug_log = false;
-		$this->fs_chmod_dir = 0755;
-		$this->fs_chmod_file = 0644;
+		$this->debug            = false;
+		$this->debug_display    = false;
+		$this->debug_log        = false;
+		$this->fs_chmod_dir     = 0755;
+		$this->fs_chmod_file    = 0644;
 	}
 
 	function load() {
