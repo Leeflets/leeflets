@@ -15,6 +15,7 @@ html, body {
 .lf-edit-box {
 	position: absolute;
 	overflow: hidden;
+	background-color: rgba(0,0,0,0.15);
 
 	h1 {
 		$font-size: 40px;
@@ -31,11 +32,12 @@ html, body {
 	}
 }
 
+.lf-edit-box.from-html-tag {
+	background-color: transparent;
+}
+
 .lf-edit-box:hover {
-	background-color: #ffff00;
-	background-color: rgba(255,255,0,0.15);
-	border: 1px solid #b9b900;
-	border-color: rgba(185,185,0,0.15);
+	background-color: transparent;
 	cursor: pointer;
 	
 	h1 {

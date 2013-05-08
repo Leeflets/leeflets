@@ -26,6 +26,10 @@
 			box.$pad = $('<div class="lf-edit-box"></div>');
 			box.$pad.appendTo('.lf-edit-container');
 
+			if ('html' === box.$container[0].tagName.toLowerCase()) {
+				box.$pad.addClass('from-html-tag');
+			}
+
 			box.$pad.click(function() {
 				window.parent.leeflets.load_content_panel(box.$container.data('lf-edit'));
 				return false;
@@ -49,11 +53,12 @@
 					height = 20;
 				}
 
-				var top = offset.top - 20,
-					left = offset.left - 20;
+				var padding = 0,
+					top = offset.top - padding,
+					left = offset.left - padding;
 				
-				width = width + 40;
-				height = height + 40;
+				width = width + (padding * 2);
+				height = height + (padding * 2);
 
 				box.$pad.css({
 					'top': top + 'px',
