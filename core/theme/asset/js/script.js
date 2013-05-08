@@ -565,6 +565,7 @@ function LEEFLETS() {
 		if ($visible.length) {
 			if ($visible[0] === $panel[0]) {
 				self.hide_panel($panel);
+				$('.active', $nav).removeClass('active');
 			}
 			else {
 				self.hide_panel($visible, function() {
@@ -623,12 +624,17 @@ function LEEFLETS() {
 			return false;
 		});
 
+		$('a', $nav).click(function() {
+			$('.active', $nav).removeClass('active');
+		});
+
 		$('.home', $nav).click(function() {
 			self.hide_all();
 			return false;
 		});
 
 		$('.settings, .content, .store', $nav).click(function() {
+			$(this).addClass('active');
 			self.load_panel($(this).attr('href'));
 			return false;
 		});
