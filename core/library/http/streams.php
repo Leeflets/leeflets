@@ -20,11 +20,11 @@ class Streams {
 	 * @access public
 	 * @since 2.7.0
 	 *
-	 * @param string $url
+	 * @param string  $url
 	 * @param str|array $args Optional. Override the defaults.
 	 * @return array 'headers', 'body', 'response', 'cookies' and 'filename' keys.
 	 */
-	function request($url, $args = array()) {
+	function request( $url, $args = array() ) {
 		$defaults = array(
 			'method' => 'GET', 'timeout' => 5,
 			'redirection' => 5, 'httpversion' => '1.0',
@@ -34,24 +34,24 @@ class Streams {
 
 		$r = wp_parse_args( $args, $defaults );
 
-		if ( isset($r['headers']['User-Agent']) ) {
+		if ( isset( $r['headers']['User-Agent'] ) ) {
 			$r['user-agent'] = $r['headers']['User-Agent'];
-			unset($r['headers']['User-Agent']);
-		} else if ( isset($r['headers']['user-agent']) ) {
-			$r['user-agent'] = $r['headers']['user-agent'];
-			unset($r['headers']['user-agent']);
-		}
+			unset( $r['headers']['User-Agent'] );
+		} else if ( isset( $r['headers']['user-agent'] ) ) {
+				$r['user-agent'] = $r['headers']['user-agent'];
+				unset( $r['headers']['user-agent'] );
+			}
 
 		// Construct Cookie: header if any cookies are set
 		WP_Http::buildCookieHeader( $r );
 
-		$arrURL = parse_url($url);
+		$arrURL = parse_url( $url );
 
 		if ( false === $arrURL )
-			return new WP_Error('http_request_failed', sprintf(__('Malformed URL: %s'), $url));
+			return new WP_Error( 'http_request_failed', sprintf( __( 'Malformed URL: %s' ), $url ) );
 
 		if ( 'http' != $arrURL['scheme'] && 'https' != $arrURL['scheme'] )
-			$url = preg_replace('|^' . preg_quote($arrURL['scheme'], '|') . '|', 'http', $url);
+			$url = preg_replace( '|^' . preg_quote( $arrURL['scheme'], '|' ) . '|', 'http', $url );
 
 		// Convert Header array to string.
 		$strHeaders = '';
@@ -59,18 +59,18 @@ class Streams {
 			foreach ( $r['headers'] as $name => $value )
 				$strHeaders .= "{$name}: $value\r\n";
 		else if ( is_string( $r['headers'] ) )
-			$strHeaders = $r['headers'];
+				$strHeaders = $r['headers'];
 
-		$is_local = isset($args['local']) && $args['local'];
-		$ssl_verify = isset($args['sslverify']) && $args['sslverify'];
+			$is_local = isset( $args['local'] ) && $args['local'];
+		$ssl_verify = isset( $args['sslverify'] ) && $args['sslverify'];
 		if ( $is_local )
-			$ssl_verify = apply_filters('https_local_ssl_verify', $ssl_verify);
+			$ssl_verify = apply_filters( 'https_local_ssl_verify', $ssl_verify );
 		elseif ( ! $is_local )
-			$ssl_verify = apply_filters('https_ssl_verify', $ssl_verify);
+			$ssl_verify = apply_filters( 'https_ssl_verify', $ssl_verify );
 
-		$arrContext = array('http' =>
+		$arrContext = array( 'http' =>
 			array(
-				'method' => strtoupper($r['method']),
+				'method' => strtoupper( $r['method'] ),
 				'user_agent' => $r['user-agent'],
 				'max_redirects' => $r['redirection'] + 1, // See #11557
 				'protocol_version' => (float) $r['httpversion'],
@@ -78,8 +78,8 @@ class Streams {
 				'ignore_errors' => true, // Return non-200 requests.
 				'timeout' => $r['timeout'],
 				'ssl' => array(
-						'verify_peer' => $ssl_verify,
-						'verify_host' => $ssl_verify
+					'verify_peer' => $ssl_verify,
+					'verify_host' => $ssl_verify
 				)
 			)
 		);
@@ -98,24 +98,24 @@ class Streams {
 		if ( ! is_null( $r['body'] ) )
 			$arrContext['http']['content'] = $r['body'];
 
-		$context = stream_context_create($arrContext);
+		$context = stream_context_create( $arrContext );
 
 		if ( !WP_DEBUG )
-			$handle = @fopen($url, 'r', false, $context);
+			$handle = @fopen( $url, 'r', false, $context );
 		else
-			$handle = fopen($url, 'r', false, $context);
+			$handle = fopen( $url, 'r', false, $context );
 
 		if ( ! $handle )
-			return new WP_Error('http_request_failed', sprintf(__('Could not open handle for fopen() to %s'), $url));
+			return new WP_Error( 'http_request_failed', sprintf( __( 'Could not open handle for fopen() to %s' ), $url ) );
 
 		$timeout = (int) floor( $r['timeout'] );
 		$utimeout = $timeout == $r['timeout'] ? 0 : 1000000 * $r['timeout'] % 1000000;
 		stream_set_timeout( $handle, $timeout, $utimeout );
 
 		if ( ! $r['blocking'] ) {
-			stream_set_blocking($handle, 0);
-			fclose($handle);
-			return array( 'headers' => array(), 'body' => '', 'response' => array('code' => false, 'message' => false), 'cookies' => array() );
+			stream_set_blocking( $handle, 0 );
+			fclose( $handle );
+			return array( 'headers' => array(), 'body' => '', 'response' => array( 'code' => false, 'message' => false ), 'cookies' => array() );
 		}
 
 		if ( $r['stream'] ) {
@@ -141,19 +141,19 @@ class Streams {
 
 		$processedHeaders = array();
 		if ( isset( $meta['wrapper_data']['headers'] ) )
-			$processedHeaders = WP_Http::processHeaders($meta['wrapper_data']['headers']);
+			$processedHeaders = WP_Http::processHeaders( $meta['wrapper_data']['headers'] );
 		else
-			$processedHeaders = WP_Http::processHeaders($meta['wrapper_data']);
+			$processedHeaders = WP_Http::processHeaders( $meta['wrapper_data'] );
 
 		// Streams does not provide an error code which we can use to see why the request stream stopped.
 		// We can however test to see if a location header is present and return based on that.
-		if ( isset($processedHeaders['headers']['location']) && 0 !== $args['_redirection'] )
-			return new WP_Error('http_request_failed', __('Too many redirects.'));
+		if ( isset( $processedHeaders['headers']['location'] ) && 0 !== $args['_redirection'] )
+			return new WP_Error( 'http_request_failed', __( 'Too many redirects.' ) );
 
 		if ( ! empty( $strResponse ) && isset( $processedHeaders['headers']['transfer-encoding'] ) && 'chunked' == $processedHeaders['headers']['transfer-encoding'] )
-			$strResponse = WP_Http::chunkTransferDecode($strResponse);
+			$strResponse = WP_Http::chunkTransferDecode( $strResponse );
 
-		if ( true === $r['decompress'] && true === WP_Http_Encoding::should_decode($processedHeaders['headers']) )
+		if ( true === $r['decompress'] && true === WP_Http_Encoding::should_decode( $processedHeaders['headers'] ) )
 			$strResponse = WP_Http_Encoding::decompress( $strResponse );
 
 		return array( 'headers' => $processedHeaders['headers'], 'body' => $strResponse, 'response' => $processedHeaders['response'], 'cookies' => $processedHeaders['cookies'], 'filename' => $r['filename'] );

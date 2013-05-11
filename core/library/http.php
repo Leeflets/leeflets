@@ -71,12 +71,12 @@ class Http {
 	 * @access public
 	 * @since 2.7.0
 	 * @todo Refactor this code. The code in this method extends the scope of its original purpose
-	 *		and should be refactored to allow for cleaner abstraction and reduce duplication of the
-	 *		code. One suggestion is to create a class specifically for the arguments, however
-	 *		preliminary refactoring to this affect has affect more than just the scope of the
-	 *		arguments. Something to ponder at least.
+	 *  and should be refactored to allow for cleaner abstraction and reduce duplication of the
+	 *  code. One suggestion is to create a class specifically for the arguments, however
+	 *  preliminary refactoring to this affect has affect more than just the scope of the
+	 *  arguments. Something to ponder at least.
 	 *
-	 * @param string $url URI resource.
+	 * @param string  $url  URI resource.
 	 * @param str|array $args Optional. Override the defaults.
 	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
 	 */
@@ -85,9 +85,9 @@ class Http {
 
 		$defaults = array(
 			'method' => 'GET',
-			'timeout' => apply_filters( 'http_request_timeout', 5),
-			'redirection' => apply_filters( 'http_request_redirection_count', 5),
-			'httpversion' => apply_filters( 'http_request_version', '1.0'),
+			'timeout' => apply_filters( 'http_request_timeout', 5 ),
+			'redirection' => apply_filters( 'http_request_redirection_count', 5 ),
+			'httpversion' => apply_filters( 'http_request_version', '1.0' ),
 			'user-agent' => apply_filters( 'http_headers_useragent', 'WordPress/' . $wp_version . '; ' . get_bloginfo( 'url' )  ),
 			'blocking' => true,
 			'headers' => array(),
@@ -104,7 +104,7 @@ class Http {
 		$args = wp_parse_args( $args );
 
 		// By default, Head requests do not cause redirections.
-		if ( isset($args['method']) && 'HEAD' == $args['method'] )
+		if ( isset( $args['method'] ) && 'HEAD' == $args['method'] )
 			$defaults['redirection'] = 0;
 
 		$r = wp_parse_args( $args, $defaults );
@@ -121,7 +121,7 @@ class Http {
 		$arrURL = parse_url( $url );
 
 		if ( empty( $url ) || empty( $arrURL['scheme'] ) )
-			return new WP_Error('http_request_failed', __('A valid URL was not provided.'));
+			return new WP_Error( 'http_request_failed', __( 'A valid URL was not provided.' ) );
 
 		if ( $this->block_request( $url ) )
 			return new WP_Error( 'http_request_failed', __( 'User has blocked requests through HTTP.' ) );
@@ -186,7 +186,7 @@ class Http {
 				$r['headers']['Content-Length'] = strlen( $r['body'] );
 		}
 
-		return $this->_dispatch_request($url, $r);
+		return $this->_dispatch_request( $url, $r );
 	}
 
 	/**
@@ -195,8 +195,8 @@ class Http {
 	 * @since 3.2.0
 	 * @access private
 	 *
-	 * @param array $args Request arguments
-	 * @param string $url URL to Request
+	 * @param array   $args Request arguments
+	 * @param string  $url  URL to Request
 	 *
 	 * @return string|bool Class name for the first transport that claims to support the request. False if no transport claims to support the request.
 	 */
@@ -234,8 +234,8 @@ class Http {
 	 * @since 3.2.0
 	 * @access private
 	 *
-	 * @param string $url URL to Request
-	 * @param array $args Request arguments
+	 * @param string  $url  URL to Request
+	 * @param array   $args Request arguments
 	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
 	 */
 	private function _dispatch_request( $url, $args ) {
@@ -267,14 +267,14 @@ class Http {
 	 * @access public
 	 * @since 2.7.0
 	 *
-	 * @param string $url URI resource.
+	 * @param string  $url  URI resource.
 	 * @param str|array $args Optional. Override the defaults.
 	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
 	 */
-	function post($url, $args = array()) {
-		$defaults = array('method' => 'POST');
+	function post( $url, $args = array() ) {
+		$defaults = array( 'method' => 'POST' );
 		$r = wp_parse_args( $args, $defaults );
-		return $this->request($url, $r);
+		return $this->request( $url, $r );
 	}
 
 	/**
@@ -285,14 +285,14 @@ class Http {
 	 * @access public
 	 * @since 2.7.0
 	 *
-	 * @param string $url URI resource.
+	 * @param string  $url  URI resource.
 	 * @param str|array $args Optional. Override the defaults.
 	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
 	 */
-	function get($url, $args = array()) {
-		$defaults = array('method' => 'GET');
+	function get( $url, $args = array() ) {
+		$defaults = array( 'method' => 'GET' );
 		$r = wp_parse_args( $args, $defaults );
-		return $this->request($url, $r);
+		return $this->request( $url, $r );
 	}
 
 	/**
@@ -303,14 +303,14 @@ class Http {
 	 * @access public
 	 * @since 2.7.0
 	 *
-	 * @param string $url URI resource.
+	 * @param string  $url  URI resource.
 	 * @param str|array $args Optional. Override the defaults.
 	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
 	 */
-	function head($url, $args = array()) {
-		$defaults = array('method' => 'HEAD');
+	function head( $url, $args = array() ) {
+		$defaults = array( 'method' => 'HEAD' );
 		$r = wp_parse_args( $args, $defaults );
-		return $this->request($url, $r);
+		return $this->request( $url, $r );
 	}
 
 	/**
@@ -320,13 +320,13 @@ class Http {
 	 * @static
 	 * @since 2.7.0
 	 *
-	 * @param string $strResponse The full response string
+	 * @param string  $strResponse The full response string
 	 * @return array Array with 'headers' and 'body' keys.
 	 */
-	function processResponse($strResponse) {
-		$res = explode("\r\n\r\n", $strResponse, 2);
+	function processResponse( $strResponse ) {
+		$res = explode( "\r\n\r\n", $strResponse, 2 );
 
-		return array('headers' => $res[0], 'body' => isset($res[1]) ? $res[1] : '');
+		return array( 'headers' => $res[0], 'body' => isset( $res[1] ) ? $res[1] : '' );
 	}
 
 	/**
@@ -341,26 +341,26 @@ class Http {
 	 *
 	 * @param string|array $headers
 	 * @return array Processed string headers. If duplicate headers are encountered,
-	 * 					Then a numbered array is returned as the value of that header-key.
+	 *      Then a numbered array is returned as the value of that header-key.
 	 */
-	public static function processHeaders($headers) {
+	public static function processHeaders( $headers ) {
 		// split headers, one per array element
-		if ( is_string($headers) ) {
+		if ( is_string( $headers ) ) {
 			// tolerate line terminator: CRLF = LF (RFC 2616 19.3)
-			$headers = str_replace("\r\n", "\n", $headers);
+			$headers = str_replace( "\r\n", "\n", $headers );
 			// unfold folded header fields. LWS = [CRLF] 1*( SP | HT ) <US-ASCII SP, space (32)>, <US-ASCII HT, horizontal-tab (9)> (RFC 2616 2.2)
-			$headers = preg_replace('/\n[ \t]/', ' ', $headers);
+			$headers = preg_replace( '/\n[ \t]/', ' ', $headers );
 			// create the headers array
-			$headers = explode("\n", $headers);
+			$headers = explode( "\n", $headers );
 		}
 
-		$response = array('code' => 0, 'message' => '');
+		$response = array( 'code' => 0, 'message' => '' );
 
 		// If a redirection has taken place, The headers for each page request may have been passed.
 		// In this case, determine the final HTTP header and parse from there.
-		for ( $i = count($headers)-1; $i >= 0; $i-- ) {
-			if ( !empty($headers[$i]) && false === strpos($headers[$i], ':') ) {
-				$headers = array_splice($headers, $i);
+		for ( $i = count( $headers )-1; $i >= 0; $i-- ) {
+			if ( !empty( $headers[$i] ) && false === strpos( $headers[$i], ':' ) ) {
+				$headers = array_splice( $headers, $i );
 				break;
 			}
 		}
@@ -368,17 +368,17 @@ class Http {
 		$cookies = array();
 		$newheaders = array();
 		foreach ( (array) $headers as $tempheader ) {
-			if ( empty($tempheader) )
+			if ( empty( $tempheader ) )
 				continue;
 
-			if ( false === strpos($tempheader, ':') ) {
-				$stack = explode(' ', $tempheader, 3);
+			if ( false === strpos( $tempheader, ':' ) ) {
+				$stack = explode( ' ', $tempheader, 3 );
 				$stack[] = '';
-				list( , $response['code'], $response['message']) = $stack;
+				list( , $response['code'], $response['message'] ) = $stack;
 				continue;
 			}
 
-			list($key, $value) = explode(':', $tempheader, 2);
+			list( $key, $value ) = explode( ':', $tempheader, 2 );
 
 			$key = strtolower( $key );
 			$value = trim( $value );
@@ -394,7 +394,7 @@ class Http {
 				$cookies[] = new WP_Http_Cookie( $value );
 		}
 
-		return array('response' => $response, 'headers' => $newheaders, 'cookies' => $cookies);
+		return array( 'response' => $response, 'headers' => $newheaders, 'cookies' => $cookies );
 	}
 
 	/**
@@ -408,10 +408,10 @@ class Http {
 	 * @version 2.8.0
 	 * @static
 	 *
-	 * @param array $r Full array of args passed into ::request()
+	 * @param array   $r Full array of args passed into ::request()
 	 */
 	public static function buildCookieHeader( &$r ) {
-		if ( ! empty($r['cookies']) ) {
+		if ( ! empty( $r['cookies'] ) ) {
 			$cookies_header = '';
 			foreach ( (array) $r['cookies'] as $cookie ) {
 				$cookies_header .= $cookie->getHeaderValue() . '; ';
@@ -434,13 +434,13 @@ class Http {
 	 * @since 2.7.0
 	 * @static
 	 *
-	 * @param string $body Body content
+	 * @param string  $body Body content
 	 * @return string Chunked decoded body on success or raw body on failure.
 	 */
-	function chunkTransferDecode($body) {
-		$body = str_replace(array("\r\n", "\r"), "\n", $body);
+	function chunkTransferDecode( $body ) {
+		$body = str_replace( array( "\r\n", "\r" ), "\n", $body );
 		// The body is not chunked encoding or is malformed.
-		if ( ! preg_match( '/^[0-9a-f]+(\s|\n)+/mi', trim($body) ) )
+		if ( ! preg_match( '/^[0-9a-f]+(\s|\n)+/mi', trim( $body ) ) )
 			return $body;
 
 		$parsedBody = '';
@@ -456,12 +456,12 @@ class Http {
 				$length = hexdec( $match[1] );
 				$chunkLength = strlen( $match[0] );
 
-				$strBody = substr($body, $chunkLength, $length);
+				$strBody = substr( $body, $chunkLength, $length );
 				$parsedBody .= $strBody;
 
-				$body = ltrim(str_replace(array($match[0], $strBody), '', $body), "\n");
+				$body = ltrim( str_replace( array( $match[0], $strBody ), '', $body ), "\n" );
 
-				if ( "0" == trim($body) )
+				if ( "0" == trim( $body ) )
 					return $parsedBody; // Ignore footer headers.
 			} else {
 				return $body;
@@ -485,17 +485,17 @@ class Http {
 	 * @link http://core.trac.wordpress.org/ticket/8927 Allow preventing external requests.
 	 * @link http://core.trac.wordpress.org/ticket/14636 Allow wildcard domains in WP_ACCESSIBLE_HOSTS
 	 *
-	 * @param string $uri URI of url.
+	 * @param string  $uri URI of url.
 	 * @return bool True to block, false to allow.
 	 */
-	function block_request($uri) {
+	function block_request( $uri ) {
 		// We don't need to block requests, because nothing is blocked.
 		if ( ! defined( 'WP_HTTP_BLOCK_EXTERNAL' ) || ! WP_HTTP_BLOCK_EXTERNAL )
 			return false;
 
 		// parse_url() only handles http, https type URLs, and will emit E_WARNING on failure.
 		// This will be displayed on blogs, which is not reasonable.
-		$check = @parse_url($uri);
+		$check = @parse_url( $uri );
 
 		/* Malformed URL, can not process, but this could mean ssl, so let through anyway.
 		 *
@@ -507,30 +507,30 @@ class Http {
 		if ( $check === false )
 			return false;
 
-		$home = parse_url( get_option('siteurl') );
+		$home = parse_url( get_option( 'siteurl' ) );
 
 		// Don't block requests back to ourselves by default
 		if ( $check['host'] == 'localhost' || $check['host'] == $home['host'] )
-			return apply_filters('block_local_requests', false);
+			return apply_filters( 'block_local_requests', false );
 
-		if ( !defined('WP_ACCESSIBLE_HOSTS') )
+		if ( !defined( 'WP_ACCESSIBLE_HOSTS' ) )
 			return true;
 
 		static $accessible_hosts;
 		static $wildcard_regex = false;
 		if ( null == $accessible_hosts ) {
-			$accessible_hosts = preg_split('|,\s*|', WP_ACCESSIBLE_HOSTS);
+			$accessible_hosts = preg_split( '|,\s*|', WP_ACCESSIBLE_HOSTS );
 
-			if ( false !== strpos(WP_ACCESSIBLE_HOSTS, '*') ) {
+			if ( false !== strpos( WP_ACCESSIBLE_HOSTS, '*' ) ) {
 				$wildcard_regex = array();
 				foreach ( $accessible_hosts as $host )
-					$wildcard_regex[] = str_replace('\*', '[\w.]+?', preg_quote($host, '/'));
-				$wildcard_regex = '/^(' . implode('|', $wildcard_regex) . ')$/i';
+					$wildcard_regex[] = str_replace( '\*', '[\w.]+?', preg_quote( $host, '/' ) );
+				$wildcard_regex = '/^(' . implode( '|', $wildcard_regex ) . ')$/i';
 			}
 		}
 
-		if ( !empty($wildcard_regex) )
-			return !preg_match($wildcard_regex, $check['host']);
+		if ( !empty( $wildcard_regex ) )
+			return !preg_match( $wildcard_regex, $check['host'] );
 		else
 			return !in_array( $check['host'], $accessible_hosts ); //Inverse logic, If its in the array, then we can't access it.
 
@@ -561,7 +561,7 @@ class Http {
 		if ( ! empty( $relative_url_parts['path'] ) && '/' == $relative_url_parts['path'][0] ) {
 			$path = $relative_url_parts['path'];
 
-		// Else it's a relative path
+			// Else it's a relative path
 		} elseif ( ! empty( $relative_url_parts['path'] ) ) {
 			// Strip off any file components from the absolute path
 			$path = substr( $path, 0, strrpos( $path, '/' ) + 1 );

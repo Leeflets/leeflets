@@ -19,9 +19,9 @@ class Encoding {
 	 *
 	 * @since 2.8
 	 *
-	 * @param string $raw String to compress.
-	 * @param int $level Optional, default is 9. Compression level, 9 is highest.
-	 * @param string $supports Optional, not used. When implemented it will choose the right compression based on what the server supports.
+	 * @param string  $raw      String to compress.
+	 * @param int     $level    Optional, default is 9. Compression level, 9 is highest.
+	 * @param string  $supports Optional, not used. When implemented it will choose the right compression based on what the server supports.
 	 * @return string|bool False on failure.
 	 */
 	public static function compress( $raw, $level = 9, $supports = null ) {
@@ -38,13 +38,13 @@ class Encoding {
 	 *
 	 * @since 2.8
 	 *
-	 * @param string $compressed String to decompress.
-	 * @param int $length The optional length of the compressed data.
+	 * @param string  $compressed String to decompress.
+	 * @param int     $length     The optional length of the compressed data.
 	 * @return string|bool False on failure.
 	 */
 	public static function decompress( $compressed, $length = null ) {
 
-		if ( empty($compressed) )
+		if ( empty( $compressed ) )
 			return $compressed;
 
 		if ( false !== ( $decompressed = @gzinflate( $compressed ) ) )
@@ -56,7 +56,7 @@ class Encoding {
 		if ( false !== ( $decompressed = @gzuncompress( $compressed ) ) )
 			return $decompressed;
 
-		if ( function_exists('gzdecode') ) {
+		if ( function_exists( 'gzdecode' ) ) {
 			$decompressed = @gzdecode( $compressed );
 
 			if ( false !== $decompressed )
@@ -83,34 +83,34 @@ class Encoding {
 	 * @link http://au2.php.net/manual/en/function.gzinflate.php#70875
 	 * @link http://au2.php.net/manual/en/function.gzinflate.php#77336
 	 *
-	 * @param string $gzData String to decompress.
+	 * @param string  $gzData String to decompress.
 	 * @return string|bool False on failure.
 	 */
-	public static function compatible_gzinflate($gzData) {
+	public static function compatible_gzinflate( $gzData ) {
 
 		// Compressed data might contain a full header, if so strip it for gzinflate()
-		if ( substr($gzData, 0, 3) == "\x1f\x8b\x08" ) {
+		if ( substr( $gzData, 0, 3 ) == "\x1f\x8b\x08" ) {
 			$i = 10;
-			$flg = ord( substr($gzData, 3, 1) );
+			$flg = ord( substr( $gzData, 3, 1 ) );
 			if ( $flg > 0 ) {
 				if ( $flg & 4 ) {
-					list($xlen) = unpack('v', substr($gzData, $i, 2) );
+					list( $xlen ) = unpack( 'v', substr( $gzData, $i, 2 ) );
 					$i = $i + 2 + $xlen;
 				}
 				if ( $flg & 8 )
-					$i = strpos($gzData, "\0", $i) + 1;
+					$i = strpos( $gzData, "\0", $i ) + 1;
 				if ( $flg & 16 )
-					$i = strpos($gzData, "\0", $i) + 1;
+					$i = strpos( $gzData, "\0", $i ) + 1;
 				if ( $flg & 2 )
 					$i = $i + 2;
 			}
-			$decompressed = @gzinflate( substr($gzData, $i, -8) );
+			$decompressed = @gzinflate( substr( $gzData, $i, -8 ) );
 			if ( false !== $decompressed )
 				return $decompressed;
 		}
 
 		// Compressed data from java.util.zip.Deflater amongst others.
-		$decompressed = @gzinflate( substr($gzData, 2) );
+		$decompressed = @gzinflate( substr( $gzData, 2 ) );
 		if ( false !== $decompressed )
 			return $decompressed;
 
@@ -135,7 +135,7 @@ class Encoding {
 		if ( function_exists( 'gzdecode' ) )
 			$type[] = 'gzip;q=0.5';
 
-		return implode(', ', $type);
+		return implode( ', ', $type );
 	}
 
 	/**
@@ -157,13 +157,13 @@ class Encoding {
 	 * @param array|string $headers All of the available headers.
 	 * @return bool
 	 */
-	public static function should_decode($headers) {
+	public static function should_decode( $headers ) {
 		if ( is_array( $headers ) ) {
-			if ( array_key_exists('content-encoding', $headers) && ! empty( $headers['content-encoding'] ) )
+			if ( array_key_exists( 'content-encoding', $headers ) && ! empty( $headers['content-encoding'] ) )
 				return true;
 		} else if ( is_string( $headers ) ) {
-			return ( stripos($headers, 'content-encoding:') !== false );
-		}
+				return stripos( $headers, 'content-encoding:' ) !== false;
+			}
 
 		return false;
 	}
@@ -180,6 +180,6 @@ class Encoding {
 	 * @return bool
 	 */
 	public static function is_available() {
-		return ( function_exists('gzuncompress') || function_exists('gzdeflate') || function_exists('gzinflate') );
+		return function_exists( 'gzuncompress' ) || function_exists( 'gzdeflate' ) || function_exists( 'gzinflate' );
 	}
 }

@@ -27,11 +27,11 @@ class Curl {
 	 * @access public
 	 * @since 2.7.0
 	 *
-	 * @param string $url
+	 * @param string  $url
 	 * @param str|array $args Optional. Override the defaults.
 	 * @return array 'headers', 'body', 'response', 'cookies' and 'filename' keys.
 	 */
-	function request($url, $args = array()) {
+	function request( $url, $args = array() ) {
 		$defaults = array(
 			'method' => 'GET', 'timeout' => 5,
 			'redirection' => 5, 'httpversion' => '1.0',
@@ -41,13 +41,13 @@ class Curl {
 
 		$r = wp_parse_args( $args, $defaults );
 
-		if ( isset($r['headers']['User-Agent']) ) {
+		if ( isset( $r['headers']['User-Agent'] ) ) {
 			$r['user-agent'] = $r['headers']['User-Agent'];
-			unset($r['headers']['User-Agent']);
-		} else if ( isset($r['headers']['user-agent']) ) {
-			$r['user-agent'] = $r['headers']['user-agent'];
-			unset($r['headers']['user-agent']);
-		}
+			unset( $r['headers']['User-Agent'] );
+		} else if ( isset( $r['headers']['user-agent'] ) ) {
+				$r['user-agent'] = $r['headers']['user-agent'];
+				unset( $r['headers']['user-agent'] );
+			}
 
 		// Construct Cookie: header if any cookies are set.
 		WP_Http::buildCookieHeader( $r );
@@ -69,12 +69,12 @@ class Curl {
 			}
 		}
 
-		$is_local = isset($r['local']) && $r['local'];
-		$ssl_verify = isset($r['sslverify']) && $r['sslverify'];
+		$is_local = isset( $r['local'] ) && $r['local'];
+		$ssl_verify = isset( $r['sslverify'] ) && $r['sslverify'];
 		if ( $is_local )
-			$ssl_verify = apply_filters('https_local_ssl_verify', $ssl_verify);
+			$ssl_verify = apply_filters( 'https_local_ssl_verify', $ssl_verify );
 		elseif ( ! $is_local )
-			$ssl_verify = apply_filters('https_ssl_verify', $ssl_verify);
+			$ssl_verify = apply_filters( 'https_ssl_verify', $ssl_verify );
 
 		// CURLOPT_TIMEOUT and CURLOPT_CONNECTTIMEOUT expect integers. Have to use ceil since
 		// a value of 0 will allow an unlimited timeout.
@@ -82,7 +82,7 @@ class Curl {
 		curl_setopt( $handle, CURLOPT_CONNECTTIMEOUT, $timeout );
 		curl_setopt( $handle, CURLOPT_TIMEOUT, $timeout );
 
-		curl_setopt( $handle, CURLOPT_URL, $url);
+		curl_setopt( $handle, CURLOPT_URL, $url );
 		curl_setopt( $handle, CURLOPT_RETURNTRANSFER, true );
 		curl_setopt( $handle, CURLOPT_SSL_VERIFYHOST, ( $ssl_verify === true ) ? 2 : false );
 		curl_setopt( $handle, CURLOPT_SSL_VERIFYPEER, $ssl_verify );
@@ -92,22 +92,22 @@ class Curl {
 		curl_setopt( $handle, CURLOPT_FOLLOWLOCATION, false );
 
 		switch ( $r['method'] ) {
-			case 'HEAD':
-				curl_setopt( $handle, CURLOPT_NOBODY, true );
-				break;
-			case 'POST':
-				curl_setopt( $handle, CURLOPT_POST, true );
+		case 'HEAD':
+			curl_setopt( $handle, CURLOPT_NOBODY, true );
+			break;
+		case 'POST':
+			curl_setopt( $handle, CURLOPT_POST, true );
+			curl_setopt( $handle, CURLOPT_POSTFIELDS, $r['body'] );
+			break;
+		case 'PUT':
+			curl_setopt( $handle, CURLOPT_CUSTOMREQUEST, 'PUT' );
+			curl_setopt( $handle, CURLOPT_POSTFIELDS, $r['body'] );
+			break;
+		default:
+			curl_setopt( $handle, CURLOPT_CUSTOMREQUEST, $r['method'] );
+			if ( ! is_null( $r['body'] ) )
 				curl_setopt( $handle, CURLOPT_POSTFIELDS, $r['body'] );
-				break;
-			case 'PUT':
-				curl_setopt( $handle, CURLOPT_CUSTOMREQUEST, 'PUT' );
-				curl_setopt( $handle, CURLOPT_POSTFIELDS, $r['body'] );
-				break;
-			default:
-				curl_setopt( $handle, CURLOPT_CUSTOMREQUEST, $r['method'] );
-				if ( ! is_null( $r['body'] ) )
-					curl_setopt( $handle, CURLOPT_POSTFIELDS, $r['body'] );
-				break;
+			break;
 		}
 
 		if ( true === $r['blocking'] )
@@ -142,20 +142,20 @@ class Curl {
 
 		// Cookies are not handled by the HTTP API currently. Allow for plugin authors to handle it
 		// themselves... Although, it is somewhat pointless without some reference.
-		do_action_ref_array( 'http_api_curl', array(&$handle) );
+		do_action_ref_array( 'http_api_curl', array( &$handle ) );
 
 		// We don't need to return the body, so don't. Just execute request and return.
 		if ( ! $r['blocking'] ) {
 			curl_exec( $handle );
 			curl_close( $handle );
-			return array( 'headers' => array(), 'body' => '', 'response' => array('code' => false, 'message' => false), 'cookies' => array() );
+			return array( 'headers' => array(), 'body' => '', 'response' => array( 'code' => false, 'message' => false ), 'cookies' => array() );
 		}
 
 		$theResponse = curl_exec( $handle );
 		$theBody = '';
 		$theHeaders = WP_Http::processHeaders( $this->headers );
 
-		if ( strlen($theResponse) > 0 && ! is_bool( $theResponse ) ) // is_bool: when using $args['stream'], curl_exec will return (bool)true
+		if ( strlen( $theResponse ) > 0 && ! is_bool( $theResponse ) ) // is_bool: when using $args['stream'], curl_exec will return (bool)true
 			$theBody = $theResponse;
 
 		// If no response
@@ -170,7 +170,7 @@ class Curl {
 
 		$response = array();
 		$response['code'] = curl_getinfo( $handle, CURLINFO_HTTP_CODE );
-		$response['message'] = get_status_header_desc($response['code']);
+		$response['message'] = get_status_header_desc( $response['code'] );
 
 		curl_close( $handle );
 
@@ -186,7 +186,7 @@ class Curl {
 			}
 		}
 
-		if ( true === $r['decompress'] && true === WP_Http_Encoding::should_decode($theHeaders['headers']) )
+		if ( true === $r['decompress'] && true === WP_Http_Encoding::should_decode( $theHeaders['headers'] ) )
 			$theBody = WP_Http_Encoding::decompress( $theBody );
 
 		return array( 'headers' => $theHeaders['headers'], 'body' => $theBody, 'response' => $response, 'cookies' => $theHeaders['cookies'], 'filename' => $r['filename'] );
@@ -222,7 +222,7 @@ class Curl {
 
 		if ( $is_ssl ) {
 			$curl_version = curl_version();
-			if ( ! (CURL_VERSION_SSL & $curl_version['features']) ) // Does this cURL version support SSL requests?
+			if ( ! ( CURL_VERSION_SSL & $curl_version['features'] ) ) // Does this cURL version support SSL requests?
 				return false;
 		}
 

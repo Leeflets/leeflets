@@ -90,8 +90,8 @@ class Cookie {
 
 			// Set everything else as a property
 			foreach ( $pairs as $pair ) {
-				$pair = rtrim($pair);
-				if ( empty($pair) ) //Handles the cookie ending in ; which results in a empty final pair
+				$pair = rtrim( $pair );
+				if ( empty( $pair ) ) //Handles the cookie ending in ; which results in a empty final pair
 					continue;
 
 				list( $key, $val ) = strpos( $pair, '=' ) ? explode( '=', $pair ) : array( $pair, '' );
@@ -125,7 +125,7 @@ class Cookie {
 	 * @access public
 	 * @since 2.8.0
 	 *
-	 * @param string $url URL you intend to send this cookie to
+	 * @param string  $url URL you intend to send this cookie to
 	 * @return boolean true if allowed, false otherwise.
 	 */
 	function test( $url ) {
@@ -151,7 +151,7 @@ class Cookie {
 			return false;
 
 		// Port - supports "port-lists" in the format: "80,8000,8080"
-		if ( !in_array( $url['port'], explode( ',', $port) ) )
+		if ( !in_array( $url['port'], explode( ',', $port ) ) )
 			return false;
 
 		// Path - request path must start with path restriction
