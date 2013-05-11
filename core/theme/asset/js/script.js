@@ -581,6 +581,7 @@ function LEEFLETS() {
 	self.hide_all = function() {
 		self.toggle_nav();
 		self.hide_panel();
+		$('.active', $nav).removeClass('active');
 	};
 
 	self.load_panel = function(url) {
