@@ -32,6 +32,10 @@ class Config {
 		$this->debug_log        = false;
 		$this->fs_chmod_dir     = 0755;
 		$this->fs_chmod_file    = 0644;
+
+		// Include version number in external file so we don't pollute
+		// the change history of this file with version number updates
+		include $this->include_path . '/version.php';
 	}
 
 	function load() {
