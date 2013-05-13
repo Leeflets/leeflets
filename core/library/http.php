@@ -34,6 +34,13 @@ namespace Leeflets;
  * @since 2.7.0
  */
 class Http {
+	private $config, $hook, $router;
+
+	function __construct( Config $config, Hook $hook, Router $router ) {
+		$this->config = $config;
+		$this->hook = $hook;
+		$this->router = $router;
+	}
 
 	/**
 	 * Send a HTTP request to a URI.
@@ -78,17 +85,16 @@ class Http {
 	 *
 	 * @param string  $url  URI resource.
 	 * @param str|array $args Optional. Override the defaults.
-	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
+	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A Error instance upon error
 	 */
 	function request( $url, $args = array() ) {
-		global $wp_version;
 
 		$defaults = array(
 			'method' => 'GET',
-			'timeout' => apply_filters( 'http_request_timeout', 5 ),
-			'redirection' => apply_filters( 'http_request_redirection_count', 5 ),
-			'httpversion' => apply_filters( 'http_request_version', '1.0' ),
-			'user-agent' => apply_filters( 'http_headers_useragent', 'WordPress/' . $wp_version . '; ' . get_bloginfo( 'url' )  ),
+			'timeout' => $this->hook->apply( 'http_request_timeout', 5 ),
+			'redirection' => $this->hook->apply( 'http_request_redirection_count', 5 ),
+			'httpversion' => $this->hook->apply( 'http_request_version', '1.0' ),
+			'user-agent' => $this->hook->apply( 'http_headers_useragent', 'Leeflets/' . $this->config->version . '; ' . $this->router->admin_url()  ),
 			'blocking' => true,
 			'headers' => array(),
 			'cookies' => array(),
@@ -101,37 +107,37 @@ class Http {
 		);
 
 		// Pre-parse for the HEAD checks.
-		$args = wp_parse_args( $args );
+		//$args = wp_parse_args( $args );
 
 		// By default, Head requests do not cause redirections.
 		if ( isset( $args['method'] ) && 'HEAD' == $args['method'] )
 			$defaults['redirection'] = 0;
 
-		$r = wp_parse_args( $args, $defaults );
-		$r = apply_filters( 'http_request_args', $r, $url );
+		$r = array_merge( $defaults, $args );
+		$r = $this->hook->apply( 'http_request_args', $r, $url );
 
 		// Certain classes decrement this, store a copy of the original value for loop purposes.
 		$r['_redirection'] = $r['redirection'];
 
 		// Allow plugins to short-circuit the request
-		$pre = apply_filters( 'pre_http_request', false, $r, $url );
+		$pre = $this->hook->apply( 'pre_http_request', false, $r, $url );
 		if ( false !== $pre )
 			return $pre;
 
 		$arrURL = parse_url( $url );
 
 		if ( empty( $url ) || empty( $arrURL['scheme'] ) )
-			return new WP_Error( 'http_request_failed', __( 'A valid URL was not provided.' ) );
+			return new Error( 'http_request_failed', __( 'A valid URL was not provided.' ) );
 
 		if ( $this->block_request( $url ) )
-			return new WP_Error( 'http_request_failed', __( 'User has blocked requests through HTTP.' ) );
+			return new Error( 'http_request_failed', __( 'User has blocked requests through HTTP.' ) );
 
 		// Determine if this is a https call and pass that on to the transport functions
 		// so that we can blacklist the transports that do not support ssl verification
 		$r['ssl'] = $arrURL['scheme'] == 'https' || $arrURL['scheme'] == 'ssl';
 
 		// Determine if this request is to OUR install of WordPress
-		$homeURL = parse_url( get_bloginfo( 'url' ) );
+		$homeURL = parse_url( $this->router->admin_url() );
 		$r['local'] = $homeURL['host'] == $arrURL['host'] || 'localhost' == $arrURL['host'];
 		unset( $homeURL );
 
@@ -144,14 +150,14 @@ class Http {
 		if ( $r['stream'] ) {
 			$r['blocking'] = true;
 			if ( ! call_user_func( 'WIN' === strtoupper( substr( PHP_OS, 0, 3 ) ) ? 'win_is_writable' : 'is_writable', dirname( $r['filename'] ) ) )
-				return new WP_Error( 'http_request_failed', __( 'Destination directory for file streaming does not exist or is not writable.' ) );
+				return new Error( 'http_request_failed', __( 'Destination directory for file streaming does not exist or is not writable.' ) );
 		}
 
 		if ( is_null( $r['headers'] ) )
 			$r['headers'] = array();
 
 		if ( ! is_array( $r['headers'] ) ) {
-			$processedHeaders = WP_Http::processHeaders( $r['headers'] );
+			$processedHeaders = $this->processHeaders( $r['headers'] );
 			$r['headers'] = $processedHeaders['headers'];
 		}
 
@@ -166,10 +172,10 @@ class Http {
 		}
 
 		// Construct Cookie: header if any cookies are set
-		WP_Http::buildCookieHeader( $r );
+		$this->buildCookieHeader( $r );
 
-		if ( WP_Http_Encoding::is_available() )
-			$r['headers']['Accept-Encoding'] = WP_Http_Encoding::accept_encoding();
+		if ( Http\Encoding::is_available() )
+			$r['headers']['Accept-Encoding'] = Http\Encoding::accept_encoding();
 
 		if ( ( ! is_null( $r['body'] ) && '' != $r['body'] ) || 'POST' == $r['method'] || 'PUT' == $r['method'] ) {
 			if ( is_array( $r['body'] ) || is_object( $r['body'] ) ) {
@@ -205,10 +211,10 @@ class Http {
 
 		// Loop over each transport on each HTTP request looking for one which will serve this request's needs
 		foreach ( $request_order as $transport ) {
-			$class = 'WP_HTTP_' . $transport;
+			$class = '\Leeflets\Http\\' . $transport;
 
 			// Check to see if this transport is a possibility, calls the transport statically
-			if ( !call_user_func( array( $class, 'test' ), $args, $url ) )
+			if ( !call_user_func( array( $class, 'test' ), $this->hook, $args, $url ) )
 				continue;
 
 			return $class;
@@ -236,27 +242,27 @@ class Http {
 	 *
 	 * @param string  $url  URL to Request
 	 * @param array   $args Request arguments
-	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
+	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A Error instance upon error
 	 */
 	private function _dispatch_request( $url, $args ) {
 		static $transports = array();
 
 		$class = $this->_get_first_available_transport( $args, $url );
 		if ( !$class )
-			return new WP_Error( 'http_failure', __( 'There are no HTTP transports available which can complete the requested request.' ) );
+			return new Error( 'http_failure', __( 'There are no HTTP transports available which can complete the requested request.' ) );
 
 		// Transport claims to support request, instantiate it and give it a whirl.
 		if ( empty( $transports[$class] ) )
-			$transports[$class] = new $class;
+			$transports[$class] = new $class( $this->config, $this->hook );
 
 		$response = $transports[$class]->request( $url, $args );
 
-		do_action( 'http_api_debug', $response, 'response', $class, $args, $url );
+		$this->hook->apply( 'http_api_debug', $response, 'response', $class, $args, $url );
 
-		if ( is_wp_error( $response ) )
+		if ( Error::is_a( $response ) )
 			return $response;
 
-		return apply_filters( 'http_response', $response, $args, $url );
+		return $this->hook->apply( 'http_response', $response, $args, $url );
 	}
 
 	/**
@@ -269,11 +275,11 @@ class Http {
 	 *
 	 * @param string  $url  URI resource.
 	 * @param str|array $args Optional. Override the defaults.
-	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
+	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A Error instance upon error
 	 */
 	function post( $url, $args = array() ) {
 		$defaults = array( 'method' => 'POST' );
-		$r = wp_parse_args( $args, $defaults );
+		$r = array_merge( $defaults, $args );
 		return $this->request( $url, $r );
 	}
 
@@ -287,11 +293,11 @@ class Http {
 	 *
 	 * @param string  $url  URI resource.
 	 * @param str|array $args Optional. Override the defaults.
-	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
+	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A Error instance upon error
 	 */
 	function get( $url, $args = array() ) {
 		$defaults = array( 'method' => 'GET' );
-		$r = wp_parse_args( $args, $defaults );
+		$r = array_merge( $defaults, $args );
 		return $this->request( $url, $r );
 	}
 
@@ -305,11 +311,11 @@ class Http {
 	 *
 	 * @param string  $url  URI resource.
 	 * @param str|array $args Optional. Override the defaults.
-	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A WP_Error instance upon error
+	 * @return array|object Array containing 'headers', 'body', 'response', 'cookies', 'filename'. A Error instance upon error
 	 */
 	function head( $url, $args = array() ) {
 		$defaults = array( 'method' => 'HEAD' );
-		$r = wp_parse_args( $args, $defaults );
+		$r = array_merge( $defaults, $args );
 		return $this->request( $url, $r );
 	}
 
@@ -391,7 +397,7 @@ class Http {
 				$newheaders[ $key ] = $value;
 			}
 			if ( 'set-cookie' == $key )
-				$cookies[] = new WP_Http_Cookie( $value );
+				$cookies[] = new Http\Cookie( $value );
 		}
 
 		return array( 'response' => $response, 'headers' => $newheaders, 'cookies' => $cookies );
@@ -400,7 +406,7 @@ class Http {
 	/**
 	 * Takes the arguments for a ::request() and checks for the cookie array.
 	 *
-	 * If it's found, then it's assumed to contain WP_Http_Cookie objects, which are each parsed
+	 * If it's found, then it's assumed to contain Http\Cookie objects, which are each parsed
 	 * into strings and added to the Cookie: header (within the arguments array). Edits the array by
 	 * reference.
 	 *
@@ -511,7 +517,7 @@ class Http {
 
 		// Don't block requests back to ourselves by default
 		if ( $check['host'] == 'localhost' || $check['host'] == $home['host'] )
-			return apply_filters( 'block_local_requests', false );
+			return $this->hook->apply( 'block_local_requests', false );
 
 		if ( !defined( 'WP_ACCESSIBLE_HOSTS' ) )
 			return true;
@@ -583,5 +589,80 @@ class Http {
 			$path .= '?' . $relative_url_parts['query'];
 
 		return $absolute_path . '/' . ltrim( $path, '/' );
+	}
+
+	/**
+	 * Retrieve the description for the HTTP status.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param int $code HTTP status code.
+	 * @return string Empty string if not found, or description if found.
+	 */
+	static function get_status_header_desc( $code ) {
+		$code = abs( intval( $code ) );
+
+		$wp_header_to_desc = array(
+			100 => 'Continue',
+			101 => 'Switching Protocols',
+			102 => 'Processing',
+
+			200 => 'OK',
+			201 => 'Created',
+			202 => 'Accepted',
+			203 => 'Non-Authoritative Information',
+			204 => 'No Content',
+			205 => 'Reset Content',
+			206 => 'Partial Content',
+			207 => 'Multi-Status',
+			226 => 'IM Used',
+
+			300 => 'Multiple Choices',
+			301 => 'Moved Permanently',
+			302 => 'Found',
+			303 => 'See Other',
+			304 => 'Not Modified',
+			305 => 'Use Proxy',
+			306 => 'Reserved',
+			307 => 'Temporary Redirect',
+
+			400 => 'Bad Request',
+			401 => 'Unauthorized',
+			402 => 'Payment Required',
+			403 => 'Forbidden',
+			404 => 'Not Found',
+			405 => 'Method Not Allowed',
+			406 => 'Not Acceptable',
+			407 => 'Proxy Authentication Required',
+			408 => 'Request Timeout',
+			409 => 'Conflict',
+			410 => 'Gone',
+			411 => 'Length Required',
+			412 => 'Precondition Failed',
+			413 => 'Request Entity Too Large',
+			414 => 'Request-URI Too Long',
+			415 => 'Unsupported Media Type',
+			416 => 'Requested Range Not Satisfiable',
+			417 => 'Expectation Failed',
+			422 => 'Unprocessable Entity',
+			423 => 'Locked',
+			424 => 'Failed Dependency',
+			426 => 'Upgrade Required',
+
+			500 => 'Internal Server Error',
+			501 => 'Not Implemented',
+			502 => 'Bad Gateway',
+			503 => 'Service Unavailable',
+			504 => 'Gateway Timeout',
+			505 => 'HTTP Version Not Supported',
+			506 => 'Variant Also Negotiates',
+			507 => 'Insufficient Storage',
+			510 => 'Not Extended'
+		);
+
+		if ( isset( $wp_header_to_desc[$code] ) )
+			return $wp_header_to_desc[$code];
+		else
+			return '';
 	}
 }

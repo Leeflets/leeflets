@@ -11,6 +11,12 @@ namespace Leeflets\Http;
  * @since 2.7
  */
 class Curl {
+	private $config, $hook;
+
+	function __construct( \Leeflets\Config $config, \Leeflets\Hook $hook ) {
+		$this->config = $config;
+		$this->hook = $hook;
+	}
 
 	/**
 	 * Temporary header storage for use with streaming to a file.
@@ -39,7 +45,7 @@ class Curl {
 			'headers' => array(), 'body' => null, 'cookies' => array()
 		);
 
-		$r = wp_parse_args( $args, $defaults );
+		$r = array_merge( $defaults, $args );
 
 		if ( isset( $r['headers']['User-Agent'] ) ) {
 			$r['user-agent'] = $r['headers']['User-Agent'];
@@ -50,12 +56,12 @@ class Curl {
 			}
 
 		// Construct Cookie: header if any cookies are set.
-		WP_Http::buildCookieHeader( $r );
+		\Leeflets\Http::buildCookieHeader( $r );
 
 		$handle = curl_init();
 
 		// cURL offers really easy proxy support.
-		$proxy = new WP_HTTP_Proxy();
+		$proxy = new Proxy();
 
 		if ( $proxy->is_enabled() && $proxy->send_through_proxy( $url ) ) {
 
@@ -72,9 +78,9 @@ class Curl {
 		$is_local = isset( $r['local'] ) && $r['local'];
 		$ssl_verify = isset( $r['sslverify'] ) && $r['sslverify'];
 		if ( $is_local )
-			$ssl_verify = apply_filters( 'https_local_ssl_verify', $ssl_verify );
+			$ssl_verify = $this->hook->apply( 'https_local_ssl_verify', $ssl_verify );
 		elseif ( ! $is_local )
-			$ssl_verify = apply_filters( 'https_ssl_verify', $ssl_verify );
+			$ssl_verify = $this->hook->apply( 'https_ssl_verify', $ssl_verify );
 
 		// CURLOPT_TIMEOUT and CURLOPT_CONNECTTIMEOUT expect integers. Have to use ceil since
 		// a value of 0 will allow an unlimited timeout.
@@ -117,12 +123,12 @@ class Curl {
 
 		// If streaming to a file open a file handle, and setup our curl streaming handler
 		if ( $r['stream'] ) {
-			if ( ! WP_DEBUG )
+			if ( ! $this->config->debug )
 				$stream_handle = @fopen( $r['filename'], 'w+' );
 			else
 				$stream_handle = fopen( $r['filename'], 'w+' );
 			if ( ! $stream_handle )
-				return new WP_Error( 'http_request_failed', sprintf( __( 'Could not open handle for fopen() to %s' ), $r['filename'] ) );
+				return new Error( 'http_request_failed', sprintf( __( 'Could not open handle for fopen() to %s' ), $r['filename'] ) );
 			curl_setopt( $handle, CURLOPT_FILE, $stream_handle );
 		}
 
@@ -142,7 +148,7 @@ class Curl {
 
 		// Cookies are not handled by the HTTP API currently. Allow for plugin authors to handle it
 		// themselves... Although, it is somewhat pointless without some reference.
-		do_action_ref_array( 'http_api_curl', array( &$handle ) );
+		//do_action_ref_array( 'http_api_curl', array( &$handle ) );
 
 		// We don't need to return the body, so don't. Just execute request and return.
 		if ( ! $r['blocking'] ) {
@@ -153,7 +159,7 @@ class Curl {
 
 		$theResponse = curl_exec( $handle );
 		$theBody = '';
-		$theHeaders = WP_Http::processHeaders( $this->headers );
+		$theHeaders = \Leeflets\Http::processHeaders( $this->headers );
 
 		if ( strlen( $theResponse ) > 0 && ! is_bool( $theResponse ) ) // is_bool: when using $args['stream'], curl_exec will return (bool)true
 			$theBody = $theResponse;
@@ -161,16 +167,16 @@ class Curl {
 		// If no response
 		if ( 0 == strlen( $theResponse ) && empty( $theHeaders['headers'] ) ) {
 			if ( $curl_error = curl_error( $handle ) )
-				return new WP_Error( 'http_request_failed', $curl_error );
+				return new Error( 'http_request_failed', $curl_error );
 			if ( in_array( curl_getinfo( $handle, CURLINFO_HTTP_CODE ), array( 301, 302 ) ) )
-				return new WP_Error( 'http_request_failed', __( 'Too many redirects.' ) );
+				return new Error( 'http_request_failed', __( 'Too many redirects.' ) );
 		}
 
 		$this->headers = '';
 
 		$response = array();
 		$response['code'] = curl_getinfo( $handle, CURLINFO_HTTP_CODE );
-		$response['message'] = get_status_header_desc( $response['code'] );
+		$response['message'] = \Leeflets\Http::get_status_header_desc( $response['code'] );
 
 		curl_close( $handle );
 
@@ -180,14 +186,14 @@ class Curl {
 		// See #11305 - When running under safe mode, redirection is disabled above. Handle it manually.
 		if ( ! empty( $theHeaders['headers']['location'] ) && 0 !== $r['_redirection'] ) { // _redirection: The requested number of redirections
 			if ( $r['redirection']-- > 0 ) {
-				return $this->request( WP_HTTP::make_absolute_url( $theHeaders['headers']['location'], $url ), $r );
+				return $this->request( \Leeflets\Http::make_absolute_url( $theHeaders['headers']['location'], $url ), $r );
 			} else {
-				return new WP_Error( 'http_request_failed', __( 'Too many redirects.' ) );
+				return new Error( 'http_request_failed', __( 'Too many redirects.' ) );
 			}
 		}
 
-		if ( true === $r['decompress'] && true === WP_Http_Encoding::should_decode( $theHeaders['headers'] ) )
-			$theBody = WP_Http_Encoding::decompress( $theBody );
+		if ( true === $r['decompress'] && true === Encoding::should_decode( $theHeaders['headers'] ) )
+			$theBody = Encoding::decompress( $theBody );
 
 		return array( 'headers' => $theHeaders['headers'], 'body' => $theBody, 'response' => $response, 'cookies' => $theHeaders['cookies'], 'filename' => $r['filename'] );
 	}
@@ -214,7 +220,7 @@ class Curl {
 	 *
 	 * @return boolean False means this class can not be used, true means it can.
 	 */
-	public static function test( $args = array() ) {
+	public static function test( \Leeflets\Hook $hook, $args = array() ) {
 		if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) )
 			return false;
 
@@ -226,6 +232,6 @@ class Curl {
 				return false;
 		}
 
-		return apply_filters( 'use_curl_transport', true, $args );
+		return $hook->apply( 'use_curl_transport', true, $args );
 	}
 }

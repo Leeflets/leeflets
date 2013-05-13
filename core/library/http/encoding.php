@@ -50,7 +50,7 @@ class Encoding {
 		if ( false !== ( $decompressed = @gzinflate( $compressed ) ) )
 			return $decompressed;
 
-		if ( false !== ( $decompressed = WP_Http_Encoding::compatible_gzinflate( $compressed ) ) )
+		if ( false !== ( $decompressed = Encoding::compatible_gzinflate( $compressed ) ) )
 			return $decompressed;
 
 		if ( false !== ( $decompressed = @gzuncompress( $compressed ) ) )

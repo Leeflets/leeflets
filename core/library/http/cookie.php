@@ -5,7 +5,7 @@ namespace Leeflets\Http;
  * Internal representation of a single cookie.
  *
  * Returned cookies are represented using this class, and when cookies are set, if they are not
- * already a WP_Http_Cookie() object, then they are turned into one.
+ * already a Cookie() object, then they are turned into one.
  *
  * @todo The WordPress convention is to use underscores instead of camelCase for function and method
  * names. Need to switch to use underscores instead for the methods.
@@ -173,7 +173,7 @@ class Cookie {
 		if ( ! isset( $this->name ) || ! isset( $this->value ) )
 			return '';
 
-		return $this->name . '=' . apply_filters( 'wp_http_cookie_value', $this->value, $this->name );
+		return $this->name . '=' . $this->hook->apply( 'wp_http_cookie_value', $this->value, $this->name );
 	}
 
 	/**

@@ -163,7 +163,7 @@ class Proxy {
 
 		$home = parse_url( get_option( 'siteurl' ) );
 
-		$result = apply_filters( 'pre_http_send_through_proxy', null, $uri, $check, $home );
+		$result = $this->hook->apply( 'pre_http_send_through_proxy', null, $uri, $check, $home );
 		if ( ! is_null( $result ) )
 			return $result;
 

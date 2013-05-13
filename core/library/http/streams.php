@@ -14,6 +14,13 @@ namespace Leeflets\Http;
  * @since 2.7.0
  */
 class Streams {
+	private $config, $hook;
+
+	function __construct( \Leeflets\Config $config, \Leeflets\Hook $hook ) {
+		$this->config = $config;
+		$this->hook = $hook;
+	}
+
 	/**
 	 * Send a HTTP request to a URI using streams with fopen().
 	 *
@@ -32,7 +39,7 @@ class Streams {
 			'headers' => array(), 'body' => null, 'cookies' => array()
 		);
 
-		$r = wp_parse_args( $args, $defaults );
+		$r = array_merge( $defaults, $args );
 
 		if ( isset( $r['headers']['User-Agent'] ) ) {
 			$r['user-agent'] = $r['headers']['User-Agent'];
@@ -43,12 +50,12 @@ class Streams {
 			}
 
 		// Construct Cookie: header if any cookies are set
-		WP_Http::buildCookieHeader( $r );
+		\Leeflets\Http::buildCookieHeader( $r );
 
 		$arrURL = parse_url( $url );
 
 		if ( false === $arrURL )
-			return new WP_Error( 'http_request_failed', sprintf( __( 'Malformed URL: %s' ), $url ) );
+			return new \Leeflets\Error( 'http_request_failed', sprintf( __( 'Malformed URL: %s' ), $url ) );
 
 		if ( 'http' != $arrURL['scheme'] && 'https' != $arrURL['scheme'] )
 			$url = preg_replace( '|^' . preg_quote( $arrURL['scheme'], '|' ) . '|', 'http', $url );
@@ -64,9 +71,9 @@ class Streams {
 			$is_local = isset( $args['local'] ) && $args['local'];
 		$ssl_verify = isset( $args['sslverify'] ) && $args['sslverify'];
 		if ( $is_local )
-			$ssl_verify = apply_filters( 'https_local_ssl_verify', $ssl_verify );
+			$ssl_verify = $this->hook->apply( 'https_local_ssl_verify', $ssl_verify );
 		elseif ( ! $is_local )
-			$ssl_verify = apply_filters( 'https_ssl_verify', $ssl_verify );
+			$ssl_verify = $this->hook->apply( 'https_ssl_verify', $ssl_verify );
 
 		$arrContext = array( 'http' =>
 			array(
@@ -84,7 +91,7 @@ class Streams {
 			)
 		);
 
-		$proxy = new WP_HTTP_Proxy();
+		$proxy = new Proxy();
 
 		if ( $proxy->is_enabled() && $proxy->send_through_proxy( $url ) ) {
 			$arrContext['http']['proxy'] = 'tcp://' . $proxy->host() . ':' . $proxy->port();
@@ -100,13 +107,13 @@ class Streams {
 
 		$context = stream_context_create( $arrContext );
 
-		if ( !WP_DEBUG )
+		if ( !$this->config->debug )
 			$handle = @fopen( $url, 'r', false, $context );
 		else
 			$handle = fopen( $url, 'r', false, $context );
 
 		if ( ! $handle )
-			return new WP_Error( 'http_request_failed', sprintf( __( 'Could not open handle for fopen() to %s' ), $url ) );
+			return new \Leeflets\Error( 'http_request_failed', sprintf( __( 'Could not open handle for fopen() to %s' ), $url ) );
 
 		$timeout = (int) floor( $r['timeout'] );
 		$utimeout = $timeout == $r['timeout'] ? 0 : 1000000 * $r['timeout'] % 1000000;
@@ -119,13 +126,13 @@ class Streams {
 		}
 
 		if ( $r['stream'] ) {
-			if ( ! WP_DEBUG )
+			if ( ! $this->config->debug )
 				$stream_handle = @fopen( $r['filename'], 'w+' );
 			else
 				$stream_handle = fopen( $r['filename'], 'w+' );
 
 			if ( ! $stream_handle )
-				return new WP_Error( 'http_request_failed', sprintf( __( 'Could not open handle for fopen() to %s' ), $r['filename'] ) );
+				return new \Leeflets\Error( 'http_request_failed', sprintf( __( 'Could not open handle for fopen() to %s' ), $r['filename'] ) );
 
 			stream_copy_to_stream( $handle, $stream_handle );
 
@@ -141,20 +148,20 @@ class Streams {
 
 		$processedHeaders = array();
 		if ( isset( $meta['wrapper_data']['headers'] ) )
-			$processedHeaders = WP_Http::processHeaders( $meta['wrapper_data']['headers'] );
+			$processedHeaders = \Leeflets\Http::processHeaders( $meta['wrapper_data']['headers'] );
 		else
-			$processedHeaders = WP_Http::processHeaders( $meta['wrapper_data'] );
+			$processedHeaders = \Leeflets\Http::processHeaders( $meta['wrapper_data'] );
 
 		// Streams does not provide an error code which we can use to see why the request stream stopped.
 		// We can however test to see if a location header is present and return based on that.
 		if ( isset( $processedHeaders['headers']['location'] ) && 0 !== $args['_redirection'] )
-			return new WP_Error( 'http_request_failed', __( 'Too many redirects.' ) );
+			return new \Leeflets\Error( 'http_request_failed', __( 'Too many redirects.' ) );
 
 		if ( ! empty( $strResponse ) && isset( $processedHeaders['headers']['transfer-encoding'] ) && 'chunked' == $processedHeaders['headers']['transfer-encoding'] )
-			$strResponse = WP_Http::chunkTransferDecode( $strResponse );
+			$strResponse = \Leeflets\Http::chunkTransferDecode( $strResponse );
 
-		if ( true === $r['decompress'] && true === WP_Http_Encoding::should_decode( $processedHeaders['headers'] ) )
-			$strResponse = WP_Http_Encoding::decompress( $strResponse );
+		if ( true === $r['decompress'] && true === Encoding::should_decode( $processedHeaders['headers'] ) )
+			$strResponse = Encoding::decompress( $strResponse );
 
 		return array( 'headers' => $processedHeaders['headers'], 'body' => $strResponse, 'response' => $processedHeaders['response'], 'cookies' => $processedHeaders['cookies'], 'filename' => $r['filename'] );
 	}
@@ -168,7 +175,7 @@ class Streams {
 	 *
 	 * @return boolean False means this class can not be used, true means it can.
 	 */
-	public static function test( $args = array() ) {
+	public static function test( \Leeflets\Hook $hook, $args = array() ) {
 		if ( ! function_exists( 'fopen' ) )
 			return false;
 
@@ -180,6 +187,6 @@ class Streams {
 		if ( $is_ssl && ! extension_loaded( 'openssl' ) )
 			return false;
 
-		return apply_filters( 'use_streams_transport', true, $args );
+		return $hook->apply( 'use_streams_transport', true, $args );
 	}
 }

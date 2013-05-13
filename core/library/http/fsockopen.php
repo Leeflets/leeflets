@@ -12,12 +12,19 @@ namespace Leeflets\Http;
  * @since 2.7.0
  */
 class Fsockopen {
+	private $config, $hook;
+
+	function __construct( \Leeflets\Config $config, \Leeflets\Hook $hook ) {
+		$this->config = $config;
+		$this->hook = $hook;
+	}
+
 	/**
 	 * Send a HTTP request to a URI using fsockopen().
 	 *
 	 * Does not support non-blocking mode.
 	 *
-	 * @see WP_Http::request For default options descriptions.
+	 * @see \Leeflets\Http::request For default options descriptions.
 	 *
 	 * @since 2.7
 	 * @access public
@@ -33,7 +40,7 @@ class Fsockopen {
 			'headers' => array(), 'body' => null, 'cookies' => array()
 		);
 
-		$r = wp_parse_args( $args, $defaults );
+		$r = array_merge( $defaults, $args );
 
 		if ( isset( $r['headers']['User-Agent'] ) ) {
 			$r['user-agent'] = $r['headers']['User-Agent'];
@@ -44,7 +51,7 @@ class Fsockopen {
 			}
 
 		// Construct Cookie: header if any cookies are set
-		WP_Http::buildCookieHeader( $r );
+		\Leeflets\Http::buildCookieHeader( $r );
 
 		$iError = null; // Store error number
 		$strError = null; // Store error string
@@ -77,9 +84,9 @@ class Fsockopen {
 
 		$startDelay = time();
 
-		$proxy = new WP_HTTP_Proxy();
+		$proxy = new Proxy();
 
-		if ( !WP_DEBUG ) {
+		if ( !$this->config->debug ) {
 			if ( $proxy->is_enabled() && $proxy->send_through_proxy( $url ) )
 				$handle = @fsockopen( $proxy->host(), $proxy->port(), $iError, $strError, $r['timeout'] );
 			else
@@ -100,7 +107,7 @@ class Fsockopen {
 			add_option( 'disable_fsockopen', $endDelay, null, true );
 
 		if ( false === $handle )
-			return new WP_Error( 'http_request_failed', $iError . ': ' . $strError );
+			return new \Leeflets\Error( 'http_request_failed', $iError . ': ' . $strError );
 
 		$timeout = (int) floor( $r['timeout'] );
 		$utimeout = $timeout == $r['timeout'] ? 0 : 1000000 * $r['timeout'] % 1000000;
@@ -151,12 +158,12 @@ class Fsockopen {
 
 		// If streaming to a file setup the file handle
 		if ( $r['stream'] ) {
-			if ( ! WP_DEBUG )
+			if ( ! $this->config->debug )
 				$stream_handle = @fopen( $r['filename'], 'w+' );
 			else
 				$stream_handle = fopen( $r['filename'], 'w+' );
 			if ( ! $stream_handle )
-				return new WP_Error( 'http_request_failed', sprintf( __( 'Could not open handle for fopen() to %s' ), $r['filename'] ) );
+				return new \Leeflets\Error( 'http_request_failed', sprintf( __( 'Could not open handle for fopen() to %s' ), $r['filename'] ) );
 
 			while ( ! feof( $handle ) ) {
 				$block = fread( $handle, 4096 );
@@ -165,7 +172,7 @@ class Fsockopen {
 				} else {
 					$strResponse .= $block;
 					if ( strpos( $strResponse, "\r\n\r\n" ) ) {
-						$process = WP_Http::processResponse( $strResponse );
+						$process = \Leeflets\Http::processResponse( $strResponse );
 						$bodyStarted = true;
 						fwrite( $stream_handle, $process['body'] );
 						unset( $strResponse );
@@ -180,7 +187,7 @@ class Fsockopen {
 			while ( ! feof( $handle ) )
 				$strResponse .= fread( $handle, 4096 );
 
-			$process = WP_Http::processResponse( $strResponse );
+			$process = \Leeflets\Http::processResponse( $strResponse );
 			unset( $strResponse );
 		}
 
@@ -189,23 +196,23 @@ class Fsockopen {
 		if ( true === $secure_transport )
 			error_reporting( $error_reporting );
 
-		$arrHeaders = WP_Http::processHeaders( $process['headers'] );
+		$arrHeaders = \Leeflets\Http::processHeaders( $process['headers'] );
 
 		// If location is found, then assume redirect and redirect to location.
 		if ( isset( $arrHeaders['headers']['location'] ) && 0 !== $r['_redirection'] ) {
 			if ( $r['redirection']-- > 0 ) {
-				return $this->request( WP_HTTP::make_absolute_url( $arrHeaders['headers']['location'], $url ), $r );
+				return $this->request( \Leeflets\Http::make_absolute_url( $arrHeaders['headers']['location'], $url ), $r );
 			} else {
-				return new WP_Error( 'http_request_failed', __( 'Too many redirects.' ) );
+				return new \Leeflets\Error( 'http_request_failed', __( 'Too many redirects.' ) );
 			}
 		}
 
 		// If the body was chunk encoded, then decode it.
 		if ( ! empty( $process['body'] ) && isset( $arrHeaders['headers']['transfer-encoding'] ) && 'chunked' == $arrHeaders['headers']['transfer-encoding'] )
-			$process['body'] = WP_Http::chunkTransferDecode( $process['body'] );
+			$process['body'] = \Leeflets\Http::chunkTransferDecode( $process['body'] );
 
-		if ( true === $r['decompress'] && true === WP_Http_Encoding::should_decode( $arrHeaders['headers'] ) )
-			$process['body'] = WP_Http_Encoding::decompress( $process['body'] );
+		if ( true === $r['decompress'] && true === Encoding::should_decode( $arrHeaders['headers'] ) )
+			$process['body'] = Encoding::decompress( $process['body'] );
 
 		return array( 'headers' => $arrHeaders['headers'], 'body' => $process['body'], 'response' => $arrHeaders['response'], 'cookies' => $arrHeaders['cookies'], 'filename' => $r['filename'] );
 	}
@@ -217,18 +224,18 @@ class Fsockopen {
 	 * @static
 	 * @return boolean False means this class can not be used, true means it can.
 	 */
-	public static function test( $args = array() ) {
+	public static function test( \Leeflets\Hook $hook, $args = array() ) {
 		if ( ! function_exists( 'fsockopen' ) )
 			return false;
 
-		if ( false !== ( $option = get_option( 'disable_fsockopen' ) ) && time() - $option < 12 * HOUR_IN_SECONDS )
-			return false;
+		//if ( false !== ( $option = get_option( 'disable_fsockopen' ) ) && time() - $option < 12 * HOUR_IN_SECONDS )
+			//return false;
 
 		$is_ssl = isset( $args['ssl'] ) && $args['ssl'];
 
 		if ( $is_ssl && ! extension_loaded( 'openssl' ) )
 			return false;
 
-		return apply_filters( 'use_fsockopen_transport', true, $args );
+		return $hook->apply( 'use_fsockopen_transport', true, $args );
 	}
 }
