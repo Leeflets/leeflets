@@ -201,7 +201,7 @@ class Error {
 	 * @return bool True, if Error. False, if not Error.
 	 */
 	function is_a( $thing ) {
-		if ( is_object( $thing ) && is_a( $thing, 'LP_Error' ) )
+		if ( is_object( $thing ) && is_a( $thing, '\Leeflets\Error' ) )
 			return true;
 		return false;
 	}
