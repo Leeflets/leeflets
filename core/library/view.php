@@ -24,7 +24,7 @@ class View {
     
     function render( $vars = array(), $file = '' ) {
         if ( !$file ) {
-            $file = $this->router->controller_name . '/' . $this->router->action;
+            $file = $this->router->controller_name . '/' . str_replace( '_', '-', $this->router->action );
         }
 
         if ( !isset( $vars['content'] ) ) {
