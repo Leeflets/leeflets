@@ -60,10 +60,9 @@
 						<!-- End Active Template -->
 					
 						<div class="section-header">
-							<h3>Templates <small>Browse our template marketplace &amp; your purchased templates.</small></h3>
+							<h3>Installed Templates</h3>
 						</div>
 						
-						<!-- Begin Template Marketplace Menu -->
 						<?php /*
 						<div id="templates-menu" class="row-fluid mb-thirty">
 							<div class="span6">
@@ -80,14 +79,10 @@
 							</div>
 						</div>
 						*/ ?>
-						
-						<!-- End Template Marketplace Menu -->
-						
-						<!-- Begin Marketplace Templates -->
 
 						<?php if ( $templates ) : ?>
 
-						<div id="marketplace-templates">
+						<div id="installed-templates">
 							<div class="row-fluid">                                  
 								<ul class="thumbnails">
 									
@@ -123,7 +118,18 @@
 						<?php endif; ?>
 						
 						<!-- End Marketplace Templates -->
-						
+
+						<div class="section-header">
+							<h3>Buy Templates <small>Browse our template marketplace.</small></h3>
+						</div>
+
+						<div id="marketplace-templates">
+							<div class="row-fluid">                                  
+								<ul class="thumbnails" data-ajax-fill="<?php echo $this->router->admin_url( '/store/buy_templates/' ); ?>">
+								</ul>
+							</div>
+						</div>
+												
 					</div>
 					
 					<!-- End Templates Tab -->

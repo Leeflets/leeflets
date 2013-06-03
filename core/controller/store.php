@@ -54,6 +54,40 @@ class Store extends \Leeflets\Controller {
 		return compact( 'active_template', 'templates' );
 	}
 
+	function _get_products( $type ) {
+		$http = new \Leeflets\Http( $this->config, $this->hook, $this->router );
+		$response = $http->get( $this->config->leeflets_api_url . '/product-list?cat=' . $type );
+
+		if ( \Leeflets\Error::is_a( $response ) ) {
+			return $response;
+		}
+
+		if ( (int) $response['response']['code'] < 200 || (int) $response['response']['code'] > 399 ) {
+			return new \Leeflets\Error( 'product_list_fail_http_status', 'Failed to get product list from leeflets.com. Received response ' . $response['response']['code'] . ' ' . $response['response']['message'] . '.', $response );
+		}
+
+        if ( !( $response_data = json_decode( $response['body'], true ) ) ) {
+            return new \Leeflets\Error( 'product_list_fail_json_decode', 'Failed to get product list from leeflets.com. Error decoding the JSON response received from the server.', $response['body'] );
+        }
+
+        if ( !isset( $response_data['products'] ) ) {
+            return new \Leeflets\Error( 'product_list_fail_array_index', 'Failed to get product list from leeflets.com. Missing "products" array index.', $response['body'] );
+        }
+
+        return $response_data['products'];
+	}
+
+	function buy_templates() {
+		$templates = $this->_get_products( 'templates' );
+
+		if ( \Leeflets\Error::is_a( $templates ) ) {
+			echo $templates->get_error_message();
+			return false;
+		}
+
+		return compact( 'templates' );
+	}
+
 	function activate_template( $slug ) {
 		$template_path = $this->config->templates_path . '/' . $slug;
 		if ( !is_dir( $template_path ) ) {

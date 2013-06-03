@@ -268,6 +268,13 @@ function LEEFLETS() {
 			});
 			return false;
 		});
+
+		$('[data-ajax-fill]', $panel).each(function() {
+			var $el = $(this);
+			$.get($el.data('ajax-fill'), {ajax:1}, function(data) {
+				$el.html(data);
+			});
+		});
 	};
 
 	self.panel_events = function($panel) {
