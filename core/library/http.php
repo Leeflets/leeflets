@@ -101,7 +101,7 @@ class Http {
 			'body' => null,
 			'compress' => false,
 			'decompress' => true,
-			'sslverify' => true,
+			'sslverify' => false,
 			'stream' => false,
 			'filename' => null
 		);
