@@ -128,7 +128,7 @@ class Curl {
 			else
 				$stream_handle = fopen( $r['filename'], 'w+' );
 			if ( ! $stream_handle )
-				return new Error( 'http_request_failed', sprintf( __( 'Could not open handle for fopen() to %s' ), $r['filename'] ) );
+				return new \Leeflets\Error( 'http_request_failed', sprintf( __( 'Could not open handle for fopen() to %s' ), $r['filename'] ) );
 			curl_setopt( $handle, CURLOPT_FILE, $stream_handle );
 		}
 
@@ -167,9 +167,9 @@ class Curl {
 		// If no response
 		if ( 0 == strlen( $theResponse ) && empty( $theHeaders['headers'] ) ) {
 			if ( $curl_error = curl_error( $handle ) )
-				return new Error( 'http_request_failed', $curl_error );
+				return new \Leeflets\Error( 'http_request_failed', $curl_error );
 			if ( in_array( curl_getinfo( $handle, CURLINFO_HTTP_CODE ), array( 301, 302 ) ) )
-				return new Error( 'http_request_failed', __( 'Too many redirects.' ) );
+				return new \Leeflets\Error( 'http_request_failed', __( 'Too many redirects.' ) );
 		}
 
 		$this->headers = '';
@@ -188,7 +188,7 @@ class Curl {
 			if ( $r['redirection']-- > 0 ) {
 				return $this->request( \Leeflets\Http::make_absolute_url( $theHeaders['headers']['location'], $url ), $r );
 			} else {
-				return new Error( 'http_request_failed', __( 'Too many redirects.' ) );
+				return new \Leeflets\Error( 'http_request_failed', __( 'Too many redirects.' ) );
 			}
 		}
 
