@@ -5,7 +5,7 @@ class Home extends \Leeflets\Controller {
 	function index() {
 		$core_update_check_enabled = $this->hook->apply( 'core_update_check_enabled', true );
 		if ( $core_update_check_enabled ) {
-			$this->hook->add( 'admin_footer', array( $this, '_update_check' ) );
+			//$this->hook->add( 'admin_footer', array( $this, '_update_check' ) );
 		}
 	}
 
@@ -16,8 +16,6 @@ class Home extends \Leeflets\Controller {
 		$problem = 'There was a problem (#%s) checking for a core update. You might want to check <a href="http://leeflets.com">leeflets.com</a> to see if there\'s a new version.';
 
 		$result = $product_info->refresh();
-
-		//$updates->data['versions']['core'] = 0.2;
 
 		if ( \Leeflets\Error::is_a( $result ) ) {
 			$msg = sprintf( $problem, '1' );
