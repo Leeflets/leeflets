@@ -77,15 +77,16 @@ class Store extends \Leeflets\Controller {
         return $response_data['products'];
 	}
 
-	function buy_templates() {
-		$templates = $this->_get_products( 'templates' );
+	function products( $type ) {
+		$products = $this->_get_products( $type );
 
-		if ( \Leeflets\Error::is_a( $templates ) ) {
-			echo $templates->get_error_message();
+		if ( \Leeflets\Error::is_a( $products ) ) {
+			echo $products->get_error_message();
 			return false;
 		}
 
-		return compact( 'templates' );
+		echo $this->view->render( compact( 'products' ), 'store/buy-' . $type );
+		return false;
 	}
 
 	function activate_template( $slug ) {

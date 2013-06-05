@@ -11,8 +11,8 @@
 				</div> 
 									
 				<ul class="nav nav-tabs" id="templates-addons">
-					<li class="active templates"><a href="#templates">Templates</a></li>
-					<li class="addons"><a href="#addons">Addons</a></li>
+					<li class="active templates"><a href="#templates" data-toggle="tab">Templates</a></li>
+					<li class="addons"><a href="#addons" data-toggle="tab">Addons</a></li>
 				</ul>
 				
 				<div class="tab-content">
@@ -120,12 +120,12 @@
 						<!-- End Marketplace Templates -->
 
 						<div class="section-header">
-							<h3>Buy Templates <small>Browse our template marketplace.</small></h3>
+							<h3>Template Marketplace <small>Browse our template marketplace.</small></h3>
 						</div>
 
 						<div id="marketplace-templates">
 							<div class="row-fluid">                                  
-								<ul class="thumbnails" data-ajax-fill="<?php echo $this->router->admin_url( '/store/buy_templates/' ); ?>">
+								<ul class="thumbnails" data-ajax-fill="<?php echo $this->router->admin_url( '/store/products/templates/' ); ?>">
 								</ul>
 							</div>
 						</div>
@@ -135,13 +135,7 @@
 					<!-- End Templates Tab -->
 					
 					<!-- Begin Addons Tab -->
-					<?php /*
 					<div class="tab-pane" id="addons">
-						<div class="alert alert-block alert-info">
-							<button type="button" class="close" data-dismiss="alert">×</button>
-							<h4>About the Addons Control Panel</h4>
-							Browse &amp; manage your currently installed addons below. Keep in mind that some addons will be disabled automatically when they are not compatible with your currently active theme.
-						</div>
 						
 						<!-- Begin Installed Addons -->
 						
@@ -215,11 +209,12 @@
 						<!-- End Installed Addons -->
 						
 						<div class="section-header">
-							<h3>Addon Marketplace <small>Browse our addon marketplace &amp; your purchased addons.</small></h3>
+							<h3>Addon Marketplace <small>Browse our addon marketplace.</small></h3>
 						</div>
 						
 						<!-- Begin Addon Marketplace Menu -->
 						
+						<? /*
 						<div id="addons-menu" class="row-fluid mb-thirty">
 							<div class="span6">
 								<button class="btn btn-primary" type="button">Featured</button>
@@ -234,13 +229,14 @@
 								</div>
 							</div>
 						</div>
+						*/ ?>
 						
 						<!-- End Addon Marketplace Menu -->
 						
 						<!-- Begin Addons Marketplace -->
 						
 						<table id="marketplace-addons" class="table table-striped">
-							<tbody>
+							<tbody data-ajax-fill="<?php echo $this->router->admin_url( '/store/products/addons/' ); ?>">
 								<tr>
 									<td style="min-width: 60px;">
 										<img src="http://placehold.it/60x60">
@@ -300,6 +296,7 @@
 							</tbody>
 						</table>
 
+						<? /*
 						<div id="addon-details">
 							<div id="addon-01-details" class="modal fat hide fade">
 								<div class="modal-header">
@@ -464,9 +461,10 @@
 							</div>
 						</div>                        
 						<!-- End Addons Marketplace -->
+
+						*/ ?>
 						
 					</div>
-					*/ ?>
 					<!-- End Addons Tab -->
 					
 				</div>

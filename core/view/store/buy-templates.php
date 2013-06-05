@@ -1,6 +1,6 @@
 <?php 
 $i = 1;
-foreach ( $templates as $template ) :
+foreach ( $products as $template ) :
 	?>
 
 	<li id="template-<?php echo $i; ?>" class="span4">

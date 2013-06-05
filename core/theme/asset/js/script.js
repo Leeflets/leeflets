@@ -250,11 +250,6 @@ function LEEFLETS() {
 	self.store_panel_events = function($panel) {
 		if (!$panel.hasClass('store')) return;
 
-		$('.nav-tabs .addons', $panel).click(function() {
-			alert('Will be implemented soon.');
-			return false;
-		});
-
 		$('.activate-template', $panel).click(function() {
 			$.get($(this).attr('href'), {ajax: 1, slim: 1}, function(data) {
 				if (data) {

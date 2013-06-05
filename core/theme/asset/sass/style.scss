@@ -27,21 +27,17 @@ h3 {
 }
 	
 small {
-	display:block;
 	color:#999999;
-	margin-top:8px;
-}
-
-@media (max-width:980px) {
-	small {
-		display:none;
-	}
-
 }
 
 .section-header {
 	margin:20px 0 20px;
 	border-bottom:1px solid #e5e5e5;
+}
+
+.section-header small {
+	margin-top:8px;
+	display:block;
 }
 
 .underline {
