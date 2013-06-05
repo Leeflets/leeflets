@@ -4,54 +4,82 @@ namespace Leeflets\Controller;
 class Store extends \Leeflets\Controller {
 	function templates() {
 		$active_template_folder = $this->settings->get( 'template', 'active' );
+		$active_addons = $this->settings->get( 'active_addons' );
 		$active_template = array();
+		$default_about = array(
+			'name' => '',
+			'version' => '',
+			'description' => '',
+			'screenshot' => '',
+			'author' => array(
+				'name' => '',
+				'url' => ''
+			),
+			'changelog' => array()
+		);
 
 		$templates = array();
-		$folders = glob( $this->config->templates_path . '/*', GLOB_ONLYDIR );
-		foreach ( $folders as $folder ) {
-			if ( !file_exists( $folder . '/meta-about.php' ) ) continue;
-			
-			$variables = \Leeflets\Inc::variables( $folder . '/meta-about.php', array( 'about' ) );
-			if ( is_array( $variables ) ) {
-				extract( $variables );
-			}
-			
-			if ( !isset( $about['name'] ) || !isset( $about['version'] ) ) continue;
+		$addons = array();
+		$products = array(
+			'templates' => $this->config->templates_path, 
+			'addons' => $this->config->addons_path
+		);
+		foreach ( $products as $product_type => $path ) {
+			$folders = glob( $path . '/*', GLOB_ONLYDIR );
 
-			// Add default array keys to avoid having to check if
-			// indexes exist and array index errors
-			$about = array_merge( array(
-				'name' => '',
-				'version' => '',
-				'description' => '',
-				'screenshot' => 'http://placehold.it/360x270',
-				'author' => array(
-					'name' => '',
-					'url' => ''
-				),
-				'changelog' => array()
-			), $about );
-			
-			$folder = basename( $folder );
-			$about['slug'] = $folder;
+			foreach ( $folders as $folder ) {
+				if ( !file_exists( $folder . '/meta-about.php' ) ) continue;
+				
+				$variables = \Leeflets\Inc::variables( $folder . '/meta-about.php', array( 'about' ) );
+				if ( is_array( $variables ) ) {
+					extract( $variables );
+				}
+				
+				if ( !isset( $about['name'] ) || !isset( $about['version'] ) ) continue;
 
-			// Get screenshot URL
-			$screenshots = glob( $this->config->templates_path . '/' . $folder . '/screenshot.{jpeg,jpg,gif,png}', GLOB_BRACE );
-			if ( isset( $screenshots[0] ) ) {
-				$about['screenshot'] = $this->router->get_template_url( $folder, basename( $screenshots[0] ) );
-			}
-			
-			if ( $folder == $active_template_folder ) {
-				$active_template = $about;
-			}
-			else {
-				$templates[$folder] = $about;
-			}
+				// Add default array keys to avoid having to check if
+				// indexes exist and array index errors
+				$about = array_merge( $default_about, $about );
+				
+				$folder = basename( $folder );
+				$about['slug'] = $folder;
 
-			unset( $about );
+				// Get screenshot URL
+				$screenshots = glob( $path . '/' . $folder . '/screenshot.{jpeg,jpg,gif,png}', GLOB_BRACE );
+
+				if ( 'templates' == $product_type ) {
+					if ( isset( $screenshots[0] ) ) {
+						$about['screenshot'] = $this->router->get_template_url( $folder, basename( $screenshots[0] ) );
+					}
+					else {
+						$about['screenshot'] = 'http://placehold.it/360x270';
+					}
+					
+					if ( $folder == $active_template_folder ) {
+						$active_template = $about;
+					}
+					else {
+						$templates[$folder] = $about;
+					}
+				}
+				else {
+					if ( isset( $screenshots[0] ) ) {
+						$about['screenshot'] = $this->router->get_addon_url( $folder, basename( $screenshots[0] ) );
+					}
+					else {
+						$about['screenshot'] = 'http://placehold.it/60x60';
+					}
+
+					$about['active'] = ( (bool)$active_addons && in_array( $folder, $active_addons ) );
+
+					$addons[$folder] = $about;
+				}
+
+				unset( $about );
+			}
 		}
 
-		return compact( 'active_template', 'templates' );
+		return compact( 'active_template', 'templates', 'addons' );
 	}
 
 	function _get_products( $type ) {

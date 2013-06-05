@@ -58,6 +58,8 @@
 						</div>
 						
 						<!-- End Active Template -->
+
+						<?php if ( $templates ) : ?>
 					
 						<div class="section-header">
 							<h3>Installed Templates</h3>
@@ -79,8 +81,6 @@
 							</div>
 						</div>
 						*/ ?>
-
-						<?php if ( $templates ) : ?>
 
 						<div id="installed-templates">
 							<div class="row-fluid">                                  
@@ -136,77 +136,40 @@
 					
 					<!-- Begin Addons Tab -->
 					<div class="tab-pane" id="addons">
+
+						<?php if ( $addons ) : ?>
 						
 						<!-- Begin Installed Addons -->
 						
 						<table id="installed-addons" class="table table-striped">
 							<tbody>
+								<?php foreach ( $addons as $id => $addon ) : ?>
 								<tr>
 									<td style="min-width: 60px;">
-										<img src="http://placehold.it/60x60">
+										<img src="<?php echo $addon['screenshot']; ?>" alt="" width="60">
 									</td>
 									<td style="min-width: 120px;">
-										<strong>Super Slideshow</strong><br>
+										<strong><?php echo htmlspecialchars( $addon['name'], null, 'utf-8' ); ?></strong><br>
 										<ul class="unstyled">
-											<li>v1.3.2</li>
-											<li>by <a href="#">Leeflets</a></li>
+											<li>v<?php echo htmlspecialchars( $addon['version'], null, 'utf-8' ); ?></li>
 										</ul>
 									</td>
 									<td>
-										<small>Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec id elit non mi porta gravida at eget metus nascetur ridiculus mus.</small>
+										<small><?php echo htmlspecialchars( $addon['description'], null, 'utf-8' ); ?></small>
 									</td>
 									<td>
 										<div class="toggle-button" style="width: 100px; height: 25px;">
-											<div style="left: -50%; width: 150px;"><input id="checkbox1" type="checkbox" value="value1" checked="checked"><span class="labelLeft" style="width: 50px; height: 25px; line-height: 25px;">ON</span><label for="checkbox1" style="width: 50px; height: 25px;"></label><span class="labelRight" style="width: 50px; height: 25px; line-height: 25px;">OFF</span></div>
+                                            <input type="checkbox" value="<?php echo $id; ?>"<?php echo ( $addon['active'] ) ? ' checked="checked"' : ''; ?>>
 										</div>
 									</td>
 								</tr>
-								
-								<tr>
-									<td style="min-width: 60px;">
-										<img src="http://placehold.it/60x60">
-									</td>
-									<td style="min-width: 120px;">
-										<strong>Better Forms</strong><br>
-										<ul class="unstyled">
-											<li>v1.3.2</li>
-											<li>by <a href="#">Leeflets</a></li>
-										</ul>
-									</td>
-									<td>
-										<small>Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec id elit non mi porta gravida at eget metus nascetur ridiculus mus.</small>
-									</td>
-									<td>
-										<div class="toggle-button" style="width: 100px; height: 25px;">
-											<div style="left: -50%; width: 150px;"><input id="checkbox1" type="checkbox" value="value1" checked="checked"><span class="labelLeft" style="width: 50px; height: 25px; line-height: 25px;">ON</span><label for="checkbox1" style="width: 50px; height: 25px;"></label><span class="labelRight" style="width: 50px; height: 25px; line-height: 25px;">OFF</span></div>
-										</div>
-									</td>
-								</tr>
-								
-								<tr>
-									<td style="min-width: 60px;">
-										<img src="http://placehold.it/60x60">
-									</td>
-									<td style="min-width: 120px;">
-										<strong>Events Calendar</strong><br>
-										<ul class="unstyled">
-											<li>v1.3.2</li>
-											<li>by <a href="#">Leeflets</a></li>
-										</ul>
-									</td>
-									<td>
-										<small>Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec id elit non mi porta gravida at eget metus nascetur ridiculus mus.</small>
-									</td>
-									<td>
-										<div class="toggle-button" style="width: 100px; height: 25px;">
-											<div style="left: -50%; width: 150px;"><input id="checkbox1" type="checkbox" value="value1" checked="checked"><span class="labelLeft" style="width: 50px; height: 25px; line-height: 25px;">ON</span><label for="checkbox1" style="width: 50px; height: 25px;"></label><span class="labelRight" style="width: 50px; height: 25px; line-height: 25px;">OFF</span></div>
-										</div>
-									</td>
-								</tr>
+								<?php endforeach; ?>
 							</tbody>
 						</table>
 						
 						<!-- End Installed Addons -->
+
+						<?php endif; ?>
 						
 						<div class="section-header">
 							<h3>Addon Marketplace <small>Browse our addon marketplace.</small></h3>
@@ -237,62 +200,6 @@
 						
 						<table id="marketplace-addons" class="table table-striped">
 							<tbody data-ajax-fill="<?php echo $this->router->admin_url( '/store/products/addons/' ); ?>">
-								<tr>
-									<td style="min-width: 60px;">
-										<img src="http://placehold.it/60x60">
-									</td>
-									<td style="min-width: 120px;">
-										<strong>Super Slideshow</strong><br>
-										<ul class="unstyled">
-											<li>v1.3.2</li>
-											<li>by <a href="#">Leeflets</a></li>
-										</ul>
-									</td>
-									<td>
-										<small>Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec id elit non mi porta gravida at eget metus nascetur ridiculus mus.</small>
-									</td>
-									<td style="min-width: 80px;">
-										<a class="btn btn-primary pull-right toggle-modal" href="#addon-01-details" data-toggle="modal">Buy $5</a>
-									</td>
-								</tr>
-								
-								<tr>
-									<td style="min-width: 60px;">
-										<img src="http://placehold.it/60x60">
-									</td>
-									<td style="min-width: 120px;">
-										<strong>Better Forms</strong><br>
-										<ul class="unstyled">
-											<li>v1.3.2</li>
-											<li>by <a href="#">Leeflets</a></li>
-										</ul>
-									</td>
-									<td>
-										<small>Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec id elit non mi porta gravida at eget metus nascetur ridiculus mus.</small>
-									</td>
-									<td style="min-width: 80px;">
-										<a class="btn btn-primary pull-right toggle-modal" href="#addon-02-details" data-toggle="modal">Buy $5</a>
-									</td>
-								</tr>
-								
-								<tr>
-									<td style="min-width: 60px;">
-										<img src="http://placehold.it/60x60">
-									</td>
-									<td style="min-width: 120px;">
-										<strong>Events Calendar</strong><br>
-										<ul class="unstyled">
-											<li>v1.3.2</li>
-											<li>by <a href="#">Leeflets</a></li>
-										</ul>
-									</td>
-									<td>
-										<small>Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec id elit non mi porta gravida at eget metus nascetur ridiculus mus.</small>
-									</td>
-									<td style="min-width: 80px;">
-										<a class="btn btn-primary pull-right toggle-modal" href="#addon-03-details" data-toggle="modal">Buy $5</a>
-									</td>
-								</tr>
 							</tbody>
 						</table>
 

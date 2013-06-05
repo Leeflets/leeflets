@@ -54,6 +54,10 @@ class Router {
         return $this->admin_url( 'templates/' . rawurlencode( $template ) . '/' . ltrim( $url, '/' ) );
     }
 
+    function get_addon_url( $addon, $url = '' ) {
+        return $this->admin_url( 'addons/' . rawurlencode( $addon ) . '/' . ltrim( $url, '/' ) );
+    }
+
     function get_uploads_url( $url = '' ) {
         return $this->admin_url( 'uploads/' . ltrim( $url, '/' ) );
     }
