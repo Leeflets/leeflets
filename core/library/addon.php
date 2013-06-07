@@ -22,12 +22,26 @@ class Addon {
 	}
 
 	function load_active() {
-		if ( !$this->settings->get( 'active_addons' ) ) {
+		$active_addons = $this->settings->get( 'active_addons' );
+		
+		if ( !$active_addons ) {
 			return false;
 		}
 
-		foreach ( $this->settings->get( 'active_addons' ) as $addon ) {
-			include( $this->config->addons_path . '/' . $addon . '/' . $addon . '.php' );
+		$deactivate = array();
+
+		foreach ( $active_addons as $addon ) {
+			$path = $this->config->addons_path . '/' . $addon . '/' . $addon . '.php';
+			if ( !file_exists( $path ) ) {
+				$deactivate[] = $addon;
+			}
+			else {
+				include $path;
+			}
+		}
+
+		if ( $deactivate ) {
+			$this->deactivate( $deactivate );
 		}
 	}
 
