@@ -141,6 +141,8 @@
 						
 						<!-- Begin Installed Addons -->
 						
+						<form action="<?php echo $this->router->admin_url( '/store/addon/' ); ?>">
+
 						<table id="installed-addons" class="table table-striped">
 							<tbody>
 								<?php foreach ( $addons as $id => $addon ) : ?>
@@ -166,6 +168,8 @@
 								<?php endforeach; ?>
 							</tbody>
 						</table>
+
+						</form>
 						
 						<!-- End Installed Addons -->
 

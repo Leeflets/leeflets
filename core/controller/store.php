@@ -142,4 +142,39 @@ class Store extends \Leeflets\Controller {
 		$this->router->redirect( $url );
 		exit;
 	}
+
+	function addon( $slug, $switch ) {
+		$addons_path = $this->config->addons_path . '/' . $slug;
+		if ( !is_dir( $addons_path ) ) {
+			echo "The addon '$slug' could not be found.";
+			exit;
+		}
+
+		$active_addons = $this->settings->get( 'active_addons' );
+
+		if ( !is_array( $active_addons ) ) {
+			$active_addons = array();
+		}
+
+		$active_addons = array_flip( $active_addons );
+
+		if ( 'on' == $switch ) {
+			$active_addons[$slug] = 1;
+		}
+		else {
+			unset( $active_addons[$slug] );
+		}
+
+		$active_addons = array_keys( $active_addons );
+
+		$settings = $this->settings->get_data();
+		$settings['active_addons'] = $active_addons;
+		
+		if ( !$this->settings->write( $settings, $this->filesystem ) ) {
+			echo "Saving settings failed.";
+			exit;
+		}
+
+		exit;
+	}
 }

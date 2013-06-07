@@ -264,7 +264,34 @@ function LEEFLETS() {
 			return false;
 		});
 
-		$('.toggle-button', $panel).toggleButtons();
+		var reverting_toggle = false;
+		$('.toggle-button', $panel).toggleButtons({
+			onChange: function ($el, status, e) {
+				if ( reverting_toggle ) {
+					reverting_toggle = false;
+					return;
+				}
+
+				var $input = $('input', $el);
+				var url = $el.parents('form').attr('action');
+				url += $input.val() + '/';
+
+				if ( status ) {
+					url += 'on/';
+				}
+				else {
+					url += 'off/';
+				}
+
+				$.get(url, function(data) {
+					if (data) {
+						alert(data);
+						reverting_toggle = true;
+						$el.toggleButtons('toggleState');
+					}
+				});
+			}
+		});
 
 		$('[data-ajax-fill]', $panel).each(function() {
 			var $el = $(this);
