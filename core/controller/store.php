@@ -150,28 +150,10 @@ class Store extends \Leeflets\Controller {
 			exit;
 		}
 
-		$active_addons = $this->settings->get( 'active_addons' );
+		$result = $this->addon->toggle( $slug, ( 'on' == $switch ) );
 
-		if ( !is_array( $active_addons ) ) {
-			$active_addons = array();
-		}
-
-		$active_addons = array_flip( $active_addons );
-
-		if ( 'on' == $switch ) {
-			$active_addons[$slug] = 1;
-		}
-		else {
-			unset( $active_addons[$slug] );
-		}
-
-		$active_addons = array_keys( $active_addons );
-
-		$settings = $this->settings->get_data();
-		$settings['active_addons'] = $active_addons;
-		
-		if ( !$this->settings->write( $settings, $this->filesystem ) ) {
-			echo "Saving settings failed.";
+		if ( \Leeflets\Error::is_a( $result ) ) {
+			echo $result->get_error_message();
 			exit;
 		}
 

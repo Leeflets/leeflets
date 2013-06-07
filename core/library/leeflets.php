@@ -57,9 +57,6 @@ class Leeflets {
 
 		$settings = new Settings( $config );
 		
-		$addon = new Addon( $config, $settings, $hook, $admin_script, $admin_style, $template_script, $template_style );
-		$addon->load_active();
-		
 		$view = new View( $config, $router, $hook );
 
 		if ( $settings->get( 'connection', 'type' ) && 'direct' != $settings->get( 'connection', 'type' ) ) {
@@ -74,12 +71,15 @@ class Leeflets {
 		else {
 			$filesystem = new Filesystem\Direct( $config );
 		}
+		
+		$addon = new Addon( $config, $settings, $hook, $admin_script, $admin_style, $template_script, $template_style, $filesystem );
+		$addon->load_active();
 
 		$content = new Content( $config, $filesystem, $router, $settings, $hook );
 		$template = new Template( $config, $filesystem, $router, $settings, $hook, $template_script, $template_style, $content );
 
 		$controller_class = $router->controller_class;
-		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template, $settings, $hook, $content );
+		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template, $settings, $hook, $content, $addon );
 
 		$controller->call_action();
 	}

@@ -4,12 +4,13 @@ namespace Leeflets;
 class Controller {
 
     public $router, $view, $filesystem, $config, $user, 
-        $template, $settings, $hook, $content;
+        $template, $settings, $hook, $content, $addon;
 
     function __construct( 
         Router $router, View $view, Filesystem $filesystem,
         Config $config, User $user, Template $template, 
-        Settings $settings, Hook $hook, Content $content
+        Settings $settings, Hook $hook, Content $content,
+        Addon $addon
     ) {
         $this->router = $router;
         $this->view = $view;
@@ -20,6 +21,7 @@ class Controller {
         $this->settings = $settings;
         $this->hook = $hook;
         $this->content = $content;
+        $this->addon = $addon;
     }
 
     function call_action() {
