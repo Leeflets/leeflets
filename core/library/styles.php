@@ -31,6 +31,15 @@ class Styles extends Assets {
         $this->add( 'jquery-fileupload', $router->admin_url( '/core/theme/asset/css/jquery.fileupload-ui.css' ), array(), '6.10' );
     }
 
+    function add_enqueue( $handle, $src, $deps = array(), $ver = false, $media = 'all' ) {
+        $handle = explode( '?', $handle );
+        $handle = $handle[0];
+
+        $this->add( $handle, $src, $deps, $ver, $media );
+
+        $this->enqueue( $handle );
+    }
+
 	function do_item( $handle ) {
 		if ( !parent::do_item( $handle ) )
 			return false;

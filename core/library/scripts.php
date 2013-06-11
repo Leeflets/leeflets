@@ -37,6 +37,19 @@ class Scripts extends Assets {
 		$this->add( 'md5', $router->admin_url( '/core/theme/asset/js/md5.js' ), array() );
 	}
 
+    function add_enqueue( $handle, $src, $deps = array(), $ver = false, $in_footer = false ) {
+        $handle = explode( '?', $handle );
+        $handle = $handle[0];
+
+        $this->add( $handle, $src, $deps, $ver );
+
+        if ( $in_footer ) {
+	        $this->add_data( $handle, 'group', 1 );
+        }
+        
+        $this->enqueue( $handle );
+    }
+
 	/**
 	 * Prints scripts
 	 *

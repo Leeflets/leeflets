@@ -126,11 +126,6 @@ class Assets {
         return true;
     }
 
-    function add_enqueue( $handle, $src, $deps = array(), $ver = false, $args = null ) {
-        $this->add( $handle, $src, $deps, $ver, $args );
-        $this->enqueue( $handle );
-    }
-
     /**
      * Adds extra data
      *
