@@ -28,7 +28,7 @@ class Config {
 		$this->path             = $this->admin_path . '/config.php';
 
 		$this->debug            = false;
-		$this->debug_display    = false;
+		$this->debug_display    = true;
 		$this->debug_log        = false;
 		$this->fs_chmod_dir     = 0755;
 		$this->fs_chmod_file    = 0644;
