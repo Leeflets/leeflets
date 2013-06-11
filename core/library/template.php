@@ -70,9 +70,7 @@ class Template {
 			'content' => new Template\Content( $this->content->get_data() ),
 			'upload' => new Template\Upload( $this->router ),
 			'image' => new Template\Image( $this->router ),
-			'router' => $this->router,
-			'config' => $this->config,
-			'settings' => $this->settings,
+			'settings' => new Template\Settings( $this->settings ),
 			'hook' => $this->hook
 		) );
 	}

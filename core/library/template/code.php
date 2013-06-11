@@ -28,6 +28,10 @@ class Code {
 		$this->setup_hooks();
 	}
 
+	function is_debug() {
+		return $this->config;
+	}
+
 	// To be overriden by the template's class
 	function setup_hooks() {}
 
