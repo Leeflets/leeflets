@@ -9,7 +9,6 @@ namespace Leeflets;
 class Scripts extends Assets {
 	var $base_url; // Full URL with trailing slash
 	var $content_url;
-	var $default_version;
 	var $in_footer = array();
 	var $concat = '';
 	var $concat_version = '';
@@ -22,9 +21,9 @@ class Scripts extends Assets {
 
 	private $router;
 
-	function __construct( $base_url, Router $router ) {
+	function __construct( $base_url, Router $router, $default_version = '' ) {
 		$this->router = $router;
-		parent::__construct( $base_url );
+		parent::__construct( $base_url, $default_version );
 		
 		$this->add( 'wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/js/wysihtml5.js' ), array(), '0.3.0' );
 		$this->add( 'jquery', $router->admin_url( '/core/theme/asset/js/jquery.js' ), array(), '1.8.2' );

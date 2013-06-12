@@ -9,7 +9,6 @@ namespace Leeflets;
 class Styles extends Assets {
 	var $base_url;
 	var $content_url;
-	var $default_version;
 	var $text_direction = 'ltr';
 	var $concat = '';
 	var $concat_version = '';
@@ -20,9 +19,9 @@ class Styles extends Assets {
 
 	private $router;
 
-	function __construct( $base_url, $router ) {
+	function __construct( $base_url, $router, $default_version = '' ) {
 		$this->router = $router;
-		parent::__construct( $base_url );
+		parent::__construct( $base_url, $default_version );
 
         $this->add( 'bootstrap', $router->admin_url( '/core/theme/asset/bootstrap/core/css/bootstrap.css' ), array(), '2.2.1' );
         $this->add( 'bootstrap-responsive', $router->admin_url( '/core/theme/asset/bootstrap/core/css/bootstrap-responsive.css' ), array( 'bootstrap' ), '2.2.1' );

@@ -15,9 +15,11 @@ class Assets {
     var $groups = array();
     var $group = 0;
     public $base_url;
+    public $default_version;
 
-    function __construct( $base_url ) {
+    function __construct( $base_url, $default_version = '' ) {
         $this->base_url = $base_url;
+        $this->default_version = $default_version;
     }
 
     /**

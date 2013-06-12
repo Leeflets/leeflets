@@ -2,8 +2,8 @@
 namespace Leeflets\Admin;
 
 class Styles extends \Leeflets\Styles {
-	function __construct( $base_url, \Leeflets\Router $router ) {
-		parent::__construct( $base_url, $router );
+	function __construct( $base_url, \Leeflets\Router $router, $default_version = '' ) {
+		parent::__construct( $base_url, $router, $default_version );
 
         $this->enqueue( 'bootstrap' );
         $this->enqueue( 'bootstrap-responsive' );

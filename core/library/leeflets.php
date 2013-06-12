@@ -34,15 +34,19 @@ class Leeflets {
 
 		$hook = new Hook();
 
-		$admin_script = new Admin\Scripts( $router->admin_url, $router );
-		$admin_style = new Admin\Styles( $router->admin_url, $router );
+		$admin_script = new Admin\Scripts( $router->admin_url, $router, $config->version );
+		$admin_style = new Admin\Styles( $router->admin_url, $router, $config->version );
 
         $hook->add( 'admin_head', array( $admin_style, 'do_items' ), 0, 10 );
         $hook->add( 'admin_head', array( $admin_script, 'do_head_items' ), 0, 10 );
         $hook->add( 'admin_footer', array( $admin_script, 'do_footer_items' ), 0, 10 );
 
-		$template_script = new Template\Scripts( '', $router );
-		$template_style = new Template\Styles( '', $router );
+		$settings = new Settings( $config );
+
+		$active_template = $settings->get_template_about();
+
+		$template_script = new Template\Scripts( '', $router, $active_template['version'] );
+		$template_style = new Template\Styles( '', $router, $active_template['version'] );
 
         $hook->add( 'head', array( $template_style, 'do_items' ), 0, 10 );
         $hook->add( 'head', array( $template_script, 'do_head_items' ), 0, 10 );
@@ -54,8 +58,6 @@ class Leeflets {
 			Router::redirect( $router->admin_url( '/user/login/' ) );
 			exit;
 		}
-
-		$settings = new Settings( $config );
 		
 		$view = new View( $config, $router, $hook );
 
