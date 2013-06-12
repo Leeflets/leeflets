@@ -64,4 +64,54 @@ class Settings extends Data_File {
 
 		$this->write( $settings, $filesystem );
 	}
+
+	function get_template_about( $template = '' ) {
+		if ( !$template ) {
+			$template = $this->get( 'template', 'active' );
+		}
+
+		$path = $this->config->templates_path . '/' . $template;
+		return $this->get_product_about( $path );
+	}
+
+	function get_addon_about( $addon ) {
+		$path = $this->config->addons_path . '/' . $addon;
+		return $this->get_product_about( $path );
+	}
+
+	function get_product_about( $path = '' ) {
+
+		$path .= '/meta-about.php';
+
+		if ( !file_exists( $path ) ) {
+			return false;
+		}
+
+		$variables = \Leeflets\Inc::variables( $path, array( 'about' ) );
+		if ( is_array( $variables ) ) {
+			extract( $variables );
+		}
+
+		if ( !isset( $about['name'] ) || !isset( $about['version'] ) ) {
+			return false;
+		}
+
+		$default_about = array(
+			'name' => '',
+			'version' => '',
+			'description' => '',
+			'screenshot' => '',
+			'author' => array(
+				'name' => '',
+				'url' => ''
+			),
+			'changelog' => array()
+		);
+
+		// Add default array keys to avoid having to check if
+		// indexes exist and array index errors
+		$about = array_merge( $default_about, $about );
+
+		return $about;
+	}
 }

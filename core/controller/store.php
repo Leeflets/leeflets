@@ -6,17 +6,6 @@ class Store extends \Leeflets\Controller {
 		$active_template_folder = $this->settings->get( 'template', 'active' );
 		$active_addons = $this->settings->get( 'active_addons' );
 		$active_template = array();
-		$default_about = array(
-			'name' => '',
-			'version' => '',
-			'description' => '',
-			'screenshot' => '',
-			'author' => array(
-				'name' => '',
-				'url' => ''
-			),
-			'changelog' => array()
-		);
 
 		$templates = array();
 		$addons = array();
@@ -28,19 +17,11 @@ class Store extends \Leeflets\Controller {
 			$folders = glob( $path . '/*', GLOB_ONLYDIR );
 
 			foreach ( $folders as $folder ) {
-				if ( !file_exists( $folder . '/meta-about.php' ) ) continue;
-				
-				$variables = \Leeflets\Inc::variables( $folder . '/meta-about.php', array( 'about' ) );
-				if ( is_array( $variables ) ) {
-					extract( $variables );
+				$about = $this->settings->get_product_about( $folder );
+				if ( !$about ) {
+					return false;
 				}
-				
-				if ( !isset( $about['name'] ) || !isset( $about['version'] ) ) continue;
 
-				// Add default array keys to avoid having to check if
-				// indexes exist and array index errors
-				$about = array_merge( $default_about, $about );
-				
 				$folder = basename( $folder );
 				$about['slug'] = $folder;
 
