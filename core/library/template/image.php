@@ -27,7 +27,14 @@ class Image {
 			default:
 				$image = $this->vget( $args );
 		}
-		
+
+		if ( isset( $image['in_template'] ) && $image['in_template'] ) {
+			$in_template = true;
+		}
+		else {
+			$in_template = false;
+		}
+
 		if ( isset( $image['versions'][$version] ) ) {
 			$image = $image['versions'][$version];
 		}
@@ -36,7 +43,14 @@ class Image {
 			return false;
 		}
 
-		return array( $this->router->get_uploads_url( $image['path'] ), $image['width'], $image['height'] );
+		if ( $in_template ) {
+			$src = $this->router->get_template_url( $image['path'] );
+		}
+		else {
+			$src = $this->router->get_uploads_url( $image['path'] );
+		}
+
+		return array( $src, $image['width'], $image['height'] );
 	}
 
 	public function out() {

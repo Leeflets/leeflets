@@ -108,25 +108,31 @@ class Content extends \Leeflets\Controller {
 			$file = $files;
 		}
 
-		// Try removing the files
-		@unlink( $this->config->uploads_path . '/' . $file['path'] );
-		if ( isset( $file['versions'] ) ) {
-			foreach ( $file['versions'] as $version ) {
-				@unlink( $this->config->uploads_path . '/' . $version['path'] );
-			}
-		}
-
-		// Check if any of the files are still there
-		$all_removed = true;
-		if ( is_file( $this->config->uploads_path . '/' . $file['path'] ) ) {
-			$all_removed = false;
-		}
-		elseif ( isset( $file['versions'] ) ) {
-			foreach ( $file['versions'] as $version ) {
-				if ( is_file( $this->config->uploads_path . '/' . $version['path'] ) ) {
-					$all_removed = false;
+		// If this is a sample image in the template, don't try remove the file
+		if ( !isset( $file['in_template'] ) || !$file['in_template'] ) {
+			// Try removing the files
+			@unlink( $this->config->uploads_path . '/' . $file['path'] );
+			if ( isset( $file['versions'] ) ) {
+				foreach ( $file['versions'] as $version ) {
+					@unlink( $this->config->uploads_path . '/' . $version['path'] );
 				}
 			}
+
+			// Check if any of the files are still there
+			$all_removed = true;
+			if ( is_file( $this->config->uploads_path . '/' . $file['path'] ) ) {
+				$all_removed = false;
+			}
+			elseif ( isset( $file['versions'] ) ) {
+				foreach ( $file['versions'] as $version ) {
+					if ( is_file( $this->config->uploads_path . '/' . $version['path'] ) ) {
+						$all_removed = false;
+					}
+				}
+			}
+		}
+		else {
+			$all_removed = true;
 		}
 
 		if ( $all_removed ) {

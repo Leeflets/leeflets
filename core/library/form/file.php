@@ -115,14 +115,13 @@ class File extends Control {
                 <a class="label label-inverse remove" href="<?php echo $this->form->router->admin_url( '/content/remove-upload/' . urlencode($this->atts['data-name']) . '/' . $i . '/' ); ?>">Remove</a>
                 <div class="file-preview img-rounded <?php echo $this->get_file_type_class( $file['type'] ); ?>" title="<?php echo $this->esc_att( $file['name'] ); ?>">
                     <?php if ( preg_match( '@^image@', $file['type'] ) ) : ?>
-                    <img class="dpi-standard" src="<?php echo $this->esc_att( $this->form->router->get_uploads_url( $file['versions']['thumbnail']['path'] ) ); ?>">
-                    <img class="dpi-2x" src="<?php echo $this->esc_att( $this->form->router->get_uploads_url( $file['versions']['thumbnail@2x']['path'] ) ); ?>">
+                        <?php $this->image_preview( $file ); ?>
                     <?php else : ?>
                     <div class="filename"><?php echo $this->esc_html( $file['name'] ); ?></div>
                     <?php endif; ?>
                 </div>
                 <input type="hidden" name="<?php echo $this->esc_att( $this->atts['data-name'] ); ?>" value="<?php echo $this->esc_att( json_encode( $file ) ); ?>" />
-            </div>        
+            </div>
 
             <?php
         endforeach;
@@ -135,6 +134,21 @@ class File extends Control {
             if ( !isset( $file['error'] ) ) continue;
             $this->error_html( $file['error'] );
         }
+    }
+
+    function image_preview( $file ) {
+        if ( isset( $file['in_template'] ) ) {
+            $url_std = $this->form->router->get_template_url( $file['versions']['thumbnail']['path'] );
+            $url_2x = $this->form->router->get_template_url( $file['versions']['thumbnail@2x']['path'] );
+        }
+        else {
+            $url_std = $this->form->router->get_uploads_url( $file['versions']['thumbnail']['path'] );
+            $url_2x = $this->form->router->get_uploads_url( $file['versions']['thumbnail@2x']['path'] );
+        }
+        ?>
+        <img class="dpi-standard" src="<?php echo $this->esc_att( $url_std ); ?>">
+        <img class="dpi-2x" src="<?php echo $this->esc_att( $url_2x ); ?>">
+        <?php
     }
 
     function get_file_type_class( $type ) {
