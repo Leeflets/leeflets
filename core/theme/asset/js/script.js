@@ -627,8 +627,8 @@ function LEEFLETS() {
 		$.get(url, {ajax:1}, function(data) {
 			var $panel = $(data);
 			$panel.attr('id', 'admin-' + id);
-			$panel_container.append($panel);
 			$panel.hide();
+			$panel_container.append($panel);
 			self.panel_events($panel);
 			self.panel_events_once($panel);
 			self.toggle_panel($panel);
