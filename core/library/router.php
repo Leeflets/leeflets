@@ -4,7 +4,7 @@ namespace Leeflets;
 class Router {
 
     public $request_url, $base_request_url, $request_path, $is_ajax;
-    public $config;
+    public $config, $settings;
     public $admin_url, $site_url, $admin_dir_name;
 
     public $controller_name = '';
@@ -50,7 +50,11 @@ class Router {
         return $this->site_url . '/' . ltrim( $path, '/' );
     }
 
-    function get_template_url( $template, $url = '' ) {
+    function get_template_url( $url = '', $template = '' ) {
+        if ( !$template ) {
+            $template = $this->settings->get( 'template', 'active' );
+        }
+
         return $this->admin_url( 'templates/' . rawurlencode( $template ) . '/' . ltrim( $url, '/' ) );
     }
 

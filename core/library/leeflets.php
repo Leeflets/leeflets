@@ -43,6 +43,8 @@ class Leeflets {
 
 		$settings = new Settings( $config );
 
+		$router->settings = $settings;
+
 		$active_template = $settings->get_template_about();
 
 		$template_script = new Template\Scripts( '', $router, $active_template['version'] );

@@ -30,7 +30,7 @@ class Store extends \Leeflets\Controller {
 
 				if ( 'templates' == $product_type ) {
 					if ( isset( $screenshots[0] ) ) {
-						$about['screenshot'] = $this->router->get_template_url( $folder, basename( $screenshots[0] ) );
+						$about['screenshot'] = $this->router->get_template_url( basename( $screenshots[0] ), $folder );
 					}
 					else {
 						$about['screenshot'] = 'http://placehold.it/360x270';

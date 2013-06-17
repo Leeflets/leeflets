@@ -63,7 +63,7 @@ class Code {
 	}
 
 	public function get_url( $url = '' ) {
-		return $this->router->get_template_url( $this->active_template, $url );
+		return $this->router->get_template_url( $url );
 	}
 
 	public function part( $file ) {
