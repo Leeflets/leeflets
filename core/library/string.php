@@ -2,6 +2,9 @@
 namespace Leeflets;
 
 class String {
+    // Why is this email validation so simplistic? Why not use a regex?
+    // Because you can't actually validate email with a regex (http://stackoverflow.com/a/201378/112832)
+    // Good email validation is extremely complex and even then is often erroneous
     static function valid_email( $string ) {
         return false !== strpos( $string, '@' );
     }
