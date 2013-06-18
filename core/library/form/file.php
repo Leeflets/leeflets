@@ -138,12 +138,24 @@ class File extends Control {
 
     function image_preview( $file ) {
         if ( isset( $file['in_template'] ) ) {
-            $url_std = $this->form->router->get_template_url( $file['versions']['thumbnail']['path'] );
-            $url_2x = $this->form->router->get_template_url( $file['versions']['thumbnail@2x']['path'] );
+            $url = $this->form->router->get_template_url();
         }
         else {
-            $url_std = $this->form->router->get_uploads_url( $file['versions']['thumbnail']['path'] );
-            $url_2x = $this->form->router->get_uploads_url( $file['versions']['thumbnail@2x']['path'] );
+            $url = $this->form->router->get_uploads_url();
+        }
+
+        if ( isset( $file['versions']['thumbnail']['path'] ) ) {
+            $url_std = $url . $file['versions']['thumbnail']['path'];
+        }
+        else {
+            $url_std = $url . $file['path'];
+        }
+
+        if ( isset( $file['versions']['thumbnail@2x']['path'] ) ) {
+            $url_2x = $url . $file['versions']['thumbnail@2x']['path'];
+        }
+        else {
+            $url_2x = $url . $file['path'];
         }
         ?>
         <img class="dpi-standard" src="<?php echo $this->esc_att( $url_std ); ?>">
