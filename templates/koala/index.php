@@ -39,7 +39,6 @@
                      ?>
                  
                      <?php
-                     $i = 1;
                      foreach ( $features as $feature ) :
                          if ( !isset( $feature['text'] ) || !$feature['text'] ) continue;
                          ?>
@@ -48,16 +47,12 @@
                              if ( isset( $feature['icon'] ) && $icon_image = $image->get( 'icon@2x', $feature['icon'] ) ) {
                                 echo $icon_image;
                              }
-                             else {
-                                printf( '<img src="%s" alt="" />', $template->get_url( 'images/icon_0'.$i.'@2x.png' ) );
-                             }
                              ?>
 
                              <h2><?php echo $feature['title']; ?></h2>
                              <p><?php echo $feature['text']; ?></p>
                          </div>
                          <?php 
-                         $i++;
                      endforeach;
                      ?>
                  
