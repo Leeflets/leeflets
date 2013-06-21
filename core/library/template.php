@@ -132,7 +132,7 @@ class Template {
 			die( "Can't load $content variable in the active template's meta-content.php." );
 		}
 
-		return $vars['content'];
+		return $this->hook->apply( 'template_get_content_fields', $vars['content'] );
 	}
 
 	/**
