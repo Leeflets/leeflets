@@ -3,13 +3,13 @@ namespace Leeflets;
 
 class Addon {
 	private $config, $settings, $hook, $admin_script, $admin_style,
-		$template_script, $template_style, $filesystem;
+		$template_script, $template_style, $filesystem, $router, $instances;
 
 	function __construct( 
 		Config $config, Settings $settings, Hook $hook,
 		Admin\Scripts $admin_script, Admin\Styles $admin_style,
 		Template\Scripts $template_script, Template\Styles $template_style,
-		Filesystem $filesystem
+		Filesystem $filesystem, Router $router
 	) {
 		$this->config = $config;
 		$this->settings = $settings;
@@ -19,6 +19,7 @@ class Addon {
 		$this->template_script = $template_script;
 		$this->template_style = $template_style;
 		$this->filesystem = $filesystem;
+		$this->router = $router;
 	}
 
 	function load_active() {
@@ -36,7 +37,12 @@ class Addon {
 				$deactivate[] = $addon;
 			}
 			else {
-				include $path;
+				Inc::class_file( $path );
+				$class_name = \Leeflets\String::camelize( $addon );
+				$class_name = '\Leeflets\User\Addon\\' . $class_name;
+				$this->instances[$addon] = $obj = new $class_name();
+				$obj->load_objects( $this->config, $this->settings, $this->hook, $this->admin_script, $this->admin_style, $this->template_script, $this->template_style, $this->filesystem, $this->router );
+				$obj->init();
 			}
 		}
 

@@ -12,7 +12,7 @@ class String {
     static function camelize( $str ) {
         $str[0] = strtoupper( $str[0] );
         $func = create_function( '$c', 'return "_" . strtoupper($c[1]);' );
-        return preg_replace_callback( '/_([a-z])/', $func, $str );
+        return preg_replace_callback( '/[_|-]([a-z])/', $func, $str );
     }
 
     static function decamelize( $str ) {

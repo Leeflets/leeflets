@@ -76,7 +76,7 @@ class Leeflets {
 			$filesystem = new Filesystem\Direct( $config );
 		}
 		
-		$addon = new Addon( $config, $settings, $hook, $admin_script, $admin_style, $template_script, $template_style, $filesystem );
+		$addon = new Addon( $config, $settings, $hook, $admin_script, $admin_style, $template_script, $template_style, $filesystem, $router );
 		$addon->load_active();
 
 		$content = new Content( $config, $filesystem, $router, $settings, $hook );
