@@ -71,21 +71,18 @@ $content = array(
 				'type' => 'text',
 				'label' => 'Copyright',
 				'required' => true,
-				'autofocus' => true,
 				'tip' => 'Displayed within the footer.'
 			),
 			'twitter' => array(
 				'type' => 'text',
 				'label' => 'Twitter Link',
 				'required' => false,
-				'autofocus' => true,
 				'tip' => 'Displayed within the footer.'
 			),
 			'facebook' => array(
 				'type' => 'text',
 				'label' => 'Facebook Link',
 				'required' => false,
-				'autofocus' => true,
 				'tip' => 'Displayed within the footer.'
 			)
 		)
