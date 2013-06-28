@@ -21,6 +21,8 @@ class Content {
 			return false;
 		}
 
+		$values = $this->hook->apply( 'content_set_data', $values );
+
 		$file = new Data_File( $this->get_data_file_path(), $this->config );
 		$file->write( $values, $this->filesystem );
 	}
@@ -42,6 +44,8 @@ class Content {
 		$file = new Data_File( $file, $this->config );
 
 		$this->content = $file->read();
+
+		$this->content = $this->hook->apply( 'content_get_data', $this->content );
 
 		return $this->content;
 	}
