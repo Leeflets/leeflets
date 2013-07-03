@@ -39,7 +39,7 @@ class Leeflets {
 
         $hook->add( 'admin_head', array( $admin_style, 'do_items' ), 0, 10 );
         $hook->add( 'admin_head', array( $admin_script, 'do_head_items' ), 0, 10 );
-        $hook->add( 'admin_footer', array( $admin_script, 'do_footer_items' ), 0, 10 );
+        $hook->add( 'admin_footer', array( $admin_script, 'do_footer_items' ), 0, 100 );
 
 		$settings = new Settings( $config );
 
@@ -52,7 +52,7 @@ class Leeflets {
 
         $hook->add( 'head', array( $template_style, 'do_items' ), 0, 10 );
         $hook->add( 'head', array( $template_script, 'do_head_items' ), 0, 10 );
-        $hook->add( 'footer', array( $template_script, 'do_footer_items' ), 0, 10 );
+        $hook->add( 'footer', array( $template_script, 'do_footer_items' ), 0, 100 );
 
 		$user = new User( $config, $router );
 

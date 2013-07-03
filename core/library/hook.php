@@ -28,6 +28,8 @@ class Hook {
 
         $args = func_get_args();
 
+        ksort( $this->hooks[$key] );
+
         foreach ( $this->hooks[$key] as $priority => $callbacks ) {
             foreach ( $callbacks as $callback ) {
                 if ( !is_null( $callback['name'] ) ) {
