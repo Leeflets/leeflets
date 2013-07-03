@@ -40,6 +40,7 @@ class Upload {
             'script_url' => $this->router->admin_url( '/content/upload/' ),
             'upload_dir' => $this->config->uploads_path . '/',
             'upload_url' => $this->router->admin_url( '/uploads/' ),
+            'upload_subdir' => '',
             'user_dirs' => false,
             'mkdir_mode' => 0755,
             'param_name' => 'files',
@@ -95,8 +96,13 @@ class Upload {
         if ( $file_name && $version ) {
             $file_name = preg_replace( '/(\.[^.]+)$/', '-' . $version . '$1', $file_name );
         }
-        $template = $this->settings->get( 'template', 'active' ) . '/';
-        return $template . $file_name;
+        if ( empty( $this->options['upload_subdir'] ) ) {
+            $subdir = $this->settings->get( 'template', 'active' );
+        }
+        else {
+            $subdir = $this->options['upload_subdir'];
+        }
+        return $subdir . '/' . $file_name;
     }
 
     protected function get_upload_path( $file_name = null, $version = null ) {

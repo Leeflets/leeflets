@@ -2,7 +2,7 @@
 namespace Leeflets\Form;
 
 class File extends Control {
-    protected $drop_msg, $button_txt, $accept_types, $upload_options;
+    protected $drop_msg, $button_txt, $accept_types, $subfolder, $upload_options;
 
     function __construct( $parent, $id, $args = array() ) {
         if ( !isset( $args['class'] ) ) {
@@ -34,7 +34,7 @@ class File extends Control {
             )
         );
 
-        $this->special_args( 'accept_types', $args, true );
+        $this->special_args( 'accept_types, subfolder', $args, true );
 
         parent::__construct( $parent, $id, $args );
 
@@ -215,6 +215,10 @@ class File extends Control {
         if ( $this->accept_types ) {
             $types = array_map( 'preg_quote', $this->accept_types );
             $this->upload_options['accept_file_types'] = '/\.(' . implode( '|', $types ) . ')$/i';
+        }
+
+        if ( $this->subfolder ) {
+            $this->upload_options['upload_subdir'] = $this->subfolder;
         }
     }
 
