@@ -125,6 +125,10 @@ ul.details li {
 
 }
 
+.thumbnails li:nth-child(3n+1) {
+	margin-left: 0;
+}
+
 .table-striped ul {
 	li {
 		display:inline;
