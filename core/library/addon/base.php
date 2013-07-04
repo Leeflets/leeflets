@@ -4,9 +4,11 @@ namespace Leeflets\Addon;
 class Base {
 	protected $config, $settings, $hook, $admin_script, $admin_style,
 		$template_script, $template_style, $filesystem, $router;
+	protected $basename, $basepath, $slug;
 
 	function __construct( $file_path ) {
 		$this->basename = basename( $file_path );
+		$this->basepath = dirname( $file_path );
 		$this->slug = preg_replace( '@\.php$@', '', $this->basename );
 	}
 
