@@ -2,7 +2,7 @@
 namespace Leeflets\Form;
 
 class File extends Control {
-    protected $drop_msg, $button_txt, $accept_types, $subfolder, $upload_options;
+    protected $drop_msg, $button_txt, $accept_types, $subfolder, $preview_style, $upload_options;
 
     function __construct( $parent, $id, $args = array() ) {
         if ( !isset( $args['class'] ) ) {
@@ -34,7 +34,7 @@ class File extends Control {
             )
         );
 
-        $this->special_args( 'accept_types, subfolder', $args, true );
+        $this->special_args( 'accept_types, subfolder, preview-style', $args, true );
 
         parent::__construct( $parent, $id, $args );
 
@@ -113,7 +113,7 @@ class File extends Control {
 
             <div class="file-item">
                 <a class="label label-inverse remove" href="<?php echo $this->form->router->admin_url( '/content/remove-upload/' . urlencode($this->atts['data-name']) . '/' . $i . '/' ); ?>">Remove</a>
-                <div class="file-preview img-rounded <?php echo $this->get_file_type_class( $file['type'] ); ?>" title="<?php echo $this->esc_att( $file['name'] ); ?>">
+                <div class="file-preview img-rounded <?php echo $this->get_file_type_class( $file['type'] ); ?>" title="<?php echo $this->esc_att( $file['name'] ); ?>" style="<?php echo $this->esc_att( $this->preview_style ); ?>">
                     <?php if ( preg_match( '@^image@', $file['type'] ) ) : ?>
                         <?php $this->image_preview( $file ); ?>
                     <?php else : ?>
@@ -139,6 +139,9 @@ class File extends Control {
     function image_preview( $file ) {
         if ( isset( $file['in_template'] ) ) {
             $url = $this->form->router->get_template_url();
+        }
+        elseif ( isset( $file['in_addon'] ) ) {
+            $url = $this->form->router->get_addon_url( $file['in_addon'] );
         }
         else {
             $url = $this->form->router->get_uploads_url();
