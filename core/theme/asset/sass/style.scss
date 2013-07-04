@@ -286,6 +286,10 @@ input {
 		}
 	}
 
+	&.file-type-image {
+		background-image: none;
+	}
+
 	.filename {
 		font-size: 10px;
 		text-align: center;
