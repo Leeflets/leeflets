@@ -289,6 +289,9 @@ function LEEFLETS() {
 						reverting_toggle = true;
 						$el.toggleButtons('toggleState');
 					}
+					else {
+						document.location.reload(true);
+					}
 				});
 			}
 		});
