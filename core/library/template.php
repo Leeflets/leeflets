@@ -29,7 +29,10 @@ class Template {
 		// Strip out Leeflets data attributes
 		$output = preg_replace( '@ data-lf-edit="(.*?)"@', '', $output );
 
-		$file = $this->config->root_path . '/index.html';
+		$filename = $this->hook->apply( 'template_write_filename', 'index.html' );
+		$filepath = $this->hook->apply( 'template_write_filepath', $this->config->root_path );
+		
+		$file = $filepath . '/' . $filename;
 		$file = $this->filesystem->translate_path( $file );
 		return $this->filesystem->put_contents( $file, $output );
 	}
