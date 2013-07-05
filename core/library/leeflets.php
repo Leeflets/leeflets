@@ -82,6 +82,9 @@ class Leeflets {
 		$content = new Content( $config, $filesystem, $router, $settings, $hook );
 		$template = new Template( $config, $filesystem, $router, $settings, $hook, $template_script, $template_style, $content );
 
+        $router->parse_request_url();
+        $router->set_controller_class();
+
 		$controller_class = $router->controller_class;
 		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template, $settings, $hook, $content, $addon );
 

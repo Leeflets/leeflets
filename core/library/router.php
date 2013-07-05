@@ -24,8 +24,6 @@ class Router {
         $this->is_ajax = $is_ajax;
 
         $this->set_urls();
-        $this->parse_request_url();
-        $this->set_controller_class();
     }
 
     private function set_urls() {
@@ -66,7 +64,7 @@ class Router {
         return $this->admin_url( 'uploads/' . ltrim( $url, '/' ) );
     }
 
-    private function parse_request_url() {
+    function parse_request_url() {
         $admin_url = parse_url( $this->admin_url );
         $request_url = parse_url( $this->request_url );
 
@@ -99,7 +97,7 @@ class Router {
         }
     }
     
-    private function set_controller_class() {
+    function set_controller_class() {
         $name = $this->controller_name;
         $namespace = '\\Leeflets\\Controller\\';
 
