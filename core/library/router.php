@@ -111,15 +111,17 @@ class Router {
         $name = preg_replace( '@[/\-\.]@', '_', $name );
         $class = $namespace . String::camelize( $name );
 
-        $path = File::get_class_file_path( $this->config, ltrim( $class, '\\' ) );
-        if ( !file_exists( $path ) || !method_exists( $class, $this->action ) ) {
-            $this->controller_name = 'error';
-            $this->controller_class = $namespace . 'Error';
-            $this->action = 'e404';
+        if ( !class_exists( $class ) ) {
+            $path = File::get_class_file_path( $this->config, ltrim( $class, '\\' ) );
+            if ( !file_exists( $path ) || !method_exists( $class, $this->action ) ) {
+                $this->controller_name = 'error';
+                $this->controller_class = $namespace . 'Error';
+                $this->action = 'e404';
+                return;
+            }
         }
-        else {
-            $this->controller_class = $class;
-        }
+
+        $this->controller_class = $class;
     }
 
     static function base_request_url() {
