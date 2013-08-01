@@ -61,7 +61,13 @@
                  ?>
             </div>
         </div>
-        
+
+        <?php
+        if ( isset( $contact_form ) ) :
+            include $contact_form->template_path();
+        endif;
+        ?>
+
         <div data-lf-edit="footer" id="footer">
             <div class="row">
                 <div class="one-half">
