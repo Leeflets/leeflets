@@ -15,7 +15,10 @@ html, body {
 .lf-edit-box {
 	position: absolute;
 	overflow: hidden;
-	background-color: rgba(0,0,0,0.15);
+	background-color: rgba(255,255,255,0.6);
+	box-shadow: inset 0px 0px 120px rgba(0, 0, 0, 0.5);
+	transition: background-color .25s, box-shadow .25s;
+	z-index: 99;
 
 	h1 {
 		$font-size: 40px;
@@ -38,6 +41,7 @@ html, body {
 
 .lf-edit-box:hover {
 	background-color: transparent;
+	box-shadow: none;
 	cursor: pointer;
 	
 	h1 {
