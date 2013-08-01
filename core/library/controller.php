@@ -5,6 +5,7 @@ class Controller {
 
     public $router, $view, $filesystem, $config, $user, 
         $template, $settings, $hook, $content, $addon;
+    protected $no_auth_actions;
 
     function __construct( 
         Router $router, View $view, Filesystem $filesystem,
@@ -22,6 +23,11 @@ class Controller {
         $this->hook = $hook;
         $this->content = $content;
         $this->addon = $addon;
+    }
+
+    function is_no_auth_action() {
+        if ( is_null( $this->no_auth_actions ) ) return false;
+        return in_array( $this->router->action, $this->no_auth_actions );
     }
 
     function call_action() {

@@ -21,15 +21,11 @@ class Leeflets {
 
 		$this->setup_error_reporting();
 
-		$is_login = preg_match( '@user/login/@', $_SERVER['REQUEST_URI'] );
-
 		if ( !$is_config_loaded ) {
 			$router = new Router( $config, null, '/setup/install/' );
-			$is_install = true;
 		}
 		else {
 			$router = new Router( $config );
-			$is_install = false;
 		}
 
 		$hook = new Hook();
@@ -55,11 +51,6 @@ class Leeflets {
         $hook->add( 'footer', array( $template_script, 'do_footer_items' ), 0, 100 );
 
 		$user = new User( $config, $router );
-
-		if ( !$user->is_logged_in() && !( $is_install || $is_login ) ) {
-			Router::redirect( $router->admin_url( '/user/login/' ) );
-			exit;
-		}
 		
 		$view = new View( $config, $router, $hook );
 
@@ -87,6 +78,11 @@ class Leeflets {
 
 		$controller_class = $router->controller_class;
 		$controller = new $controller_class( $router, $view, $filesystem, $config, $user, $template, $settings, $hook, $content, $addon );
+
+		if ( !$user->is_logged_in() && !$controller->is_no_auth_action() ) {
+			Router::redirect( $router->admin_url( '/user/login/' ) );
+			exit;
+		}
 
 		$controller->call_action();
 	}

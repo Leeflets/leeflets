@@ -2,6 +2,8 @@
 namespace Leeflets\Controller;
 
 class Setup extends \Leeflets\Controller {
+	protected $no_auth_actions = array( 'install' );
+
 	function matching_passwords( $password2, $password1 ) {
 		return ( $_POST['password1'] == $_POST['password2'] );
 	}

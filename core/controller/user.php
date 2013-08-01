@@ -2,6 +2,8 @@
 namespace Leeflets\Controller;
 
 class User extends \Leeflets\Controller {
+	protected $no_auth_actions = array( 'login' );
+
 	function login() {
 		
 		$form = new \Leeflets\Form( $this->config, $this->router, $this->settings, 'login-form', array(
