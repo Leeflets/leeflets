@@ -66,14 +66,12 @@ class Code {
 		return $this->router->get_template_url( $url );
 	}
 
-	public function part( $file ) {
-		echo $this->get_part( $file );
+	public function file_path( $file ) {
+		return $this->config->templates_path . '/' . $this->active_template . '/' . $file . '.php';
 	}
 
-	public function get_part( $file ) {
-		ob_start();
-		include $path = $this->config->templates_path . '/' . $this->active_template . '/part-' . $file . '.php';
-		return ob_get_clean();
+	public function part( $file ) {
+		return $this->file( 'part-' . $file );
 	}
 
     function enqueue_script( $handle, $src, $deps = array(), $ver = false, $args = null ) {
