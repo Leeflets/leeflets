@@ -85,6 +85,13 @@ class Addon {
 		return true;
 	}
 
+	function get_instance( $slug ) {
+		if ( !empty( $this->instances[$slug] ) ) {
+			return $this->instances[$slug];
+		}
+		return false;
+	}
+
 	function activate( $addons ) {
 		return $this->toggle( $addons, true );
 	}
