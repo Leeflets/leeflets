@@ -68,14 +68,18 @@ class Template {
 
 		$template = new $template_class( $is_publish, $this->config, $this->filesystem, $this->router, $this->settings, $this->hook, $this->script, $this->style, $this->content );
 
-		return Inc::content( $index_path, array(
+		$template_objects = array(
 			'template' => $template,
 			'content' => new Template\Content( $this->content->get_data() ),
 			'upload' => new Template\Upload( $this->router ),
 			'image' => new Template\Image( $this->router ),
 			'settings' => new Template\Settings( $this->settings ),
 			'hook' => $this->hook
-		) );
+		);
+
+		$template_objects = $this->hook->apply( 'template_render_objects', $template_objects );
+
+		return Inc::content( $index_path, $template_objects );
 	}
 
 	private function old_api_detected() {
