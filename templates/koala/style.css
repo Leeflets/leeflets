@@ -229,7 +229,12 @@ strong {
     margin: 0;
 }
 
-.addon-contact-form-success,
+#addon-contact-form-success,
+#addon-contact-form-error {
+    margin: 10px 0 0 0;
+}
+
+#addon-contact-form-success,
 .addon-contact-form-error {
     color: #ccc;
     font-weight: bold;
