@@ -145,17 +145,23 @@ strong {
 /* Contact Form
 *********************************************************************************************/
 
-#addon-contact-form {
-    width: 500px;
+#addon-contact-form-container {
+    width: 600px;
     margin: 0 auto;
-    padding: 90px 0 60px 0;
+    padding: 90px 50px 60px 50px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box; 
 }
 
-#addon-contact-form h3 {
+#addon-contact-form-container h3 {
     font-size: 22px;
+    color: #999;
+}
+
+#addon-contact-form-container .activate {
+    font-size: 22px;
+    line-height: 24px;
     color: #999;
 }
 
