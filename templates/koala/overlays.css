@@ -1,0 +1,12 @@
+.lf-edit-box {
+	position: absolute;
+	overflow: hidden;
+	background-color: transparent;
+	box-shadow: none;
+	transition: background-color .25s, box-shadow .25s;
+	z-index: 99;
+}
+
+.lf-edit-box:hover {
+	background-color: rgba(0,0,0,0.2);
+}
