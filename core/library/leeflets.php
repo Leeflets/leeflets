@@ -30,8 +30,8 @@ class Leeflets {
 
 		$hook = new Hook();
 
-		$admin_script = new Admin\Scripts( $router->admin_url, $router, $config->version );
-		$admin_style = new Admin\Styles( $router->admin_url, $router, $config->version );
+		$admin_script = new Admin\Scripts( $router->admin_url, $router, $config );
+		$admin_style = new Admin\Styles( $router->admin_url, $router, $config );
 
         $hook->add( 'admin_head', array( $admin_style, 'do_items' ), 0, 10 );
         $hook->add( 'admin_head', array( $admin_script, 'do_head_items' ), 0, 10 );
@@ -43,8 +43,8 @@ class Leeflets {
 
 		$active_template = $settings->get_template_about();
 
-		$template_script = new Template\Scripts( '', $router, $active_template['version'] );
-		$template_style = new Template\Styles( '', $router, $active_template['version'] );
+		$template_script = new Template\Scripts( '', $router, $config, $active_template['version'] );
+		$template_style = new Template\Styles( '', $router, $config, $active_template['version'] );
 
         $hook->add( 'head', array( $template_style, 'do_items' ), 0, 10 );
         $hook->add( 'head', array( $template_script, 'do_head_items' ), 0, 10 );

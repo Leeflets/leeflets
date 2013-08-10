@@ -19,21 +19,24 @@ class Scripts extends Assets {
 	var $ext_version = '';
 	var $default_dirs;
 
-	private $router;
+	private $router, $config;
 
-	function __construct( $base_url, Router $router, $default_version = '' ) {
+	function __construct( $base_url, Router $router, Config $config, $default_version = '' ) {
 		$this->router = $router;
+		$this->config = $config;
 		parent::__construct( $base_url, $default_version );
+
+		$min = $this->config->debug ? '' : '.min';
 		
-		$this->add( 'wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/js/wysihtml5.js' ), array(), '0.3.0' );
-		$this->add( 'jquery', $router->admin_url( '/core/theme/asset/js/jquery.js' ), array(), '1.10.2' );
-		$this->add( 'jquery-ui-widget', $router->admin_url( '/core/theme/asset/js/jquery.ui.widget.js' ), array( 'jquery' ), '1.10.3' );
-		$this->add( 'jquery-iframe-transport', $router->admin_url( '/core/theme/asset/js/jquery.iframe-transport.js' ), array( 'jquery' ), '1.7' );
-		$this->add( 'jquery-fileupload', $router->admin_url( '/core/theme/asset/js/jquery.fileupload.js' ), array( 'jquery' ), '5.32.2' );
-		$this->add( 'bootstrap', $router->admin_url( '/core/theme/asset/bootstrap/core/js/bootstrap.js' ), array(), '2.3.2' );
-		$this->add( 'bootstrap-datepicker', $router->admin_url( '/core/theme/asset/bootstrap/datepicker/js/bootstrap-datepicker.js' ), array( 'bootstrap' ), '2013-03-12' );
-		$this->add( 'bootstrap-wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/js/bootstrap-wysihtml5.js' ), array( 'bootstrap' ), '2013-04-29' );
-		$this->add( 'md5', $router->admin_url( '/core/theme/asset/js/md5.js' ), array() );
+		$this->add( 'wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/js/wysihtml5' . $min . '.js' ), array(), '0.3.0' );
+		$this->add( 'jquery', $router->admin_url( '/core/theme/asset/js/jquery' . $min . '.js' ), array(), '1.10.2' );
+		$this->add( 'jquery-ui-widget', $router->admin_url( '/core/theme/asset/js/jquery.ui.widget' . $min . '.js' ), array( 'jquery' ), '1.10.3' );
+		$this->add( 'jquery-iframe-transport', $router->admin_url( '/core/theme/asset/js/jquery.iframe-transport' . $min . '.js' ), array( 'jquery' ), '1.7' );
+		$this->add( 'jquery-fileupload', $router->admin_url( '/core/theme/asset/js/jquery.fileupload' . $min . '.js' ), array( 'jquery' ), '5.32.2' );
+		$this->add( 'bootstrap', $router->admin_url( '/core/theme/asset/bootstrap/core/js/bootstrap' . $min . '.js' ), array(), '2.3.2' );
+		$this->add( 'bootstrap-datepicker', $router->admin_url( '/core/theme/asset/bootstrap/datepicker/js/bootstrap-datepicker' . $min . '.js' ), array( 'bootstrap' ), '2013-03-12' );
+		$this->add( 'bootstrap-wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/js/bootstrap-wysihtml5' . $min . '.js' ), array( 'bootstrap' ), '2013-04-29' );
+		$this->add( 'md5', $router->admin_url( '/core/theme/asset/js/md5' . $min . '.js' ), array() );
 	}
 
     function add_enqueue( $handle, $src, $deps = array(), $ver = false, $in_footer = false ) {

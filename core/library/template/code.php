@@ -37,11 +37,13 @@ class Code {
 
 	function setup_default_hooks() {
 		if ( !$this->is_publish ) {
-			$url = $this->router->admin_url( '/core/theme/asset/js/frontend-edit.js' );
+			$min = $this->config->debug ? '' : '.min';
+
+			$url = $this->router->admin_url( '/core/theme/asset/js/frontend-edit' . $min . '.js' );
 			$this->enqueue_script( 'lf-frontend-edit', $url, array( 'jquery' ) );
 
 			if ( !$this->config->debug || !$this->settings->get( 'debug', 'disable-overlays' ) ) {
-				$url = $this->router->admin_url( '/core/theme/asset/js/frontend-overlay.js' );
+				$url = $this->router->admin_url( '/core/theme/asset/js/frontend-overlay' . $min . '.js' );
 				$this->enqueue_script( 'lf-frontend-overlay', $url, array( 'jquery' ) );
 				$url = $this->router->admin_url( '/core/theme/asset/css/frontend-overlay.css' );
 				$this->enqueue_style( 'lf-frontend-overlay', $url );

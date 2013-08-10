@@ -17,14 +17,15 @@ class Styles extends Assets {
 	var $print_code = '';
 	var $default_dirs;
 
-	private $router;
+	private $router, $config;
 
-	function __construct( $base_url, $router, $default_version = '' ) {
+	function __construct( $base_url, Router $router, Config $config, $default_version = '' ) {
 		$this->router = $router;
+		$this->config = $config;
 		parent::__construct( $base_url, $default_version );
 
-        $this->add( 'bootstrap', $router->admin_url( '/core/theme/asset/bootstrap/core/css/bootstrap.css' ), array(), '2.2.1' );
-        $this->add( 'bootstrap-responsive', $router->admin_url( '/core/theme/asset/bootstrap/core/css/bootstrap-responsive.css' ), array( 'bootstrap' ), '2.2.1' );
+        $this->add( 'bootstrap', $router->admin_url( '/core/theme/asset/bootstrap/core/css/bootstrap.min.css' ), array(), '2.2.1' );
+        $this->add( 'bootstrap-responsive', $router->admin_url( '/core/theme/asset/bootstrap/core/css/bootstrap-responsive.min.css' ), array( 'bootstrap' ), '2.2.1' );
         $this->add( 'bootstrap-datepicker', $router->admin_url( '/core/theme/asset/bootstrap/datepicker/css/datepicker.css' ), array( 'bootstrap' ) );
         $this->add( 'bootstrap-wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/css/bootstrap-wysihtml5.css' ), array( 'bootstrap' ) );
         $this->add( 'jquery-fileupload', $router->admin_url( '/core/theme/asset/css/jquery.fileupload-ui.css' ), array(), '6.10' );
