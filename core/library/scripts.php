@@ -26,13 +26,13 @@ class Scripts extends Assets {
 		parent::__construct( $base_url, $default_version );
 		
 		$this->add( 'wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/js/wysihtml5.js' ), array(), '0.3.0' );
-		$this->add( 'jquery', $router->admin_url( '/core/theme/asset/js/jquery.js' ), array(), '1.8.2' );
-		$this->add( 'jquery-ui-widget', $router->admin_url( '/core/theme/asset/js/jquery.ui.widget.js' ), array( 'jquery' ), '1.9.1' );
-		$this->add( 'jquery-iframe-transport', $router->admin_url( '/core/theme/asset/js/jquery.iframe-transport.js' ), array( 'jquery' ), '1.6.1' );
-		$this->add( 'jquery-fileupload', $router->admin_url( '/core/theme/asset/js/jquery.fileupload.js' ), array( 'jquery' ), '5.19.8' );
-		$this->add( 'bootstrap', $router->admin_url( '/core/theme/asset/bootstrap/core/js/bootstrap.js' ), array(), '2.2.1' );
-		$this->add( 'bootstrap-datepicker', $router->admin_url( '/core/theme/asset/bootstrap/datepicker/js/bootstrap-datepicker.js' ), array( 'bootstrap' ) );
-		$this->add( 'bootstrap-wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/js/bootstrap-wysihtml5.js' ), array( 'bootstrap' ) );
+		$this->add( 'jquery', $router->admin_url( '/core/theme/asset/js/jquery.js' ), array(), '1.10.2' );
+		$this->add( 'jquery-ui-widget', $router->admin_url( '/core/theme/asset/js/jquery.ui.widget.js' ), array( 'jquery' ), '1.10.3' );
+		$this->add( 'jquery-iframe-transport', $router->admin_url( '/core/theme/asset/js/jquery.iframe-transport.js' ), array( 'jquery' ), '1.7' );
+		$this->add( 'jquery-fileupload', $router->admin_url( '/core/theme/asset/js/jquery.fileupload.js' ), array( 'jquery' ), '5.32.2' );
+		$this->add( 'bootstrap', $router->admin_url( '/core/theme/asset/bootstrap/core/js/bootstrap.js' ), array(), '2.3.2' );
+		$this->add( 'bootstrap-datepicker', $router->admin_url( '/core/theme/asset/bootstrap/datepicker/js/bootstrap-datepicker.js' ), array( 'bootstrap' ), '2013-03-12' );
+		$this->add( 'bootstrap-wysihtml5', $router->admin_url( '/core/theme/asset/bootstrap/wysihtml5/js/bootstrap-wysihtml5.js' ), array( 'bootstrap' ), '2013-04-29' );
 		$this->add( 'md5', $router->admin_url( '/core/theme/asset/js/md5.js' ), array() );
 	}
 
