@@ -15,9 +15,6 @@ html, body {
 .lf-edit-box {
 	position: absolute;
 	overflow: hidden;
-	background-color: rgba(255,255,255,0.6);
-	box-shadow: inset 0px 0px 120px rgba(0, 0, 0, 0.5);
-	transition: background-color .25s, box-shadow .25s;
 	z-index: 99;
 
 	h1 {
@@ -39,12 +36,44 @@ html, body {
 	background-color: transparent;
 }
 
+.lf-edit-box-popover {
+	display: inline;
+	width: 80px;
+	text-align: center;
+	height: 30px;
+	font-family: Arial, sans-serif;
+	font-size: 18px;
+	line-height: 18px;
+	letter-spacing: 1px;
+	font-weight: bold;
+	color: #ddd;
+	border-radius: 5px;
+	padding: 13px 0 0 0;
+	background-color: #000;
+	position: absolute;
+	top: -20px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	-webkit-transition: opacity 0.3s, top 0.3s;
+	-moz-transition: opacity 0.3s, top 0.3s;
+	-o-transition: opacity 0.3s, top 0.3s;
+	transition: opacity 0.3s, top 0.3s;
+}
+
 .lf-edit-box:hover {
-	background-color: transparent;
-	box-shadow: none;
 	cursor: pointer;
 	
 	h1 {
 		display: block;
+	}
+
+	.lf-edit-box-popover {
+		opacity: 1;
+		top: 0;
+		filter: alpha(opacity=100);
 	}
 }
