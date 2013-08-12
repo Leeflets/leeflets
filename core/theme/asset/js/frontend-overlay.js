@@ -23,7 +23,7 @@
 		$('[data-lf-edit]').each(function() {
 			var box = {};
 			box.$container = $(this);
-			box.$pad = $('<div class="lf-edit-box"><div class="lf-edit-box-popover">EDIT</div></div>');
+			box.$pad = $('<div class="lf-edit-box"><div class="lf-edit-box-popover"></div></div>');
 			box.$pad.appendTo('.lf-edit-container');
 
 			if ('html' === box.$container[0].tagName.toLowerCase()) {
