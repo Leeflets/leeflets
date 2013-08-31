@@ -33,7 +33,7 @@ class Config {
 		$this->fs_chmod_dir     = 0755;
 		$this->fs_chmod_file    = 0644;
 
-		$this->leeflets_api_url = 'http://leeflets.aws.af.cm/api/v1';
+		$this->leeflets_api_url = 'http://leeflets.com/api/v1';
 
 		// Include version number in external file so we don't pollute
 		// the change history of this file with version number updates
