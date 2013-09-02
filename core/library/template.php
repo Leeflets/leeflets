@@ -26,6 +26,8 @@ class Template {
 		$this->filesystem->connect();
 		$output = $this->render( true );
 
+		$output = $this->hook->apply( 'template_write_output', $output );
+
 		// Strip out Leeflets data attributes
 		$output = preg_replace( '@ data-lf-edit="(.*?)"@', '', $output );
 
