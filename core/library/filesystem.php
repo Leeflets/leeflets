@@ -51,14 +51,14 @@ class Filesystem {
 
 		$this->have_direct_access = false;
 
-		if ( !function_exists( 'getmyuid' ) || !function_exists( 'fileowner' ) ) {
+		if ( !function_exists( 'getmyuid' ) || !function_exists( 'fileowner' ) || !function_exists( 'posix_getgroups' ) || !function_exists( 'filegroup' ) ) {
 			return $this->have_direct_access;
 		}
 
 		$temp_file_name = $this->config->root_path . '/temp-write-test-' . time();
 		$temp_handle = @fopen( $temp_file_name, 'w' );
 		if ( $temp_handle ) {
-			if ( getmyuid() == @fileowner( $temp_file_name ) ) {
+			if ( getmyuid() == @fileowner( $temp_file_name ) || in_array( @filegroup( $temp_file_name ), posix_getgroups() )  ) {
 				$this->have_direct_access = true;
 			}
 			@fclose( $temp_handle );
