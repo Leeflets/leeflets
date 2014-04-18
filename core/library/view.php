@@ -49,10 +49,10 @@ class View {
         }
 
         if ( !isset( $vars['page-title'] ) || !$vars['page-title'] ) {
-            $vars['page-title'] = 'Leefets';
+            $vars['page-title'] = 'Leeflets';
         }
         else {
-            $vars['page-title'] = $vars['page-title'] . ' &laquo; Leefets';
+            $vars['page-title'] = $vars['page-title'] . ' &laquo; Leeflets';
         }
 
         echo $this->get_content( $this->config->theme_path . '/' . $layout . '.php', $vars );
