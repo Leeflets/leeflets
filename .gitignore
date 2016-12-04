@@ -7,3 +7,4 @@
 *.espressostorage
 /templates/
 /addons/
+/vendor/
