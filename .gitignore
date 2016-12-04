@@ -9,3 +9,5 @@
 /addons/
 /vendor/
 composer.lock
+
+.idea/
