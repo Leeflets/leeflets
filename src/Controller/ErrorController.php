@@ -1,6 +1,6 @@
 <?php
 
-namespace Leeflets\Core\Controller;
+namespace Leeflets\Controller;
 
 use Leeflets\Core\Library\Controller;
 

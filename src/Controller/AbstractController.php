@@ -1,8 +1,8 @@
 <?php
 
-namespace Leeflets\Core\Library;
+namespace Leeflets\Controller;
 
-class Controller {
+abstract class AbstractController {
 
     public $router, $view, $filesystem, $config, $user, 
         $template, $settings, $hook, $content, $addon;

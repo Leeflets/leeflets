@@ -1,13 +1,13 @@
 <?php
 
-namespace Leeflets\Core\Controller;
+namespace Leeflets\Controller;
 
 use Leeflets\Core\Library\Content;
-use Leeflets\Core\Library\Controller;
 use Leeflets\Core\Library\String;
 
-class ContentController extends Controller {
-	function edit() {
+class ContentAbstractController extends AbstractController {
+
+    function edit() {
 		$data = $this->content->get_data();
 
 		$fieldset_ids = func_get_args();
