@@ -1,0 +1,23 @@
+{
+    "name": "1blankz7/leeflets",
+    "description": "Beautifully Simple Websites",
+    "require": {
+        "rych/phpass": "^2.0",
+        "widi/router": "^1.4",
+        "widi/service-locator": "^2.1"
+    },
+    "authors": [
+        {
+            "name": "Christian Blank",
+            "email": "mail@cblank.de"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Leeflets\\": "src/"
+        }
+    }
+}

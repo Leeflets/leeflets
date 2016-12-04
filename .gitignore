@@ -8,3 +8,4 @@
 /templates/
 /addons/
 /vendor/
+composer.lock
