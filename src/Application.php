@@ -2,7 +2,7 @@
 
 namespace Leeflets;
 
-use Widi\Components\Router\Router;
+use Widi\Components\Router\RouterFactory;
 
 /**
  * Class Leeflets
@@ -13,23 +13,23 @@ class Application {
     /**
      * @var array
      */
-    private $config;
+    protected $config;
 
     /**
-     * @var Router
+     * @var RouterFactory
      */
-    private $router;
+    protected $router;
 
     /**
      * Application constructor.
      *
      * @param array $config
-     * @param Router $router
+     * @param RouterFactory $routerFactory
      */
-    public function __construct($config, Router $router) {
+    public function __construct($config, RouterFactory $routerFactory) {
         $this->config = $config;
 
-        $this->router = $router;
+        $this->router = $routerFactory($config['routes']);
     }
 
     public function run() {

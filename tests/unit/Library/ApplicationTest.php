@@ -5,7 +5,7 @@ namespace LeefletsTest\Library;
 use Leeflets\Application;
 use LeefletsTest\AbstractUnitTestCase;
 use Mockery as m;
-use Widi\Components\Router\Router;
+use Widi\Components\Router\RouterFactory;
 
 class ApplicationTest extends AbstractUnitTestCase {
 
@@ -13,6 +13,9 @@ class ApplicationTest extends AbstractUnitTestCase {
      * @test
      */
     public function itShouldBeInstantiated() {
-        $application = new Application([], m::mock(Router::class));
+        $factoryMock = m::mock(
+            RouterFactory::class,
+            ['__invoke' => 1]);
+        new Application(['routes' => []], $factoryMock);
     }
 }
