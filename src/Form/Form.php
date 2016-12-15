@@ -3,6 +3,7 @@
 namespace Leeflets\Core\Library;
 
 class Form extends Form\ElementCollection {
+
     public $config, $router, $settings;
     
     function __construct( Config $config, Router $router, Settings $settings, $id, $args = array() ) {

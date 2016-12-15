@@ -2,6 +2,8 @@
 
 namespace Leeflets;
 
+use Widi\Components\Router\Route\Method\Get;
+use Widi\Components\Router\Router;
 use Widi\Components\Router\RouterFactory;
 
 /**
@@ -16,7 +18,7 @@ class Application {
     protected $config;
 
     /**
-     * @var RouterFactory
+     * @var Router
      */
     protected $router;
 
@@ -30,9 +32,16 @@ class Application {
         $this->config = $config;
 
         $this->router = $routerFactory($config['routes']);
+        $this->router->setEnableRouteCallbacks(true);
     }
 
     public function run() {
+        $route = $this->router->route();
+        if ($this->router->isRouteNotFound()) {
+            $route = $this->router->route('/404', Get::METHOD_STRING);
+        }
+
+        $controller = $route->getController();
 
     }
 
