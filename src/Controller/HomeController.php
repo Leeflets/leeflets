@@ -2,40 +2,32 @@
 
 namespace Leeflets\Controller;
 
-use Leeflets\Core\Library\Controller;
-use Leeflets\Core\Library\ProductInfo;
+use Leeflets\Core\Response;
+use Leeflets\Core\ResponseInterface;
+use Leeflets\Core\Session;
+use Leeflets\View\View;
+use Widi\Components\Router\Request;
 
-class HomeController extends Controller {
-	function index() {
-		$core_update_check_enabled = $this->hook->apply( 'core_update_check_enabled', true );
-		if ( $core_update_check_enabled ) {
-			//$this->hook->add( 'admin_footer', array( $this, '_update_check' ) );
-		}
+/**
+ * The home controller is responsible for collecting the basic information for the one pager.
+ *
+ * @package Leeflets\Controller
+ */
+class HomeController extends AbstractController {
+
+    /**
+     * @param Request $request
+     *
+     * @return ResponseInterface
+     */
+    public function indexAction(Request $request) {
+        $session = Session::init($_SESSION);
+
+        $isLoggedIn = $session->exists('user');
+
+        return new Response(
+            (new View(''))->toHtml()
+        );
 	}
 
-	function _update_check() {
-		$product_info = new ProductInfo( $this->config, $this->hook, $this->router, $this->filesystem );
-
-		$msg = '';
-		$problem = 'There was a problem (#%s) checking for a core update. You might want to check <a href="http://leeflets.com">leeflets.com</a> to see if there\'s a new version.';
-
-		$result = $product_info->refresh();
-
-		if (ErrorController::is_a( $result ) ) {
-			$msg = sprintf( $problem, '1' );
-		}
-		elseif ( !$core = $product_info->get( 'core' ) ) {
-			$msg = sprintf( $problem, '2' );
-		}
-		elseif ( empty( $core['version'] ) ) {
-			$msg = sprintf( $problem, '3' );
-		}
-		elseif ( version_compare( $this->config->version, $core['version'], '<' ) ) {
-			$msg = 'There is a new version of Leeflets available. You are currently on version ' . htmlspecialchars( $this->config->version ) . '. Visit <a href="http://leeflets.com">leeflets.com</a> to download version ' . htmlspecialchars( $core['version'] ) . '.';
-		}
-
-		if ( $msg ) {
-			$this->view->partial( 'core-update-msg', compact( 'msg' ) );
-		}
-	}
 }

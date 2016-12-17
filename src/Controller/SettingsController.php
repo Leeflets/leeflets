@@ -5,8 +5,9 @@ namespace Leeflets\Controller;
 use Leeflets\Core\Library\Controller;
 use Leeflets\Core\Library\Form;
 
-class SettingsController extends Controller {
-	function edit() {
+class SettingsController extends AbstractController {
+
+    public function editAction() {
 		if ( isset( $_POST['connection']['type'] ) ) {
 			if ( 'direct' == $_POST['connection']['type'] ) {
 				$_POST['connection']['hostname'] = '';

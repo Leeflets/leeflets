@@ -2,6 +2,7 @@
 
 namespace Leeflets;
 
+use Leeflets\Core\ResponseInterface;
 use Widi\Components\Router\Route\Method\Get;
 use Widi\Components\Router\Router;
 use Widi\Components\Router\RouterFactory;
@@ -35,13 +36,32 @@ class Application {
         $this->router->setEnableRouteCallbacks(true);
     }
 
+    /**
+     * @todo Use dispatcher and director
+     */
     public function run() {
         $route = $this->router->route();
         if ($this->router->isRouteNotFound()) {
             $route = $this->router->route('/404', Get::METHOD_STRING);
         }
 
-        $controller = $route->getController();
+        $controllerName = $route->getController();
+        $actionName = $route->getAction();
+        $request = $this->router->getRequest();
+
+        $controller = new $controllerName();
+
+        /** @var ResponseInterface $response */
+        $response = $controller->$actionName($request);
+
+        $this->setHeader($response);
+        echo $response->output();
+    }
+
+    /**
+     * @param ResponseInterface $response
+     */
+    private function setHeader($response) {
 
     }
 

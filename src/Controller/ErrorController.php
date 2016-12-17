@@ -2,11 +2,10 @@
 
 namespace Leeflets\Controller;
 
-use Leeflets\Core\Library\Controller;
+class ErrorController extends AbstractController {
 
-class ErrorController extends Controller {
-	function e404() {
+    public function e404() {
         header('HTTP/1.0 404 Not Found');
-		die( 'Not found.' );
+		die('Not found.');
 	}
 }

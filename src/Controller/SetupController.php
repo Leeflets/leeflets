@@ -7,7 +7,7 @@ use Leeflets\Core\Library\Form;
 use Leeflets\Core\Library\Router;
 use Phpass\Hash;
 
-class SetupController extends Controller {
+class SetupController extends AbstractController {
 
     protected $no_auth_actions = ['install'];
 

@@ -5,7 +5,7 @@ namespace Leeflets\Controller;
 use Leeflets\Core\Library\Content;
 use Leeflets\Core\Library\String;
 
-class ContentAbstractController extends AbstractController {
+class ContentController extends AbstractController {
 
     function edit() {
 		$data = $this->content->get_data();
