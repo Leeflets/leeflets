@@ -16,20 +16,20 @@ class RoutingTest extends AbstractIntegrationTestCase {
     public function setUp() {
         parent::setUp();
         $routerFactory = new RouterFactory();
-        $config = include 'src/config.php';
 
         $_SERVER = [
             'path_info' => '/',
             'request_method' => 'GET'
         ];
 
-        $this->application = new Application($config, $routerFactory);
+        $this->application = new Application($routerFactory);
     }
 
     /**
      * @test
      */
     public function itShouldCallIndexActionInHomeControllerWhenRequestingIndexWithGet() {
+        // TODO: create spy for indexAction
         $this->application->run();
     }
 }

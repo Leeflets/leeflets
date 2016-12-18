@@ -4,7 +4,8 @@
     "require": {
         "rych/phpass": "^2.0",
         "widi/router": "^1.4",
-        "widi/service-locator": "^2.1"
+        "widi/service-locator": "^2.1",
+        "twig/twig": "~1.0"
     },
     "authors": [
         {

@@ -2,6 +2,7 @@
 
 namespace Leeflets;
 
+use Leeflets\Controller\AbstractController;
 use Leeflets\Core\ResponseInterface;
 use Widi\Components\Router\Route\Method\Get;
 use Widi\Components\Router\Router;
@@ -26,13 +27,14 @@ class Application {
     /**
      * Application constructor.
      *
-     * @param array $config
      * @param RouterFactory $routerFactory
+     * @param array $config
      */
-    public function __construct($config, RouterFactory $routerFactory) {
-        $this->config = $config;
+    public function __construct(RouterFactory $routerFactory, $config = []) {
+        $basicConfig = include dirname(__FILE__) . '/config.php';
+        $this->config = array_merge($basicConfig, $config);
 
-        $this->router = $routerFactory($config['routes']);
+        $this->router = $routerFactory($this->config['routes']);
         $this->router->setEnableRouteCallbacks(true);
     }
 
@@ -49,7 +51,9 @@ class Application {
         $actionName = $route->getAction();
         $request = $this->router->getRequest();
 
+        /** @var AbstractController $controller */
         $controller = new $controllerName();
+        $controller->setConfig($this->config);
 
         /** @var ResponseInterface $response */
         $response = $controller->$actionName($request);

@@ -2,10 +2,7 @@
 
 namespace Leeflets\Controller;
 
-use Leeflets\Core\Response;
 use Leeflets\Core\ResponseInterface;
-use Leeflets\Core\Session;
-use Leeflets\View\View;
 use Widi\Components\Router\Request;
 
 /**
@@ -21,12 +18,10 @@ class HomeController extends AbstractController {
      * @return ResponseInterface
      */
     public function indexAction(Request $request) {
-        $session = Session::init($_SESSION);
 
-        $isLoggedIn = $session->exists('user');
-
-        return new Response(
-            (new View(''))->toHtml()
+        return $this->createHtmlResponse(
+            'home',
+            array_merge($this->getBasicContext(), [])
         );
 	}
 
