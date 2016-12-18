@@ -47,4 +47,5 @@ return [
         ],
     ],
     'one_pager_template' => 'onepager.twig',
+    'title' => 'Default Title',
 ];

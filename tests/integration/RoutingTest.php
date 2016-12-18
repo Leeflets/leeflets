@@ -22,7 +22,9 @@ class RoutingTest extends AbstractIntegrationTestCase {
             'request_method' => 'GET'
         ];
 
-        $this->application = new Application($routerFactory);
+        $this->application = new Application($routerFactory, [
+            'one_pager_template_dir' => 'tests/integration'
+        ]);
     }
 
     /**
