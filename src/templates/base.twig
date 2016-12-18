@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% block head %}
+  {% endblock %}
+  <title>{{title}}</title>
+  <link rel="stylesheet" href="style.css" />
+  {% if loggedIn %}
+    <link rel="stylesheet" href="admin.css" />
+  {% endif %}
+</head>
+<body>
+  {% if loggedIn %}
+  <div id="leeflets-admin-panel">
+    <div>Best Admin Panel in town</div>
+    {% block admin %}{% endblock %}
+  </div>
+  {% endif %}
+  {% include userTemplate %}
+</body>
+</html>
