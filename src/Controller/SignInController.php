@@ -3,7 +3,10 @@
 namespace Leeflets\Controller;
 
 use Leeflets\Core\Response;
+use Leeflets\Form\EmailField;
 use Leeflets\Form\Form;
+use Leeflets\Form\PasswordField;
+use Leeflets\Form\SubmitButton;
 use Widi\Components\Router\Request;
 
 /**
@@ -34,13 +37,25 @@ class SignInController extends AbstractController {
     public function loginAction(Request $request) {
         $loginForm = $this->getLoginForm();
 
-
     }
 
     /**
      * @return Form
      */
     private function getLoginForm() {
-        return new Form([]);
+        $form = new Form([
+            'class' => 'login-container'
+        ]);
+
+        $form->add(new EmailField('email', [
+            'placeholder' => 'Email'
+        ]));
+        $form->add(new PasswordField('password', [
+            'placeholder' => 'Password'
+        ]));
+
+        $form->add(new SubmitButton('Log In'));
+
+        return $form;
     }
 }

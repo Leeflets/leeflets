@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  {% block head %}
-  {% endblock %}
   <title>{{title}}</title>
   <link rel="stylesheet" href="signin.css" />
 </head>
 <body>
+  <div class="login">
+    <div class="login-triangle"></div>
 
+    <h2 class="login-header">Log in</h2>
+
+    {{ form | raw }}
+
+  </div>
 </body>
 </html>

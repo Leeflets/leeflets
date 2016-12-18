@@ -23,8 +23,6 @@ class ApplicationTest extends AbstractUnitTestCase {
         new Application($factoryMock, ['routes' => []]);
     }
 
-
-
     private function buildRouterMock() {
         $mockBuilder = $this->getMockBuilder(Router::class)
             ->disableOriginalConstructor();
