@@ -1,0 +1,86 @@
+
+/*@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);*/
+
+body {
+    background: #456;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.login {
+    width: 400px;
+    margin: 16px auto;
+    font-size: 16px;
+}
+
+/* Reset top and bottom margins from certain elements */
+.login-header {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* The triangle form is achieved by a CSS hack */
+.login-triangle {
+    width: 0;
+    margin-right: auto;
+    margin-left: auto;
+    border: 12px solid transparent;
+    border-bottom-color: #28d;
+}
+
+.login-header {
+    background: #28d;
+    padding: 20px;
+    font-size: 1.4em;
+    font-weight: normal;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.login-container {
+    background: #ebebeb;
+    padding: 24px 24px 12px 24px;
+}
+
+.login input {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    padding: 16px;
+    outline: 0;
+    font-family: inherit;
+    font-size: 0.95em;
+    margin-bottom: 12px;
+    background: #fff;
+    border: 1px solid #bbb;
+    color: #555;
+}
+
+/* Text fields' focus effect */
+.login input:focus {
+    border-color: #888;
+}
+
+.login button {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    padding: 16px;
+    outline: 0;
+    font-family: inherit;
+    font-size: 0.95em;
+    margin-bottom: 12px;
+    background: #28d;
+    border: 1px solid transparent;
+    color: #fff;
+    cursor: pointer;
+}
+
+.login button:hover {
+    background: #17c;
+}
+
+/* Buttons' focus effect */
+.login button:focus {
+    border-color: #05a;
+}
