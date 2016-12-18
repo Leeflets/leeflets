@@ -46,24 +46,18 @@ body {
     box-sizing: border-box;
     display: block;
     width: 100%;
-    border: 1px solid;
     padding: 16px;
     outline: 0;
     font-family: inherit;
     font-size: 0.95em;
     margin-bottom: 12px;
-}
-
-.login input[type="text"],
-.login input[type="password"] {
     background: #fff;
-    border-color: #bbb;
+    border: 1px solid #bbb;
     color: #555;
 }
 
 /* Text fields' focus effect */
-.login input[type="text"]:focus,
-.login input[type="password"]:focus {
+.login input:focus {
     border-color: #888;
 }
 

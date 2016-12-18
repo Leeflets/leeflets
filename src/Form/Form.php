@@ -2,6 +2,8 @@
 
 namespace Leeflets\Form;
 
+use Widi\Components\Router\Request;
+
 /**
  * Class Form
  * @package Leeflets\Form
@@ -17,6 +19,11 @@ class Form {
      * @var FieldInterface[]
      */
     private $fields;
+
+    /**
+     * @var ValidationResult[]
+     */
+    private $validation;
 
     /**
      * Form constructor.
@@ -42,9 +49,39 @@ class Form {
     }
 
     /**
-     * @return bool
+     * @inheritdoc
      */
-    public function validate() {
+    public function validate(Request $request) {
+        $data = $request->getpost();
+        $validation = array_map(function($field) use ($data) {
+            /** @var FieldInterface $field */
+            return $field->validate($data);
+        }, $this->fields);
+
+        $this->validation = $validation;
+
+        $result = [];
+
+        if(!$this->isValid()) {
+            return $result;
+        }
+
+        foreach ($this->validation as $validationResult) {
+            $result[$validationResult->getName()] = $validationResult->getValue();
+        }
+
+        return $result;
+    }
+
+    public function isValid() {
+        if(!$this->validation) {
+            return false;
+        }
+        foreach ($this->validation as $validationResult) {
+            if($validationResult->hasError()) {
+                return false;
+            }
+        }
         return true;
     }
 

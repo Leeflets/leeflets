@@ -59,4 +59,9 @@ abstract class AbstractController {
         }
     }
 
+    protected function redirect($location) {
+        header("Location: $location");
+        exit();
+    }
+
 }

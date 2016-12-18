@@ -20,10 +20,20 @@ class SubmitButton implements FieldInterface {
         $this->value = $value;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function render() {
         return sprintf(
             '<button type="submit">%s</button>',
             $this->value
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validate(array $request) {
+        return new ValidationResult('submit');
     }
 }
